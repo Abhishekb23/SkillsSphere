@@ -1,0 +1,85 @@
+##############################################
+# SkillsSphere Full Stack (.NET + Angular)
+##############################################
+
+# ====== General ======
+*.log
+*.tmp
+*.temp
+*.bak
+*.swp
+*.swo
+.DS_Store
+Thumbs.db
+.env
+.env.* 
+!.env.example
+
+# ====== Node / Angular (Frontend) ======
+/skillsphere-frontend/node_modules/
+/skillsphere-frontend/dist/
+/skillsphere-frontend/.angular/cache/
+/skillsphere-frontend/.angular/
+/skillsphere-frontend/.vscode/
+/skillsphere-frontend/coverage/
+/skillsphere-frontend/src/environments/environment.*.ts
+
+# Angular build outputs
+skillsphere-frontend/dist/
+skillsphere-frontend/.angular/cache/
+
+# ====== .NET (Backend) ======
+/skillsphere-backend/bin/
+/skillsphere-backend/obj/
+/skillsphere-backend/.vs/
+/skillsphere-backend/.vscode/
+/skillsphere-backend/Properties/launchSettings.json
+/skillsphere-backend/appsettings.Development.json
+/skillsphere-backend/appsettings.Local.json
+/skillsphere-backend/appsettings.*.json
+
+# ====== IDE Specific ======
+# VS Code
+.vscode/
+.history/
+.idea/
+*.code-workspace
+
+# Visual Studio
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+.vs/
+
+# Rider / JetBrains
+.idea/
+*.iml
+
+# ====== OS Files ======
+.DS_Store
+Thumbs.db
+ehthumbs.db
+Icon?
+Desktop.ini
+
+# ====== Package Managers ======
+/**/npm-debug.log*
+/**/yarn-debug.log*
+/**/yarn-error.log*
+/**/pnpm-debug.log*
+/**/package-lock.json
+/**/yarn.lock
+/**/pnpm-lock.yaml
+
+# ====== Other ======
+/**/logs/
+/**/temp/
+/**/obj/
+/**/bin/
+/**/out/
+/**/dist/
+
+##############################################
+# End of SkillsSphere .gitignore
+##############################################
