@@ -3,7 +3,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.14.36414.22 d17.14
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "skillsphere-backend", "skillsphere-backend\skillsphere-backend.csproj", "{173BBB58-35EE-4EEA-9056-710176682394}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "skillsphere.backend", "skillsphere-backend\skillsphere.backend.csproj", "{173BBB58-35EE-4EEA-9056-710176682394}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "skillsphere.infrastructure", "Infrastructure\skillsphere.infrastructure.csproj", "{6B88CB11-38BE-4832-A50C-8D0049E210C8}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "skillsphere.core", "Core\skillsphere.core.csproj", "{0C89EF48-1ACA-4641-8440-A80004F2606C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,6 +19,14 @@ Global
 		{173BBB58-35EE-4EEA-9056-710176682394}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{173BBB58-35EE-4EEA-9056-710176682394}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{173BBB58-35EE-4EEA-9056-710176682394}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6B88CB11-38BE-4832-A50C-8D0049E210C8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6B88CB11-38BE-4832-A50C-8D0049E210C8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6B88CB11-38BE-4832-A50C-8D0049E210C8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6B88CB11-38BE-4832-A50C-8D0049E210C8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0C89EF48-1ACA-4641-8440-A80004F2606C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0C89EF48-1ACA-4641-8440-A80004F2606C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0C89EF48-1ACA-4641-8440-A80004F2606C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0C89EF48-1ACA-4641-8440-A80004F2606C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

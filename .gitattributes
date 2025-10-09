@@ -1,0 +1,30 @@
+# ============================
+# SkillsSphere Git Attributes
+# ============================
+
+# Handle line endings automatically
+* text=auto eol=lf
+
+# Treat these as binary (no diff)
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.gif binary
+*.ico binary
+*.exe binary
+*.dll binary
+*.pdf binary
+
+# C#, .NET specific
+*.cs text diff=csharp
+*.csproj text
+*.sln text
+
+# TypeScript / Angular
+*.ts text
+*.html text
+*.css text
+*.scss text
+*.json text
+*.js text
+*.md text

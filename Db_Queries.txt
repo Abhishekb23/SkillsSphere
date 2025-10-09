@@ -1,0 +1,175 @@
+CREATE TABLE "Users" (
+    "UserId" SERIAL PRIMARY KEY,
+    "Username" VARCHAR(50) NOT NULL UNIQUE,
+    "Email" VARCHAR(100) NOT NULL UNIQUE,
+    "PasswordHash" VARCHAR(255) NOT NULL,
+    "Role" INT NOT NULL DEFAULT 1, -- 1 = Learner, 2 = Admin
+    "IsActive" BOOLEAN DEFAULT TRUE,
+    "CreatedAt" TIMESTAMP DEFAULT NOW(),
+    "UpdatedAt" TIMESTAMP DEFAULT NOW()
+);
+CREATE OR REPLACE FUNCTION get_user_by_id(p_userid INT)
+RETURNS TABLE(
+    "UserId" INT,
+    "Username" VARCHAR,
+    "Email" VARCHAR,
+    "PasswordHash" VARCHAR,
+    "Role" INT,
+    "IsActive" BOOLEAN,
+    "CreatedAt" TIMESTAMP,
+    "UpdatedAt" TIMESTAMP
+) AS $$
+BEGIN
+    RETURN QUERY
+    SELECT 
+        u."UserId",
+        u."Username",
+        u."Email",
+        u."PasswordHash",
+        u."Role",
+        u."IsActive",
+        u."CreatedAt",
+        u."UpdatedAt"
+    FROM "Users" u
+    WHERE u."UserId" = p_userid;
+END;
+$$ LANGUAGE plpgsql;
+
+
+
+
+CREATE OR REPLACE FUNCTION get_all_users()
+RETURNS TABLE(
+    "UserId" INT,
+    "Username" VARCHAR,
+    "Email" VARCHAR,
+    "PasswordHash" VARCHAR,
+    "Role" INT,
+    "IsActive" BOOLEAN,
+    "CreatedAt" TIMESTAMP,
+    "UpdatedAt" TIMESTAMP
+) AS $$
+BEGIN
+    RETURN QUERY SELECT * FROM "Users";
+END;
+$$ LANGUAGE plpgsql;
+
+
+
+
+CREATE OR REPLACE PROCEDURE create_user(
+    p_username VARCHAR,
+    p_email VARCHAR,
+    p_passwordhash VARCHAR,
+    p_role INT,
+    OUT p_userid INT
+)
+AS $$
+BEGIN
+    INSERT INTO "Users"("Username", "Email", "PasswordHash", "Role")
+    VALUES (p_username, p_email, p_passwordhash, p_role)
+    RETURNING "UserId" INTO p_userid;
+END;
+$$ LANGUAGE plpgsql;
+
+
+
+
+
+
+
+-- Test Table
+CREATE TABLE Test (
+    TestId SERIAL PRIMARY KEY,
+    Title VARCHAR(255) NOT NULL,
+    Description TEXT,
+    CreatedBy INT NOT NULL,
+    CreatedAt TIMESTAMP DEFAULT NOW(),
+    IsActive BOOLEAN DEFAULT TRUE
+);
+
+-- Question Table
+CREATE TABLE Question (
+    QuestionId SERIAL PRIMARY KEY,
+    TestId INT NOT NULL REFERENCES Test(TestId) ON DELETE CASCADE,
+    QuestionText TEXT NOT NULL,
+    QuestionType VARCHAR(50) DEFAULT 'SingleChoice'
+);
+
+-- Option Table
+CREATE TABLE Option (
+    OptionId SERIAL PRIMARY KEY,
+    QuestionId INT NOT NULL REFERENCES Question(QuestionId) ON DELETE CASCADE,
+    OptionText TEXT NOT NULL,
+    IsCorrect BOOLEAN DEFAULT FALSE
+);
+
+
+
+-- Enable JSON support in Postgres if needed
+-- This is default in modern Postgres versions
+
+CREATE OR REPLACE FUNCTION create_test(
+    test_data JSON
+)
+RETURNS INT AS $$
+DECLARE
+    v_test_id INT;
+    v_question JSON;
+    v_option JSON;
+    v_question_id INT;
+BEGIN
+    -- Insert Test
+    INSERT INTO Test(Title, Description, CreatedBy, CreatedAt, IsActive)
+    VALUES (
+        test_data->>'title',
+        test_data->>'description',
+        (test_data->>'createdBy')::INT,
+        NOW(),
+        TRUE
+    )
+    RETURNING TestId INTO v_test_id;
+
+    -- Loop through Questions
+    FOR v_question IN SELECT * FROM json_array_elements(test_data->'questions')
+    LOOP
+        INSERT INTO Question(TestId, QuestionText, QuestionType)
+        VALUES (
+            v_test_id,
+            v_question->>'questionText',
+            COALESCE(v_question->>'questionType', 'SingleChoice')
+        )
+        RETURNING QuestionId INTO v_question_id;
+
+        -- Loop through Options
+        FOR v_option IN SELECT * FROM json_array_elements(v_question->'options')
+        LOOP
+            INSERT INTO Option(QuestionId, OptionText, IsCorrect)
+            VALUES (
+                v_question_id,
+                v_option->>'optionText',
+                (v_option->>'isCorrect')::BOOLEAN
+            );
+        END LOOP;
+    END LOOP;
+
+    RETURN v_test_id;
+END;
+$$ LANGUAGE plpgsql;
+
+
+
+
+
+
+SELECT * from "Users";
+INSERT INTO "Users" ("Username", "Email", "PasswordHash", "Role")
+VALUES ('abhishek','abhishek@gmail.com','123',2);)
+
+
+
+
+
+
+
+
