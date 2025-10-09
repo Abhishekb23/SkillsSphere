@@ -7,10 +7,13 @@ EXPOSE 8080
 FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
 ARG BUILD_CONFIGURATION=Release
 WORKDIR /src
-COPY ["skillsphere-backend/skillsphere-backend.csproj", "skillsphere-backend/"]
-RUN dotnet restore "./skillsphere-backend/skillsphere-backend.csproj"
+
+# Copy csproj and restore dependencies
+COPY ["skillsphere-backend.csproj", "./"]
+RUN dotnet restore "./skillsphere-backend.csproj"
+
+# Copy the rest of the source code
 COPY . .
-WORKDIR "/src/skillsphere-backend"
 RUN dotnet build "./skillsphere-backend.csproj" -c $BUILD_CONFIGURATION -o /app/build
 
 # Publish stage
