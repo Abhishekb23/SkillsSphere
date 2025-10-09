@@ -40,6 +40,13 @@ builder.Services.AddAuthentication(options =>
 // Register your JWT service
 builder.Services.AddScoped<IJwtService, JwtService>();
 
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowAll", policy =>
+        policy.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod());
+});
+
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -51,9 +58,14 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
-app.UseAuthentication(); // MUST come before UseAuthorization
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();
 
+// Important for Render
+var port = Environment.GetEnvironmentVariable("PORT") ?? "8080";
+app.Urls.Add($"http://*:{port}");
+
 app.Run();
+
