@@ -1,0 +1,34 @@
+<section class="container mt-4">
+  <mat-card class="test-header mat-elevation-z2">
+    <h2>{{ testData?.title }}</h2>
+    <p>{{ testData?.description }}</p>
+    <p><strong>Created At:</strong> {{ testData?.createdAt | date:'medium' }}</p>
+  </mat-card>
+
+  <div *ngFor="let question of testData.questions" class="mt-4">
+    <mat-card class="question-card mat-elevation-z1">
+      <h4>Q{{ question.questionId }}. {{ question.questionText }}</h4>
+
+      <!-- Single Choice Question -->
+      <mat-radio-group *ngIf="question.questionType === 'SingleChoice'">
+        <mat-radio-button
+          *ngFor="let option of question.options"
+          [value]="option.optionId"
+          class="option"
+        >
+          {{ option.optionText }}
+        </mat-radio-button>
+      </mat-radio-group>
+
+      <!-- Multiple Choice Question -->
+      <div *ngIf="question.questionType === 'MultipleChoice'">
+        <mat-checkbox
+          *ngFor="let option of question.options"
+          class="option"
+        >
+          {{ option.optionText }}
+        </mat-checkbox>
+      </div>
+    </mat-card>
+  </div>
+</section>
