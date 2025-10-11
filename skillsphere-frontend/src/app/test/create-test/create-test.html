@@ -1,0 +1,54 @@
+<div class="container py-4">
+  <h2>Create New Quiz</h2>
+  
+  <form [formGroup]="quizForm" (ngSubmit)="submitQuiz()">
+    <div class="mb-3">
+      <label class="form-label">Title</label>
+      <input class="form-control" formControlName="title" placeholder="Enter quiz title" />
+    </div>
+
+    <div class="mb-3">
+      <label class="form-label">Description</label>
+      <textarea class="form-control" formControlName="description" placeholder="Enter description"></textarea>
+    </div>
+
+    <div formArrayName="questions">
+      <div *ngFor="let q of questions.controls; let i = index" [formGroupName]="i" class="card my-3 shadow-sm">
+        <div class="card-body">
+          <h5 class="card-title">Question {{ i + 1 }}</h5>
+          
+          <div class="mb-2">
+            <input class="form-control" formControlName="questionText" placeholder="Enter question text" />
+          </div>
+
+          <div class="mb-3">
+            <label>Type</label>
+            <select class="form-select" formControlName="questionType">
+              <option value="single">Single Choice</option>
+              <option value="multiple">Multiple Choice</option>
+            </select>
+          </div>
+
+          <div formArrayName="options">
+            <div *ngFor="let opt of getOptions(i).controls; let j = index" [formGroupName]="j" class="input-group mb-2">
+              <input class="form-control" formControlName="optionText" placeholder="Option text" />
+              <div class="input-group-text">
+                <input type="checkbox" formControlName="isCorrect" />
+              </div>
+              <button class="btn btn-outline-danger" type="button" (click)="removeOption(i, j)" *ngIf="getOptions(i).length > 1">Remove</button>
+            </div>
+          </div>
+
+          <button class="btn btn-secondary btn-sm" type="button" (click)="addOption(i)">+ Add Option</button>
+        </div>
+
+        <div class="card-footer text-end">
+          <button class="btn btn-danger btn-sm" type="button" (click)="removeQuestion(i)" *ngIf="questions.length > 1">Remove Question</button>
+        </div>
+      </div>
+    </div>
+
+    <button class="btn btn-primary mt-3" type="button" (click)="addQuestion()">+ Add Question</button>
+    <button class="btn btn-success mt-3 float-end" type="submit">Submit Quiz</button>
+  </form>
+</div>

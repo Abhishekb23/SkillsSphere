@@ -1,0 +1,24 @@
+<div class="container py-4">
+  <h2 class="mb-4">Available Tests</h2>
+
+  <div class="row g-4">
+    <div class="col-md-6" *ngFor="let test of tests">
+      <div class="card shadow-sm h-100">
+        <div class="card-body">
+          <h5 class="card-title">
+            {{ test.title }}
+            <span class="badge bg-success float-end" *ngIf="test.isActive">Active</span>
+            <span class="badge bg-secondary float-end" *ngIf="!test.isActive">Inactive</span>
+          </h5>
+
+          <p class="card-text text-muted">{{ test.description }}</p>
+
+          <small class="text-secondary">Created At: {{ test.createdAt | date: 'medium' }}</small>
+        </div>
+        <div class="card-footer text-end">
+          <button class="btn btn-outline-primary btn-sm">View Details</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

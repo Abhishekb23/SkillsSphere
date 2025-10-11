@@ -1,0 +1,13 @@
+.test-header {
+  padding: 20px;
+  background-color: #f5f5f5;
+}
+
+.question-card {
+  padding: 20px;
+}
+
+.option {
+  display: block;
+  margin-top: 10px;
+}
