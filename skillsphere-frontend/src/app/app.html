@@ -2,7 +2,7 @@
   <div class="container-fluid">
     <!-- Logo -->
     <a class="navbar-brand fw-bold" href="#">
-      <img src="# " alt="SkillSphere" width="120" height="auto">
+      <img src="#" alt="SkillSphere" width="120" height="auto">
     </a>
 
     <!-- Toggler for mobile -->
@@ -10,18 +10,24 @@
       <span class="navbar-toggler-icon"></span>
     </button>
 
-    <!-- Navbar content -->
     <div class="collapse navbar-collapse" id="navbarContent">
       <!-- Search -->
       <form class="d-flex flex-grow-1 me-3" role="search">
         <input class="form-control rounded-pill px-4" type="search" placeholder="Search for anything" aria-label="Search">
       </form>
 
-      <!-- Links -->
       <ul class="navbar-nav align-items-center">
         <li class="nav-item me-3">
           <a class="nav-link" routerLink="manage-test">Get Certified</a>
         </li>
+
+        <!-- Only for Admin -->
+        <li class="nav-item me-3" *ngIf="authService.isAdmin()">
+          <a class="btn btn-outline-primary btn-sm" routerLink="/add-course">
+            <i class="bi bi-plus-circle"></i> New Course
+          </a>
+        </li>
+
         <li class="nav-item me-3">
           <a class="nav-link" href="#">Offers</a>
         </li>
@@ -32,14 +38,26 @@
         </li>
 
         <!-- Login & Signup Buttons -->
-        <li class="nav-item me-2">
-          <a class="btn btn-outline-dark btn-sm" routerLink="/login">Log In</a>
-        </li>
-        <li class="nav-item">
-          <a class="btn btn-dark btn-sm" routerLink="/signup">Sign Up</a>
-        </li>
+        <ng-container *ngIf="!authService.isAuthenticated(); else loggedIn">
+          <li class="nav-item me-2">
+            <a class="btn btn-outline-dark btn-sm" routerLink="/login">Log In</a>
+          </li>
+          <li class="nav-item">
+            <a class="btn btn-dark btn-sm" routerLink="/signup">Sign Up</a>
+          </li>
+        </ng-container>
+
+        <!-- Logout Button (only when logged in) -->
+        <ng-template #loggedIn>
+          <li class="nav-item">
+            <button class="btn btn-outline-danger btn-sm" (click)="authService.logout()">
+              <i class="bi bi-box-arrow-right"></i> Logout
+            </button>
+          </li>
+        </ng-template>
       </ul>
     </div>
   </div>
 </nav>
+
 <router-outlet></router-outlet>

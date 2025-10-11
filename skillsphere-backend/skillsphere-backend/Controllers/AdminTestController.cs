@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using skillsphere.core.Dtos;
 using skillsphere.core.Interfaces.Services;
@@ -18,6 +19,8 @@ namespace skillsphere_backend.Controllers
 
         // POST api/admin/tests
         [HttpPost]
+        [Authorize(Roles ="Admin")]
+
         public async Task<IActionResult> CreateTest([FromBody] CreateTestRequest request)
         {
             try
@@ -37,6 +40,7 @@ namespace skillsphere_backend.Controllers
 
         // GET api/admin/tests/{id}
         [HttpGet("{id}")]
+        [Authorize]
         public async Task<IActionResult> GetTest(int id)
         {
             var test = await _testService.GetTestByIdAsync(id);

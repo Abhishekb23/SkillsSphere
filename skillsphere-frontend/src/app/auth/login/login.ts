@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { AuthService } from '../../services/auth-service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-login',
@@ -16,13 +17,14 @@ export class Login {
 
   private token: string = '';
 
-  constructor(private readonly authService: AuthService){}
+  constructor(private readonly authService: AuthService,private router:Router){}
 
   onLogin() {
     this.authService.login(this.user).subscribe({
       next: (res) => {
-        this.token = res;
-        console.log(res);
+        this.token = res.token;
+        this.authService.setToken(this.token);
+         this.router.navigate(['/']);
         alert("success");
       },
       error: (error) => {
