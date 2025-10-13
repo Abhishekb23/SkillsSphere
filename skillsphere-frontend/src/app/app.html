@@ -2,7 +2,7 @@
   <div class="container-fluid">
     <!-- Logo -->
     <a class="navbar-brand fw-bold" href="#">
-      <img src="#" alt="SkillSphere" width="120" height="auto">
+      <img src="./assets/icon.png" alt="SkillSphere" width="40" height="auto">
     </a>
 
     <!-- Toggler for mobile -->
@@ -23,8 +23,8 @@
 
         <!-- Only for Admin -->
         <li class="nav-item me-3" *ngIf="authService.isAdmin()">
-          <a class="btn btn-outline-primary btn-sm" routerLink="/add-course">
-            <i class="bi bi-plus-circle"></i> New Course
+          <a class="btn  btn-sm" routerLink="/create-test">
+             New Course
           </a>
         </li>
 

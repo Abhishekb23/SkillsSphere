@@ -1,6 +1,5 @@
 import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
-import { MatCard } from '@angular/material/card';
 import { RouterModule } from '@angular/router';
 
 interface Slide {
@@ -20,7 +19,7 @@ interface CourseCard {
 
 @Component({
   selector: 'app-dashboard',
-  imports: [CommonModule, RouterModule, MatCard],
+  imports: [CommonModule, RouterModule],
   templateUrl: './dashboard.html',
   styleUrl: './dashboard.css'
 })
