@@ -47,15 +47,16 @@ builder.Services.AddSwaggerGen(options =>
 
 
 // JWT setup
-var key = Encoding.ASCII.GetBytes(configuration["Jwt:Key"]);
+var key = Encoding.UTF8.GetBytes(configuration["Jwt:Key"]);
 
 builder.Services.AddAuthentication(options =>
 {
     options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
     options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-})
-.AddJwtBearer(options =>
+}).AddJwtBearer(options =>
 {
+    var key = Encoding.UTF8.GetBytes(configuration["Jwt:Key"]);
+
     options.TokenValidationParameters = new TokenValidationParameters
     {
         ValidateIssuer = true,
@@ -66,7 +67,17 @@ builder.Services.AddAuthentication(options =>
         IssuerSigningKey = new SymmetricSecurityKey(key),
         ClockSkew = TimeSpan.Zero
     };
+
+    options.Events = new JwtBearerEvents
+    {
+        OnAuthenticationFailed = context =>
+        {
+            Console.WriteLine("JWT ERROR: " + context.Exception.Message);
+            return Task.CompletedTask;
+        }
+    };
 });
+
 
 // Register your JWT service
 builder.Services.AddScoped<IJwtService, JwtService>();

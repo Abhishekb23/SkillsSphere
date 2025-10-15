@@ -34,4 +34,29 @@ namespace skillsphere.core.Entities
         public bool IsCorrect { get; set; } = false;
     }
 
+
+
+
+    public class UserAnswer
+    {
+        public int UserAnswerId { get; set; }
+        public int UserId { get; set; }
+        public int TestId { get; set; }
+        public int QuestionId { get; set; }
+        public List<int> SelectedOptionIds { get; set; } = new();
+        public DateTime SubmittedAt { get; set; }
+    }
+
+    public class TestResult
+    {
+        public int ResultId { get; set; }
+        public int TestId { get; set; }
+        public int UserId { get; set; }
+        public int TotalQuestions { get; set; }
+        public int CorrectAnswers { get; set; }
+        public decimal Score { get; set; }
+        public DateTime StartedAt { get; set; }
+        public DateTime CompletedAt { get; set; }
+    }
+
 }

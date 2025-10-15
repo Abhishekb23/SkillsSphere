@@ -17,7 +17,6 @@ namespace skillsphere_backend.Controllers
             _testService = testService;
         }
 
-        // POST api/admin/tests
         [HttpPost]
         [Authorize(Roles ="Admin")]
 
@@ -40,7 +39,7 @@ namespace skillsphere_backend.Controllers
 
         // GET api/admin/tests/{id}
         [HttpGet("{id}")]
-        [Authorize]
+        [Authorize(Roles ="Admin,Learner")]
         public async Task<IActionResult> GetTest(int id)
         {
             var test = await _testService.GetTestByIdAsync(id);
@@ -50,6 +49,7 @@ namespace skillsphere_backend.Controllers
 
         // GET api/admin/tests
         [HttpGet]
+        [Authorize(Roles ="Admin,Learner")]
         public async Task<IActionResult> GetAllTests()
         {
             var tests = await _testService.GetAllTestsAsync();

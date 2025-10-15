@@ -96,6 +96,64 @@ namespace skillsphere.infrastructure.Repositories
             var tests = await conn.QueryAsync<Test>("SELECT * FROM Test;");
             return tests;
         }
+
+
+
+        public async Task SubmitAnswersAsync(SubmitTestRequest request)
+        {
+            using var conn = GetConnection();
+            conn.Open();
+
+            foreach (var answer in request.Answers)
+            {
+                await conn.ExecuteAsync(
+                    @"INSERT INTO ""UserAnswer"" (""UserId"", ""TestId"", ""QuestionId"", ""SelectedOptionIds"", ""SubmittedAt"")
+                      VALUES (@UserId, @TestId, @QuestionId, @SelectedOptionIds::jsonb, NOW());",
+                    new
+                    {
+                        UserId = request.UserId,
+                        TestId = request.TestId,
+                        QuestionId = answer.QuestionId,
+                        SelectedOptionIds = System.Text.Json.JsonSerializer.Serialize(answer.SelectedOptionIds)
+                    }
+                );
+            }
+        }
+
+        public async Task<IEnumerable<TestResult>> GetUserResultsAsync(int userId)
+        {
+            using var conn = GetConnection();
+            conn.Open();
+
+            var results = await conn.QueryAsync<TestResult>(
+                @"SELECT * FROM ""TestResult"" WHERE ""UserId"" = @UserId;",
+                new { UserId = userId }
+            );
+
+            return results;
+        }
+
+
+        public async Task InsertTestResultAsync(int userId, int testId, int totalQuestions, double correctAnswers, double score)
+        {
+            using var conn = GetConnection();
+            conn.Open();
+
+            await conn.ExecuteAsync(
+                @"INSERT INTO ""TestResult"" 
+                    (""UserId"", ""TestId"", ""TotalQuestions"", ""CorrectAnswers"", ""Score"", ""StartedAt"", ""CompletedAt"")
+                  VALUES (@UserId, @TestId, @TotalQuestions, @CorrectAnswers, @Score, NOW(), NOW());",
+                new
+                {
+                    UserId = userId,
+                    TestId = testId,
+                    TotalQuestions = totalQuestions,
+                    CorrectAnswers = correctAnswers,
+                    Score = score
+                }
+            );
+        }
+
     }
 
 }

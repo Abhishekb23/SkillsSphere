@@ -172,4 +172,30 @@ VALUES ('abhishek','abhishek@gmail.com','123',2);)
 
 
 
+-- UserAnswer table (when user submits answers)
+CREATE TABLE IF NOT EXISTS "UserAnswer" (
+    "UserAnswerId" SERIAL PRIMARY KEY,
+    "UserId" INT NOT NULL,
+    "TestId" INT NOT NULL,
+    "QuestionId" INT NOT NULL REFERENCES "question"("questionid") ON DELETE CASCADE,
+    "SelectedOptionIds" JSONB NOT NULL,
+    "SubmittedAt" TIMESTAMP DEFAULT NOW()
+);
+
+-- TestResult table (automatically created by trigger)
+CREATE TABLE IF NOT EXISTS "TestResult" (
+    "ResultId" SERIAL PRIMARY KEY,
+    "TestId" INT NOT NULL REFERENCES "test"("testid") ON DELETE CASCADE,
+    "UserId" INT NOT NULL,
+    "TotalQuestions" INT NOT NULL,
+    "CorrectAnswers" INT NOT NULL,
+    "Score" NUMERIC(5,2) NOT NULL,
+    "StartedAt" TIMESTAMP NOT NULL DEFAULT NOW(),
+    "CompletedAt" TIMESTAMP NOT NULL DEFAULT NOW()
+);
+
+
+
+
+
 

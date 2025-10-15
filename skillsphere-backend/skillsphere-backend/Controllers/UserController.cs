@@ -28,7 +28,7 @@ namespace skillsphere_backend.Controllers
 
         // GET: api/User/5
         [HttpGet("{id}")]
-        [Authorize]
+        [Authorize(Roles ="Admin")]
         public async Task<ActionResult<UserDto>> GetUserById(int id)
         {
             var user = await _userService.GetUserByIdAsync(id);
@@ -37,9 +37,9 @@ namespace skillsphere_backend.Controllers
             return Ok(user);
         }
 
-        // POST: api/User
-        //[Authorize(Roles = "Admin")]
-        [HttpPost]
+        //POST: api/User
+       [Authorize(Roles = "Admin")]
+       [HttpPost]
         public async Task<ActionResult<UserDto>> CreateUser([FromBody] CreateUserDto dto)
         {
             if (!ModelState.IsValid)

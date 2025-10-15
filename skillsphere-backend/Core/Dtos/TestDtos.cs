@@ -33,4 +33,16 @@ namespace skillsphere.core.Dtos
         public DateTime CreatedAt { get; set; }
     }
 
+    public class SubmitTestRequest
+    {
+        public int TestId { get; set; }
+        public int UserId { get; set; }
+        public List<UserAnswerDto> Answers { get; set; } = new();
+    }
+
+    public class UserAnswerDto
+    {
+        public int QuestionId { get; set; }
+        public List<int> SelectedOptionIds { get; set; } = new();
+    }
 }

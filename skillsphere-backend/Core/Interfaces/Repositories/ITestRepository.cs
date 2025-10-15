@@ -13,6 +13,9 @@ namespace skillsphere.core.Interfaces.Repositories
         Task<int> CreateTestAsync(CreateTestRequest request);
         Task<Test?> GetTestByIdAsync(int testId);
         Task<IEnumerable<Test>> GetAllTestsAsync();
+        Task<IEnumerable<TestResult>> GetUserResultsAsync(int userId);
+        Task SubmitAnswersAsync(SubmitTestRequest request);
+        Task InsertTestResultAsync(int userId, int testId, int totalQuestions, double correctAnswers, double score);
     }
 
 }
