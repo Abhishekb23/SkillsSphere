@@ -21,6 +21,8 @@ public static class ApplicationServiceExtension
         services.AddScoped<IUserService, UserService>();
         services.AddScoped<ITestRepository, TestRepository>();
         services.AddScoped<ITestService, TestService>();
+        services.AddScoped<ICourseRepository, CourseRepository>();
+        services.AddScoped<ICourseService, CourseService>();
         return services;
     }
 }

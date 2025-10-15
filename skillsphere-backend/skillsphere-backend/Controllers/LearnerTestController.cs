@@ -5,7 +5,7 @@ using skillsphere.core.Interfaces.Services;
 
 namespace skillsphere_backend.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/learner/test")]
     [ApiController]
     public class LearnerTestController : ControllerBase
     {
