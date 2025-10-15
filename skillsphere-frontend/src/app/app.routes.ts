@@ -13,5 +13,5 @@ export const routes: Routes = [
     { path: 'create-test', component: CreateTest },
     { path: 'manage-test', component: ManageTest },
     { path: 'get-test', component: GetTest },
-    { path: '*', component:Dashboard}
+    { path: '**', component:Dashboard}
 ];

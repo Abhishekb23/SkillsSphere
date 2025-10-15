@@ -1,6 +1,13 @@
 import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
+import { MatCard, MatCardModule } from '@angular/material/card';
 import { RouterModule } from '@angular/router';
+import { AuthService } from '../services/auth-service';
+import { MatButtonModule } from '@angular/material/button';
+import { MatDividerModule } from '@angular/material/divider';
+import { MatIconModule } from '@angular/material/icon';
+import { MatMenuModule } from '@angular/material/menu';
+import { MatProgressBarModule } from '@angular/material/progress-bar';
 
 interface Slide {
   title: string;
@@ -19,11 +26,16 @@ interface CourseCard {
 
 @Component({
   selector: 'app-dashboard',
-  imports: [CommonModule, RouterModule],
+  imports: [CommonModule, RouterModule, MatCard, MatIconModule, MatButtonModule,
+    MatMenuModule, MatDividerModule, MatCardModule, MatProgressBarModule],
   templateUrl: './dashboard.html',
   styleUrl: './dashboard.css'
 })
 export class Dashboard {
+
+  isAuthenticated: boolean = false;
+  isAdmin: boolean = false;
+  userName: string | null = null;
 
   featuredCourses: CourseCard[] = [
     {
@@ -54,7 +66,13 @@ export class Dashboard {
 
   currentSlide = 0;
 
+  constructor(private readonly authService: AuthService){ }
+
   ngOnInit(): void {
+    this.isAuthenticated = this.authService.isAuthenticated();
+    this.isAdmin = this.authService.isAdmin();
+    this.userName = this.authService.getUserName();
+
     setInterval(() => {
       this.currentSlide = (this.currentSlide + 1) % this.imageSlides.length;
     }, 3500); // every 3.5 seconds

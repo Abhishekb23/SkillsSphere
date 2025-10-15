@@ -6,7 +6,6 @@ import { Observable } from 'rxjs';
   providedIn: 'root'
 })
 export class TestService {
-  
 
   private readonly BASE_URL = 'https://localhost:7042/api/admin/tests';
 
@@ -23,5 +22,4 @@ export class TestService {
   getTestById(id: any): Observable<any>{
     return this.http.get(`${this.BASE_URL}/${id}`);
   }
-
 }

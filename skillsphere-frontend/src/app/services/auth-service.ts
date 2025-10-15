@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import {jwtDecode} from 'jwt-decode'; // ✅ correct import
+import {jwtDecode} from 'jwt-decode';
 import { Router } from '@angular/router';
 
 @Injectable({
@@ -23,9 +23,9 @@ export class AuthService {
     return this.http.post(`${this.BASE_URL}/login`, data);
   }
 
-  // ✅ Authentication helpers
+  // Authentication helpers
   isAuthenticated(): boolean {
-    return !!this.getToken();
+    return !! this.getToken();
   }
 
   getToken(): string | null {
@@ -36,14 +36,12 @@ export class AuthService {
     localStorage.setItem(this.TOKEN_KEY, token);
   }
 
-   logout(): void {
+  logout(): void {
     localStorage.removeItem(this.TOKEN_KEY);
-    this.router.navigate(['/login']); // ✅ redirect to login after logout
+    this.router.navigate(['/login']);
   }
 
-
-
-  // ✅ Role decoding
+  // Role decoding
   getUserRole(): string | null {
     const token = this.getToken();
     if (!token) return null;
@@ -63,5 +61,17 @@ export class AuthService {
 
   isLearner(): boolean {
     return this.getUserRole() === 'Learner';
+  }
+
+  getUserName(): string | null {
+    const token = this.getToken();
+    if (!token) return null;
+    try {
+      const decoded: any = jwtDecode(token);
+      return decoded.unique_name || null;
+    } catch (error) {
+      console.error('Invalid token', error);
+      return null;
+    }
   }
 }

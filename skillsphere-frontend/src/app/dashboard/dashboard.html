@@ -1,111 +1,141 @@
-<section class="container py-5">
-  <div class="text-center mb-5">
-    <h1 class="fw-bold display-5 text-primary">Welcome to SkillSphere</h1>
-    <p class="lead text-muted">
-      Your personalized dashboard to learn, grow, and track your progress.
-    </p>
-    <div class="d-flex justify-content-center mt-4">
-      <a routerLink="/signup" class="btn btn-primary btn-lg me-3">Get Started</a>
-      <a routerLink="/login" class="btn btn-outline-primary btn-lg">Log In</a>
-    </div>
-  </div>
-
-  <!-- Quick Stats Section -->
-  <div class="row g-4 mb-5">
-    <div class="col-md-3 col-sm-6">
-      <div class="card shadow-sm text-center p-3">
-        <h4 class="fw-bold text-primary mb-1">1.2K+</h4>
-        <small class="text-muted">Active Learners</small>
-      </div>
-    </div>
-    <div class="col-md-3 col-sm-6">
-      <div class="card shadow-sm text-center p-3">
-        <h4 class="fw-bold text-success mb-1">150+</h4>
-        <small class="text-muted">Courses Available</small>
-      </div>
-    </div>
-    <div class="col-md-3 col-sm-6">
-      <div class="card shadow-sm text-center p-3">
-        <h4 class="fw-bold text-warning mb-1">95%</h4>
-        <small class="text-muted">Success Rate</small>
-      </div>
-    </div>
-    <div class="col-md-3 col-sm-6">
-      <div class="card shadow-sm text-center p-3">
-        <h4 class="fw-bold text-danger mb-1">300+</h4>
-        <small class="text-muted">Certified Tutors</small>
-      </div>
-    </div>
-  </div>
-
-  <!-- Dashboard Features -->
-  <section class="mb-5">
-    <h3 class="mb-4 text-center fw-semibold">Explore Dashboard Features</h3>
-    <div class="row g-4">
-      <div class="col-md-4">
-        <div class="card shadow-sm border-0 p-4 text-center h-100">
-          <i class="bi bi-book fs-1 text-primary mb-3"></i>
-          <h5 class="fw-bold">Manage Courses</h5>
-          <p class="text-muted mb-0">
-            Browse and enroll in courses curated for your skill goals.
-          </p>
+<div class="public-content" *ngIf="!isAuthenticated">
+    <section class="container-fluid">
+        <div class="row">
+            <div class="col-12">
+                <div class="hero-container mat-elevation-z4">
+                    <mat-card class="hero-card">
+                        <h1 class="hero-title">
+                            Become the next<br />
+                            generation developer
+                        </h1>
+                        <p class="hero-subtitle">
+                            We help thousands of students to learn, get certified, and get hired.
+                        </p>
+                        <a routerLink="/login" class="btn btn-primary btn-lg">Log In</a>
+                    </mat-card>
+                </div>
+            </div>
         </div>
-      </div>
-      <div class="col-md-4">
-        <div class="card shadow-sm border-0 p-4 text-center h-100">
-          <i class="bi bi-bar-chart-line fs-1 text-success mb-3"></i>
-          <h5 class="fw-bold">Track Progress</h5>
-          <p class="text-muted mb-0">
-            Monitor your learning milestones and performance analytics.
-          </p>
+    </section>
+
+    <!-- Featured Courses Section -->
+    <section class="container mb-6">
+        <h2 class="mb-4 text-center">Featured Courses</h2>
+        <div class="row g-4">
+            <div class="col-md-4" *ngFor="let course of featuredCourses">
+                <div class="card h-100 shadow-sm">
+                    <img [src]="course.img" class="card-img-top" alt="course">
+                    <div class="card-body d-flex flex-column">
+                        <h5 class="card-title">{{ course.title }}</h5>
+                        <p class="text-muted mb-2">by {{ course.instructor }}</p>
+                        <div class="mt-auto d-flex justify-content-between align-items-center">
+                            <span class="fw-bold">{{ course.price }}</span>
+                            <a [routerLink]="'/courses'" class="btn btn-sm btn-outline-primary">View</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
-      </div>
-      <div class="col-md-4">
-        <div class="card shadow-sm border-0 p-4 text-center h-100">
-          <i class="bi bi-trophy fs-1 text-warning mb-3"></i>
-          <h5 class="fw-bold">Earn Certificates</h5>
-          <p class="text-muted mb-0">
-            Showcase your skills with official SkillSphere certifications.
-          </p>
+    </section>
+
+    <!-- How It Works / Info Section -->
+    <section class="py-5 bg-light">
+        <div class="container">
+            <h3 class="text-center mb-4">How It Works</h3>
+            <div class="row g-4">
+                <div class="col-md-4 text-center">
+                    <i class="bi bi-search fs-1 text-primary mb-2"></i>
+                    <h5>Search Courses</h5>
+                    <p>Find from thousands of high-quality courses</p>
+                </div>
+                <div class="col-md-4 text-center">
+                    <i class="bi bi-play-btn fs-1 text-primary mb-2"></i>
+                    <h5>Start Learning</h5>
+                    <p>Watch video lectures at your pace</p>
+                </div>
+                <div class="col-md-4 text-center">
+                    <i class="bi bi-award fs-1 text-primary mb-2"></i>
+                    <h5>Get Certificate</h5>
+                    <p>Earn certification on course completion</p>
+                </div>
+            </div>
         </div>
-      </div>
+    </section>
+
+    <div class="modern-slider-wrapper">
+        <div class="modern-slider-track" [style.transform]="'translateX(-' + currentSlide * 100 + '%)'">
+            <div class="modern-slide" *ngFor="let img of imageSlides">
+                <mat-card class="modern-slide-card elevation">
+                    <img mat-card-image [src]="img" alt="Slide">
+                </mat-card>
+            </div>
+        </div>
     </div>
-  </section>
 
-  <!-- Announcements or News Section -->
-  <section class="mb-5">
-    <h3 class="mb-4 text-center fw-semibold">Recent Updates</h3>
-    <ul class="list-group shadow-sm">
-      <li class="list-group-item d-flex justify-content-between align-items-center">
-        <span>🎯 New “Full Stack Development” course launched!</span>
-        <span class="badge bg-primary rounded-pill">New</span>
-      </li>
-      <li class="list-group-item d-flex justify-content-between align-items-center">
-        <span>💡 Live workshop on Angular 17 next week</span>
-        <span class="badge bg-success rounded-pill">Upcoming</span>
-      </li>
-      <li class="list-group-item d-flex justify-content-between align-items-center">
-        <span>🏆 2000+ users earned certification this month</span>
-        <span class="badge bg-warning rounded-pill">Achievement</span>
-      </li>
-    </ul>
-  </section>
+    <!-- Call to Action -->
+    <section class="py-5 text-center">
+        <div class="container">
+            <h2>Ready to begin your learning journey?</h2>
+            <a routerLink="/signup" class="btn btn-primary btn-lg me-3">Sign Up</a>
+            <a routerLink="/login" class="btn btn-outline-primary btn-lg">Log In</a>
+        </div>
+    </section>
+</div>
 
-  <!-- Call to Action -->
-  <section class="text-center mt-5 mb-3">
-    <h3 class="fw-bold mb-3">Start Your Learning Journey Today</h3>
-    <p class="text-muted mb-4">
-      Sign up for free and unlock hundreds of skill-building opportunities.
-    </p>
-    <a routerLink="/signup" class="btn btn-primary btn-lg me-3">Join Now</a>
-    <a routerLink="/login" class="btn btn-outline-primary btn-lg">Log In</a>
-  </section>
-</section>
+<!-- Admin Section -->
 
-<!-- Footer -->
-<footer class="bg-dark text-light py-4 mt-5">
-  <div class="container text-center">
-    <p class="mb-1">&copy; 2025 SkillSphere Dashboard. All rights reserved.</p>
-    <small>Terms • Privacy • Help</small>
-  </div>
-</footer>
+<div class=".admin-container" *ngIf="isAuthenticated && isAdmin">
+    <h1 class="admin-title">Hi {{userName}} </h1>
+    <div class="card-grid">
+        <div class="card">
+            <div class="card-info">
+                <p class="card-label">Total Students</p>
+                <h2 class="card-value">1,250<mat-icon class="card-icon blue">people</mat-icon></h2>
+            </div>
+            <div class="card-buttons">
+                <button mat-raised-button color="primary" class="small-btn">View</button>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-info">
+                <p class="card-label">Total Courses</p>
+                <h2 class="card-value">3 <mat-icon class="card-icon green">menu_book</mat-icon></h2>
+            </div>
+            <div class="card-buttons">
+                <button mat-raised-button color="primary" class="small-btn">Add</button>
+                <button mat-stroked-button color="primary" class="small-btn">View</button>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-info">
+                <p class="card-label">Total Tests</p>
+                <h2 class="card-value">1 <mat-icon class="card-icon purple">menu_book</mat-icon></h2>
+                <div class="card-buttons">
+                    <button mat-raised-button color="primary" routerLink="create-test" class="small-btn">Add</button>
+                    <button mat-stroked-button color="primary" routerLink="manage-test" class="small-btn">View</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-info">
+                <p class="card-label">Certificates Issued</p>
+                <h2 class="card-value">2,340 <mat-icon class="card-icon yellow">workspace_premium</mat-icon></h2>
+            </div>
+            <div class="card-buttons">
+                <button mat-raised-button color="primary" class="small-btn">View</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="chart-box">
+        Chart Area (e.g. User Growth or Course Statistics)
+    </div>
+</div>
+<!-- Learner Section -->
+<div class="learner-content" *ngIf="isAuthenticated && !isAdmin">
+    <h1 class="admin-title">Hi {{userName}}</h1>
+    
+</div>  

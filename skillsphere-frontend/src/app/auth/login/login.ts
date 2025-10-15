@@ -24,8 +24,7 @@ export class Login {
       next: (res) => {
         this.token = res.token;
         this.authService.setToken(this.token);
-         this.router.navigate(['/']);
-        alert("success");
+        this.router.navigate(['/']);
       },
       error: (error) => {
         alert("error");
