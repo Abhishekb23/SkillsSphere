@@ -22,4 +22,8 @@ export class TestService {
   getTestById(id: any): Observable<any>{
     return this.http.get(`${this.BASE_URL}/${id}`);
   }
+
+  getTestsCount(): Observable<any>{
+    return this.http.get(`${this.BASE_URL}/count`);
+  }
 }

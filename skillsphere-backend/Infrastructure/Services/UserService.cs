@@ -39,6 +39,10 @@ namespace skillsphere.infrastructure.Services
         {
             var user = _mapper.Map<User>(dto);
 
+            var entity = await _userRepository.GetByEmailAsync(user.Email);
+            if (entity != null)
+                throw new Exception("User already exists with this email");
+
             user.PasswordHash = dto.Password;
 
             await _userRepository.AddUserAsync(user);

@@ -109,6 +109,11 @@ namespace skillsphere.infrastructure.Services
         {
             return await _testRepository.GetUserResultsAsync(userId);
         }
+
+        public async Task<int> GetTestsCount()
+        {
+            return await _testRepository.GetTestsCount();
+        }
     }
 
 }

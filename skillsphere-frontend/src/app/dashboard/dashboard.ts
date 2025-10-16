@@ -8,6 +8,7 @@ import { MatDividerModule } from '@angular/material/divider';
 import { MatIconModule } from '@angular/material/icon';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
+import { TestService } from '../services/test-service';
 
 interface Slide {
   title: string;
@@ -36,6 +37,7 @@ export class Dashboard {
   isAuthenticated: boolean = false;
   isAdmin: boolean = false;
   userName: string | null = null;
+  testsCount: number = 0;
 
   featuredCourses: CourseCard[] = [
     {
@@ -66,12 +68,20 @@ export class Dashboard {
 
   currentSlide = 0;
 
-  constructor(private readonly authService: AuthService){ }
+  constructor(private readonly authService: AuthService, private readonly testService: TestService){ }
 
   ngOnInit(): void {
     this.isAuthenticated = this.authService.isAuthenticated();
     this.isAdmin = this.authService.isAdmin();
     this.userName = this.authService.getUserName();
+
+    this.testService.getTestsCount().subscribe({
+      next: (res) => {
+        this.testsCount = res;
+      },error: (error) => {
+        console.error(error);
+      }
+    });
 
     setInterval(() => {
       this.currentSlide = (this.currentSlide + 1) % this.imageSlides.length;

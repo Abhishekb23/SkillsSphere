@@ -38,16 +38,23 @@ namespace skillsphere_backend.Controllers
         }
 
         //POST: api/User
-       [Authorize(Roles = "Admin")]
+       //[Authorize(Roles = "Admin")]
        [HttpPost]
         public async Task<ActionResult<UserDto>> CreateUser([FromBody] CreateUserDto dto)
         {
-            if (!ModelState.IsValid)
-                return BadRequest(ModelState);
+            try
+            {
+                if (!ModelState.IsValid)
+                    return BadRequest(ModelState);
 
-            var createdUser = await _userService.CreateUserAsync(dto);
-             
-            return Ok(createdUser);
+                var createdUser = await _userService.CreateUserAsync(dto);
+
+                return Ok(createdUser);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
         }
 
 

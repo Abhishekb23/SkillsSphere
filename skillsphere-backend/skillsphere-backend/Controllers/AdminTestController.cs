@@ -55,6 +55,14 @@ namespace skillsphere_backend.Controllers
             var tests = await _testService.GetAllTestsAsync();
             return Ok(tests);
         }
+
+        [HttpGet("count")]
+        [Authorize(Roles = "Admin,Learner")]
+        public async Task<IActionResult> GetTestsCount()
+        {
+            var tests = await _testService.GetTestsCount();
+            return Ok(tests);
+        }
     }
 
 }

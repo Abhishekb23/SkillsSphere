@@ -18,19 +18,19 @@
       </form>
 
       <ul class="navbar-nav align-items-center">
-        <li class="nav-item me-3">
-          <a class="nav-link" routerLink="manage-test">Get Certified</a>
+        <li class="nav-item me-3" *ngIf="isAuthenticated && !isAdmin">
+          <a class="nav-link" routerLink="/">Get Certified</a>
         </li>
 
         <!-- Only for Admin -->
-        <li class="nav-item me-3" *ngIf="authService.isAdmin()">
-          <a class="btn  btn-sm" routerLink="/create-test">
+        <li class="nav-item me-3" *ngIf="isAuthenticated && isAdmin">
+          <a class="btn  btn-sm" routerLink="/">
              New Course
           </a>
         </li>
 
-        <li class="nav-item me-3">
-          <a class="nav-link" href="#">Offers</a>
+        <li class="nav-item me-3" *ngIf="isAuthenticated && !isAdmin">
+          <a class="nav-link" routerLink="/">Offers</a>
         </li>
         <li class="nav-item me-3">
           <a class="nav-link position-relative" href="#">
@@ -39,7 +39,7 @@
         </li>
 
         <!-- Login & Signup Buttons -->
-        <ng-container *ngIf="!authService.isAuthenticated(); else loggedIn">
+        <ng-container *ngIf="!isAuthenticated; else loggedIn">
           <li class="nav-item me-2">
             <a class="btn btn-outline-dark btn-sm" routerLink="/login">Log In</a>
           </li>
@@ -60,6 +60,7 @@
     </div>
   </div>
 </nav>
+<app-toaster></app-toaster> 
 <router-outlet></router-outlet>
 <footer class="bg-dark text-light py-4">
   <div class="container text-center">

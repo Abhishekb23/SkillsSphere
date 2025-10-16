@@ -154,6 +154,14 @@ namespace skillsphere.infrastructure.Repositories
             );
         }
 
+        public async Task<int> GetTestsCount()
+        {
+            using var conn = GetConnection();
+            conn.Open();
+
+            int tests = await conn.ExecuteScalarAsync<int>("SELECT COUNT(*) FROM Test;");
+            return tests;
+        }
     }
 
 }

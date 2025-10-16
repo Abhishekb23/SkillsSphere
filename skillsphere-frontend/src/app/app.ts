@@ -3,17 +3,22 @@ import { Component, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { RouterModule, RouterOutlet } from '@angular/router';
 import { AuthService } from './services/auth-service';
+import { Toaster } from "./common/toaster/toaster";
 
 @Component({
   selector: 'app-root',
-  standalone: true, // ✅ include this if using standalone components
-  imports: [RouterOutlet, FormsModule, RouterModule, CommonModule],
+  standalone: true,
+  imports: [RouterOutlet, FormsModule, RouterModule, CommonModule, Toaster],
   templateUrl: './app.html',
-  styleUrls: ['./app.css'], // ✅ fixed plural
+  styleUrls: ['./app.css'], 
 })
 export class App {
-  protected readonly title = signal('skillsphere-frontend');
+  isAdmin: boolean = false;
+  isAuthenticated: boolean = false;
 
-  constructor(public authService: AuthService) {} // ✅ make it public for template access
+  constructor(public authService: AuthService) {
+    this.isAuthenticated = authService.isAuthenticated();
+    this.isAdmin = authService.isAdmin();    
+  } // make it public for template access
   
 }
