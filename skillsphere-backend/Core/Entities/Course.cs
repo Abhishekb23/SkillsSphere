@@ -1,12 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace skillsphere.core.Entities
 {
-    // namespace skillsphere.core.Entities
     public class Course
     {
         public int CourseId { get; set; }
@@ -34,11 +30,18 @@ namespace skillsphere.core.Entities
         public int LessonId { get; set; }
         public int ModuleId { get; set; }
         public string Title { get; set; } = null!;
-        public string? Content { get; set; } // markdown or html
-        public List<string>? ImageUrls { get; set; }
-        public List<string>? ResourceLinks { get; set; }
         public int OrderIndex { get; set; } = 0;
         public DateTime CreatedAt { get; set; }
+        public List<LessonStep>? Steps { get; set; } // New: step-by-step content
     }
 
+    public class LessonStep
+    {
+        public int LessonStepId { get; set; }
+        public int LessonId { get; set; }
+        public string? TextContent { get; set; }  // Text explanation
+        public string? ImageUrl { get; set; }     // Optional screenshot/image
+        public string? ResourceLink { get; set; } // Optional link
+        public int OrderIndex { get; set; } = 0;  // Step order
+    }
 }

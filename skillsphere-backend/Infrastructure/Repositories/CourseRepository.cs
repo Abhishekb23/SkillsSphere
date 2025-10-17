@@ -8,14 +8,15 @@ using skillsphere.infrastructure.Data;
 
 namespace skillsphere.infrastructure.Repositories
 {
-
-
     public class CourseRepository : ICourseRepository
     {
         private readonly DatabaseContext _dbContext;
         public CourseRepository(DatabaseContext dbContext) => _dbContext = dbContext;
         private IDbConnection GetConnection() => _dbContext.CreateConnection();
 
+        // -------------------------
+        // CREATE COURSE + MODULES + LESSONS + STEPS
+        // -------------------------
         public async Task<int> CreateCourseAsync(CreateCourseRequest request)
         {
             using var conn = GetConnection();
@@ -23,11 +24,10 @@ namespace skillsphere.infrastructure.Repositories
 
             var courseId = await conn.ExecuteScalarAsync<int>(
                 @"INSERT INTO ""Course"" (""Title"", ""Description"", ""ThumbnailUrl"", ""CreatedBy"", ""IsActive"", ""CreatedAt"")
-              VALUES (@Title, @Description, @ThumbnailUrl, @CreatedBy, @IsActive, NOW())
-              RETURNING ""CourseId"";",
+                  VALUES (@Title, @Description, @ThumbnailUrl, @CreatedBy, @IsActive, NOW())
+                  RETURNING ""CourseId"";",
                 new { request.Title, request.Description, request.ThumbnailUrl, request.CreatedBy, IsActive = true });
 
-            // optional: create modules + lessons if provided
             if (request.Modules != null)
             {
                 foreach (var mod in request.Modules)
@@ -37,7 +37,16 @@ namespace skillsphere.infrastructure.Repositories
                     {
                         foreach (var lesson in mod.Lessons)
                         {
-                            await CreateLessonAsync(moduleId, lesson);
+                            var lessonId = await CreateLessonAsync(moduleId, lesson);
+
+                            // create lesson steps
+                            if (lesson.Steps != null)
+                            {
+                                foreach (var step in lesson.Steps)
+                                {
+                                    await CreateLessonStepAsync(lessonId, step);
+                                }
+                            }
                         }
                     }
                 }
@@ -53,8 +62,8 @@ namespace skillsphere.infrastructure.Repositories
 
             var moduleId = await conn.ExecuteScalarAsync<int>(
                 @"INSERT INTO ""Module"" (""CourseId"", ""Title"", ""Description"", ""OrderIndex"")
-              VALUES (@CourseId, @Title, @Description, @OrderIndex)
-              RETURNING ""ModuleId"";",
+                  VALUES (@CourseId, @Title, @Description, @OrderIndex)
+                  RETURNING ""ModuleId"";",
                 new { CourseId = courseId, request.Title, request.Description, request.OrderIndex });
 
             return moduleId;
@@ -65,26 +74,32 @@ namespace skillsphere.infrastructure.Repositories
             using var conn = GetConnection();
             conn.Open();
 
-            var imageJson = JsonSerializer.Serialize(request.ImageUrls ?? new List<string>());
-            var linksJson = JsonSerializer.Serialize(request.ResourceLinks ?? new List<string>());
-
             var lessonId = await conn.ExecuteScalarAsync<int>(
-                @"INSERT INTO ""Lesson"" (""ModuleId"", ""Title"", ""Content"", ""ImageUrls"", ""ResourceLinks"", ""OrderIndex"", ""CreatedAt"")
-              VALUES (@ModuleId, @Title, @Content, @ImageUrls::jsonb, @ResourceLinks::jsonb, @OrderIndex, NOW())
-              RETURNING ""LessonId"";",
-                new
-                {
-                    ModuleId = moduleId,
-                    request.Title,
-                    request.Content,
-                    ImageUrls = imageJson,
-                    ResourceLinks = linksJson,
-                    request.OrderIndex
-                });
+                @"INSERT INTO ""Lesson"" (""ModuleId"", ""Title"", ""OrderIndex"", ""CreatedAt"")
+                  VALUES (@ModuleId, @Title, @OrderIndex, NOW())
+                  RETURNING ""LessonId"";",
+                new { ModuleId = moduleId, request.Title, request.OrderIndex });
 
             return lessonId;
         }
 
+        public async Task<int> CreateLessonStepAsync(int lessonId, CreateLessonStepRequest request)
+        {
+            using var conn = GetConnection();
+            conn.Open();
+
+            var stepId = await conn.ExecuteScalarAsync<int>(
+                @"INSERT INTO ""LessonStep"" (""LessonId"", ""TextContent"", ""ImageUrl"", ""ResourceLink"", ""OrderIndex"")
+                  VALUES (@LessonId, @TextContent, @ImageUrl, @ResourceLink, @OrderIndex)
+                  RETURNING ""LessonStepId"";",
+                new { LessonId = lessonId, request.TextContent, request.ImageUrl, request.ResourceLink, request.OrderIndex });
+
+            return stepId;
+        }
+
+        // -------------------------
+        // GET COURSE WITH MODULES, LESSONS & STEPS
+        // -------------------------
         public async Task<Course?> GetCourseByIdAsync(int courseId)
         {
             using var conn = GetConnection();
@@ -102,36 +117,29 @@ namespace skillsphere.infrastructure.Repositories
 
             foreach (var module in modules)
             {
-                var lessons = await conn.QueryAsync<dynamic>(
+                var lessons = await conn.QueryAsync<Lesson>(
                     @"SELECT * FROM ""Lesson"" WHERE ""ModuleId"" = @MId ORDER BY ""OrderIndex"";",
                     new { MId = module.ModuleId });
 
-                var lessonList = new List<Lesson>();
-                foreach (var l in lessons)
+                foreach (var lesson in lessons)
                 {
-                    // map dynamic to Lesson and parse JSONB
-                    var lesson = new Lesson
-                    {
-                        LessonId = l.lessonid,
-                        ModuleId = l.moduleid,
-                        Title = l.title,
-                        Content = l.content,
-                        OrderIndex = l.orderindex,
-                        CreatedAt = l.createdat
-                    };
-                    // parse JSONB fields
-                    lesson.ImageUrls = l.imageurls == null ? new List<string>() : JsonSerializer.Deserialize<List<string>>(l.imageurls.ToString());
-                    lesson.ResourceLinks = l.resourcelinks == null ? new List<string>() : JsonSerializer.Deserialize<List<string>>(l.resourcelinks.ToString());
-                    lessonList.Add(lesson);
+                    var steps = await conn.QueryAsync<LessonStep>(
+                        @"SELECT * FROM ""LessonStep"" WHERE ""LessonId"" = @LId ORDER BY ""OrderIndex"";",
+                        new { LId = lesson.LessonId });
+
+                    lesson.Steps = steps.ToList();
                 }
 
-                module.Lessons = lessonList;
+                module.Lessons = lessons.ToList();
             }
 
             course.Modules = modules.ToList();
             return course;
         }
 
+        // -------------------------
+        // GET ALL COURSES
+        // -------------------------
         public async Task<IEnumerable<Course>> GetAllCoursesAsync(bool onlyActive = true)
         {
             using var conn = GetConnection();
@@ -139,35 +147,36 @@ namespace skillsphere.infrastructure.Repositories
 
             if (onlyActive)
             {
-                var tests = await conn.QueryAsync<Course>(@"SELECT * FROM ""Course"" WHERE ""IsActive"" = true ORDER BY ""CreatedAt"" DESC;");
-                return tests;
+                return await conn.QueryAsync<Course>(@"SELECT * FROM ""Course"" WHERE ""IsActive"" = true ORDER BY ""CreatedAt"" DESC;");
             }
-            else
-            {
-                var tests = await conn.QueryAsync<Course>(@"SELECT * FROM ""Course"" ORDER BY ""CreatedAt"" DESC;");
-                return tests;
-            }
+
+            return await conn.QueryAsync<Course>(@"SELECT * FROM ""Course"" ORDER BY ""CreatedAt"" DESC;");
         }
 
+        // -------------------------
+        // DELETE COURSE
+        // -------------------------
         public async Task DeleteCourseAsync(int courseId)
         {
             using var conn = GetConnection();
             conn.Open();
-
             await conn.ExecuteAsync(@"DELETE FROM ""Course"" WHERE ""CourseId"" = @Id;", new { Id = courseId });
         }
 
+        // -------------------------
+        // UPDATE COURSE (modules & lessons separately)
+        // -------------------------
         public async Task UpdateCourseAsync(int courseId, CreateCourseRequest request)
         {
             using var conn = GetConnection();
             conn.Open();
 
             await conn.ExecuteAsync(
-                @"UPDATE ""Course"" SET ""Title"" = @Title, ""Description"" = @Description, ""ThumbnailUrl"" = @ThumbnailUrl, ""IsActive"" = @IsActive
-              WHERE ""CourseId"" = @CourseId;",
+                @"UPDATE ""Course"" 
+                  SET ""Title"" = @Title, ""Description"" = @Description, ""ThumbnailUrl"" = @ThumbnailUrl, ""IsActive"" = @IsActive
+                  WHERE ""CourseId"" = @CourseId;",
                 new { request.Title, request.Description, request.ThumbnailUrl, IsActive = true, CourseId = courseId });
-            // Modules/lessons update endpoints can be implemented separately
         }
-    }
 
+    }
 }

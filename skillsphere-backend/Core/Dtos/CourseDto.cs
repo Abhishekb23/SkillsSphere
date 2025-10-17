@@ -1,12 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace skillsphere.core.Dtos
 {
-    // CreateCourseRequest
+    // Request DTOs
     public class CreateCourseRequest
     {
         public string Title { get; set; } = null!;
@@ -16,7 +13,6 @@ namespace skillsphere.core.Dtos
         public List<CreateModuleRequest>? Modules { get; set; }
     }
 
-    // CreateModuleRequest
     public class CreateModuleRequest
     {
         public string Title { get; set; } = null!;
@@ -25,17 +21,22 @@ namespace skillsphere.core.Dtos
         public List<CreateLessonRequest>? Lessons { get; set; }
     }
 
-    // CreateLessonRequest
     public class CreateLessonRequest
     {
         public string Title { get; set; } = null!;
-        public string? Content { get; set; }
-        public List<string>? ImageUrls { get; set; }
-        public List<string>? ResourceLinks { get; set; }
+        public int OrderIndex { get; set; } = 0;
+        public List<CreateLessonStepRequest>? Steps { get; set; }
+    }
+
+    public class CreateLessonStepRequest
+    {
+        public string? TextContent { get; set; }
+        public string? ImageUrl { get; set; }
+        public string? ResourceLink { get; set; }
         public int OrderIndex { get; set; } = 0;
     }
 
-    // CourseDetailDto - for GET course with modules & lessons
+    // Response DTOs
     public class CourseDetailDto
     {
         public int CourseId { get; set; }
@@ -59,10 +60,16 @@ namespace skillsphere.core.Dtos
     {
         public int LessonId { get; set; }
         public string Title { get; set; } = null!;
-        public string? Content { get; set; }
-        public List<string>? ImageUrls { get; set; }
-        public List<string>? ResourceLinks { get; set; }
         public int OrderIndex { get; set; }
+        public List<LessonStepDto>? Steps { get; set; } // Include steps
     }
 
+    public class LessonStepDto
+    {
+        public int LessonStepId { get; set; }
+        public string? TextContent { get; set; }
+        public string? ImageUrl { get; set; }
+        public string? ResourceLink { get; set; }
+        public int OrderIndex { get; set; }
+    }
 }

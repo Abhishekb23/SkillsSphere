@@ -17,6 +17,8 @@ namespace skillsphere.core.Interfaces.Repositories
         Task<IEnumerable<Course>> GetAllCoursesAsync(bool onlyActive = true);
         Task DeleteCourseAsync(int courseId);
         Task UpdateCourseAsync(int courseId, CreateCourseRequest request);
+
+
     }
 
 }
