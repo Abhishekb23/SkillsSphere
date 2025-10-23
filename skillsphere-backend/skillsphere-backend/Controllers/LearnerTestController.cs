@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using skillsphere.core.Dtos;
 using skillsphere.core.Interfaces.Services;
@@ -28,6 +29,27 @@ namespace skillsphere_backend.Controllers
         {
             var results = await _testService.GetUserResultsAsync(userId);
             return Ok(results);
+        }
+
+
+        [HttpGet("{id}")]
+        //[Authorize(Roles = "Learner")]
+        public async Task<IActionResult> GetTestForLearner(int id)
+        {
+            var test = await _testService.GetTestForLearnerAsync(id);
+            if (test == null)
+                return NotFound(new { Message = "Test not found or inactive." });
+
+            return Ok(test);
+        }
+
+        // GET api/learner/tests
+        [HttpGet]
+        //[Authorize(Roles = "Learner")]
+        public async Task<IActionResult> GetAllActiveTests()
+        {
+            var tests = await _testService.GetAllActiveTestsAsync();
+            return Ok(tests);
         }
     }
 }

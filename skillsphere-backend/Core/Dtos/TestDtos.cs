@@ -45,4 +45,37 @@ namespace skillsphere.core.Dtos
         public int QuestionId { get; set; }
         public List<int> SelectedOptionIds { get; set; } = new();
     }
+
+
+    // ✅ Learner-safe models
+    public class LearnerTestDto
+    {
+        public int TestId { get; set; }
+        public string Title { get; set; } = null!;
+        public string? Description { get; set; }
+        public List<LearnerQuestionDto>? Questions { get; set; }
+    }
+
+    public class LearnerTestListDto
+    {
+        public int TestId { get; set; }
+        public string Title { get; set; } = null!;
+        public string? Description { get; set; }
+    }
+
+
+    public class LearnerQuestionDto
+    {
+        public int QuestionId { get; set; }
+        public string QuestionText { get; set; } = null!;
+        public string QuestionType { get; set; } = "SingleChoice";
+        public List<LearnerOptionDto>? Options { get; set; }
+    }
+
+    public class LearnerOptionDto
+    {
+        public int OptionId { get; set; }
+        public string OptionText { get; set; } = null!;
+    }
+
 }

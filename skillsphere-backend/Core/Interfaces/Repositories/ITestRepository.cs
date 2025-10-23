@@ -17,6 +17,7 @@ namespace skillsphere.core.Interfaces.Repositories
         Task SubmitAnswersAsync(SubmitTestRequest request);
         Task InsertTestResultAsync(int userId, int testId, int totalQuestions, double correctAnswers, double score);
         Task<int> GetTestsCount();
+
     }
 
 }
