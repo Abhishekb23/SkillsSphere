@@ -16,7 +16,8 @@
           <small class="text-secondary">Created At: {{ test.createdAt | date: 'medium' }}</small>
         </div>
         <div class="card-footer text-end">
-          <button class="btn btn-outline-primary btn-sm">View Details</button>
+          <!-- <button class="btn btn-outline-primary btn-sm">View Details</button> -->
+          <button class="btn btn-outline-primary btn-sm" (click)="attendTest(test.testId)">Attend Test</button>
         </div>
       </div>
     </div>

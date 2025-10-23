@@ -38,7 +38,7 @@ export class AuthService {
 
   logout(): void {
     localStorage.removeItem(this.TOKEN_KEY);
-    this.router.navigate(['/']);
+    window.location.href = '/';
   }
 
   // Role decoding
