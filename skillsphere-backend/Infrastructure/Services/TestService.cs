@@ -31,9 +31,53 @@ namespace skillsphere.infrastructure.Services
             return await _testRepository.GetTestByIdAsync(testId);
         }
 
+        public async Task<LearnerTestDto?> GetTestForLearnerAsync(int testId)
+        {
+            var test = await _testRepository.GetTestByIdAsync(testId);
+            if (test == null || !test.IsActive)
+                return null;
+
+            var learnerTest = new LearnerTestDto
+            {
+                TestId = test.TestId,
+                Title = test.Title,
+                Description = test.Description,
+                Questions = test.Questions?.Select(q => new LearnerQuestionDto
+                {
+                    QuestionId = q.QuestionId,
+                    QuestionText = q.QuestionText,
+                    QuestionType = q.QuestionType,
+                    Options = q.Options?.Select(o => new LearnerOptionDto
+                    {
+                        OptionId = o.OptionId,
+                        OptionText = o.OptionText
+                    }).ToList()
+                }).ToList()
+            };
+
+            return learnerTest;
+        }
+
         public async Task<IEnumerable<Test>> GetAllTestsAsync()
         {
             return await _testRepository.GetAllTestsAsync();
+        }
+
+        public async Task<IEnumerable<LearnerTestListDto>> GetAllActiveTestsAsync()
+        {
+            var allTests = await _testRepository.GetAllTestsAsync();
+
+            // Filter only active tests
+            var activeTests = allTests
+                .Where(t => t.IsActive)
+                .Select(t => new LearnerTestListDto
+                {
+                    TestId = t.TestId,
+                    Title = t.Title,
+                    Description = t.Description
+                });
+
+            return activeTests;
         }
 
 

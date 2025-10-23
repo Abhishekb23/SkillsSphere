@@ -8,6 +8,7 @@ namespace skillsphere_backend.Controllers
 {
     [ApiController]
     [Route("api/admin/tests")]
+    //[Authorize(Roles = "Admin")]
     public class AdminTestController : ControllerBase
     {
         private readonly ITestService _testService;
@@ -18,8 +19,6 @@ namespace skillsphere_backend.Controllers
         }
 
         [HttpPost]
-        [Authorize(Roles ="Admin")]
-
         public async Task<IActionResult> CreateTest([FromBody] CreateTestRequest request)
         {
             try
@@ -39,7 +38,6 @@ namespace skillsphere_backend.Controllers
 
         // GET api/admin/tests/{id}
         [HttpGet("{id}")]
-        [Authorize(Roles ="Admin,Learner")]
         public async Task<IActionResult> GetTest(int id)
         {
             var test = await _testService.GetTestByIdAsync(id);
@@ -49,7 +47,6 @@ namespace skillsphere_backend.Controllers
 
         // GET api/admin/tests
         [HttpGet]
-        [Authorize(Roles ="Admin,Learner")]
         public async Task<IActionResult> GetAllTests()
         {
             var tests = await _testService.GetAllTestsAsync();
@@ -57,7 +54,6 @@ namespace skillsphere_backend.Controllers
         }
 
         [HttpGet("count")]
-        [Authorize(Roles = "Admin,Learner")]
         public async Task<IActionResult> GetTestsCount()
         {
             var tests = await _testService.GetTestsCount();

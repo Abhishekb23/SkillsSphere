@@ -16,6 +16,8 @@ namespace skillsphere.core.Interfaces.Services
         Task SubmitTestAsync(SubmitTestRequest request);
         Task<IEnumerable<TestResult>> GetUserResultsAsync(int userId);
         Task<int> GetTestsCount();
+        Task<LearnerTestDto?> GetTestForLearnerAsync(int testId);
+        Task<IEnumerable<LearnerTestListDto>> GetAllActiveTestsAsync();
     }
 
 }

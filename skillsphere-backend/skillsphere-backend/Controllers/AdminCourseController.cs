@@ -5,7 +5,7 @@ using skillsphere.core.Interfaces.Services;
 
 [ApiController]
 [Route("api/admin/courses")]
-[Authorize(Roles = "Admin")]
+//[Authorize(Roles = "Admin")]
 public class AdminCourseController : ControllerBase
 {
     private readonly ICourseService _service;
