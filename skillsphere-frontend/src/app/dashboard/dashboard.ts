@@ -9,6 +9,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { TestService } from '../services/test-service';
+import { Navbar } from "../common/navbar/navbar";
 
 interface Slide {
   title: string;
@@ -28,7 +29,7 @@ interface CourseCard {
 @Component({
   selector: 'app-dashboard',
   imports: [CommonModule, RouterModule, MatCard, MatIconModule, MatButtonModule,
-    MatMenuModule, MatDividerModule, MatCardModule, MatProgressBarModule],
+    MatMenuModule, MatDividerModule, MatCardModule, MatProgressBarModule, Navbar],
   templateUrl: './dashboard.html',
   styleUrl: './dashboard.css'
 })
@@ -78,6 +79,7 @@ export class Dashboard {
     this.testService.getTestsCount().subscribe({
       next: (res) => {
         this.testsCount = res;
+        console.log(this.testsCount);
       },error: (error) => {
         console.error(error);
       }

@@ -1,0 +1,62 @@
+<nav class="navbar navbar-expand-lg navbar-light bg-white border-bottom py-2">
+  <div class="container-fluid">
+    <!-- Logo -->
+    <a class="navbar-brand fw-bold" href="#">
+      <img src="./assets/icon.png" alt="SkillSphere" width="40" height="auto">
+    </a>
+
+    <!-- Toggler for mobile -->
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarContent">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navbarContent">
+      <!-- Search -->
+      <form class="d-flex flex-grow-1 me-3" role="search">
+        <input class="form-control rounded-pill px-4" type="search" placeholder="Search for anything"
+          aria-label="Search">
+      </form>
+
+      <ul class="navbar-nav align-items-center">
+        <li class="nav-item me-3" *ngIf="isAuthenticated && !isAdmin">
+          <a class="nav-link" routerLink="/">Get Certified</a>
+        </li>
+
+        <!-- Only for Admin -->
+        <li class="nav-item me-3" *ngIf="isAuthenticated && isAdmin">
+          <a class="btn  btn-sm" routerLink="/">
+             New Course
+          </a>
+        </li>
+
+        <li class="nav-item me-3" *ngIf="isAuthenticated && !isAdmin">
+          <a class="nav-link" routerLink="/">Offers</a>
+        </li>
+        <li class="nav-item me-3">
+          <a class="nav-link position-relative" href="#">
+            <i class="bi bi-cart3 fs-5"></i>
+          </a>
+        </li>
+
+        <!-- Login & Signup Buttons -->
+        <ng-container *ngIf="!isAuthenticated; else loggedIn">
+          <li class="nav-item me-2">
+            <a class="btn btn-outline-dark btn-sm" routerLink="/login">Log In</a>
+          </li>
+          <li class="nav-item">
+            <a class="btn btn-dark btn-sm" routerLink="/signup">Sign Up</a>
+          </li>
+        </ng-container>
+
+        <!-- Logout Button (only when logged in) -->
+        <ng-template #loggedIn>
+          <li class="nav-item">
+            <button class="btn btn-outline-danger btn-sm" (click)="authService.logout()">
+              <i class="bi bi-box-arrow-right"></i> Logout
+            </button>
+          </li>
+        </ng-template>
+      </ul>
+    </div>
+  </div>
+</nav>

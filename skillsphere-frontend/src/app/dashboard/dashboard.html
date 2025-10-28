@@ -1,3 +1,4 @@
+<app-navbar></app-navbar>
 <div class="public-content" *ngIf="!isAuthenticated">
     <section class="container-fluid">
         <div class="row">
@@ -84,7 +85,7 @@
 
 <!-- Admin Section -->
 
-<div class=".admin-container" *ngIf="isAuthenticated && isAdmin">
+<div class="admin-container" *ngIf="isAuthenticated && isAdmin">
     <h1 class="admin-title">Hi {{userName}} </h1>
     <div class="card-grid">
         <div class="card">
@@ -135,7 +136,26 @@
     </div>
 </div>
 <!-- Learner Section -->
-<div class="learner-content" *ngIf="isAuthenticated && !isAdmin">
+<div class="learner-content p-1" *ngIf="isAuthenticated && !isAdmin">
     <h1 class="admin-title">Hi {{userName}}</h1>
-    
+    <div class="card-grid">
+         <div class="card">
+            <div class="card-info">
+                <p class="card-label">Total Tests</p>
+                <h2 class="card-value">{{testsCount}}<mat-icon class="card-icon purple">menu_book</mat-icon></h2>
+                <div class="card-buttons">
+                    <button mat-stroked-button color="primary" routerLink="manage-test" class="small-btn">View</button>
+                </div>
+            </div>
+        </div>
+        <div class="card">
+            <div class="card-info">
+                <p class="card-label">Courses</p>
+                <h2 class="card-value">{{testsCount}}<mat-icon class="card-icon purple">menu_book</mat-icon></h2>
+                <div class="card-buttons">
+                    <button mat-stroked-button color="primary" routerLink="manage-test" class="small-btn">View</button>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>  

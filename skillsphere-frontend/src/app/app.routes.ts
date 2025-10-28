@@ -12,6 +12,6 @@ export const routes: Routes = [
     { path: 'signup', component: Signup },
     { path: 'create-test', component: CreateTest },
     { path: 'manage-test', component: ManageTest },
-    { path: 'get-test', component: GetTest },
+    { path: 'get-test/:testId', component: GetTest },
     { path: '**', redirectTo: '', pathMatch: 'full'}
 ];
