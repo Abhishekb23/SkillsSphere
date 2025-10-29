@@ -38,7 +38,7 @@ namespace skillsphere_backend.Controllers
         }
 
         //POST: api/User
-       //[Authorize(Roles = "Admin")]
+        [Authorize(Roles = "Admin")]
        [HttpPost]
         public async Task<ActionResult<UserDto>> CreateUser([FromBody] CreateUserDto dto)
         {
