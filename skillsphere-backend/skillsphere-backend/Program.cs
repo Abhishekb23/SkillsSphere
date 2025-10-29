@@ -223,7 +223,5 @@ app.UseAuthorization();
 
 app.MapControllers();
 
-// ✅ Ensure app listens on all network interfaces in Docker
-app.Urls.Add("http://0.0.0.0:8080");
 
 app.Run();
