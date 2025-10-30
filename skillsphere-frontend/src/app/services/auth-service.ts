@@ -3,17 +3,16 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import {jwtDecode} from 'jwt-decode';
 import { Router } from '@angular/router';
+import environment from '../environment';
 
 @Injectable({
   providedIn: 'root',
 })
 export class AuthService {
-  private readonly BASE_URL = 'https://localhost:7042/api/User';
+  private readonly BASE_URL =environment.BASE_URL+'/User';
   private readonly TOKEN_KEY = 'token';
 
-  constructor(private readonly http: HttpClient,
-    private router: Router
-  ) {}
+  constructor(private readonly http: HttpClient) {}
 
   signup(data: any): Observable<any> {
     return this.http.post(`${this.BASE_URL}`, data);
