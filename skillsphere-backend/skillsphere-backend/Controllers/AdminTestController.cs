@@ -8,7 +8,7 @@ namespace skillsphere_backend.Controllers
 {
     [ApiController]
     [Route("api/admin/tests")]
-    //[Authorize(Roles = "Admin")]
+    [Authorize(Roles = "Admin")]
     public class AdminTestController : ControllerBase
     {
         private readonly ITestService _testService;
@@ -59,6 +59,15 @@ namespace skillsphere_backend.Controllers
             var tests = await _testService.GetTestsCount();
             return Ok(tests);
         }
+
+
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> DeleteTest(int id)
+        {
+            await _testService.DeleteTestAsync(id);
+            return NoContent();
+        }
     }
 
 }
+ 

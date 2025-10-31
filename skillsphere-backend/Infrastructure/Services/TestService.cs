@@ -158,6 +158,9 @@ namespace skillsphere.infrastructure.Services
         {
             return await _testRepository.GetTestsCount();
         }
+
+
+        public Task DeleteTestAsync(int courseId) => _testRepository.DeleteTestAsync(courseId);
     }
 
 }

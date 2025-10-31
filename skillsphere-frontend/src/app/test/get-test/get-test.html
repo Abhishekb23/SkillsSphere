@@ -5,9 +5,9 @@
     <p><strong>Created At:</strong> {{ testData?.createdAt | date:'medium' }}</p>
   </mat-card>
 
-  <div *ngFor="let question of testData.questions" class="mt-4">
+  <div *ngFor="let question of testData?.questions; let i = index" class="mt-4">
     <mat-card class="question-card mat-elevation-z1">
-      <h4>Q{{ question.questionId }}. {{ question.questionText }}</h4>
+      <h4>Q{{ i + 1 }}. {{ question.questionText }}</h4>
 
       <!-- Single Choice Question -->
       <mat-radio-group *ngIf="question.questionType === 'SingleChoice'">

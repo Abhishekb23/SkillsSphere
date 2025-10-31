@@ -162,6 +162,15 @@ namespace skillsphere.infrastructure.Repositories
             int tests = await conn.ExecuteScalarAsync<int>("SELECT COUNT(*) FROM Test;");
             return tests;
         }
+
+
+
+        public async Task DeleteTestAsync(int testId)
+        {
+            using var conn = GetConnection();
+            conn.Open();
+            await conn.ExecuteAsync(@"DELETE FROM ""test"" WHERE ""testid"" = @Id;", new { Id = testId });
+        }
     }
 
 }

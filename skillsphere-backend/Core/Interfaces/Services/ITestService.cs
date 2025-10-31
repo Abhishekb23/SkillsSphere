@@ -18,6 +18,7 @@ namespace skillsphere.core.Interfaces.Services
         Task<int> GetTestsCount();
         Task<LearnerTestDto?> GetTestForLearnerAsync(int testId);
         Task<IEnumerable<LearnerTestListDto>> GetAllActiveTestsAsync();
+        Task DeleteTestAsync(int courseId);
     }
 
 }
