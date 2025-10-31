@@ -2,14 +2,14 @@
   "version": 2,
   "builds": [
     {
-      "src": "dist/skillsphere-frontend/browser/**",
+      "src": "dist/skillsphere-frontend/browser/index.html",
       "use": "@vercel/static"
     }
   ],
   "routes": [
     {
       "src": "/(.*)",
-      "dest": "/index.html"
+      "dest": "/dist/skillsphere-frontend/browser/index.html"
     }
   ]
 }
