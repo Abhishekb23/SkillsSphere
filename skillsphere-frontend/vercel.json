@@ -1,0 +1,16 @@
+{
+  "version": 2,
+  "builds": [
+    {
+      "src": "skillsphere-frontend/angular.json",
+      "use": "@vercel/static-build",
+      "config": { "distDir": "skillsphere-frontend/dist/skillsphere-frontend" }
+    }
+  ],
+  "routes": [
+    {
+      "src": "/(.*)",
+      "dest": "skillsphere-frontend/dist/skillsphere-frontend/index.html"
+    }
+  ]
+}
