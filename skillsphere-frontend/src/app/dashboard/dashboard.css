@@ -77,11 +77,13 @@
 }
 
 .admin-title {
-  font-size: 24px;
+  font-size: 40px;
   font-weight: 600;
-  margin-bottom: 20px;
+  margin-left: 20px;
+  margin-right: 20px;
   color: #222;
   text-align: center;
+
 }
 
 /* Card Grid */

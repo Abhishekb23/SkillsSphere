@@ -8,23 +8,31 @@ import environment from '../environment';
 })
 export class TestService {
 
-  private readonly BASE_URL = environment.BASE_URL+'/admin/tests';
+  private readonly ADMIN_BASE_URL = environment.BASE_URL+'/admin/tests';
+  private readonly LEARNER_BASE_URL = environment.BASE_URL+'/learner/test';
 
   constructor(private readonly http: HttpClient) {}
 
   create(data: any): Observable<any> {
-    return this.http.post(`${this.BASE_URL}`, data);
+    return this.http.post(`${this.ADMIN_BASE_URL}`, data);
   }
 
+  submitTest(payload: any) {
+  return this.http.post(`${this.LEARNER_BASE_URL}/submit-test`, payload);
+}
+
+
+
+
   getList(): Observable<any>{
-    return this.http.get(this.BASE_URL);
+    return this.http.get(this.ADMIN_BASE_URL);
   }
 
   getTestById(id: any): Observable<any>{
-    return this.http.get(`${this.BASE_URL}/${id}`);
+    return this.http.get(`${this.ADMIN_BASE_URL}/${id}`);
   }
 
   getTestsCount(): Observable<any>{
-    return this.http.get(`${this.BASE_URL}/count`);
+    return this.http.get(`${this.ADMIN_BASE_URL}/count`);
   }
 }

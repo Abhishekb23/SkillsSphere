@@ -1,10 +1,36 @@
+/* --- Test Header Card --- */
 .test-header {
-  padding: 20px;
-  background-color: #f5f5f5;
+  background: linear-gradient(135deg, #1976d2, #63a4ff);
+  color: white;
+  padding: 24px;
+  border-radius: 8px;
+  text-align: center;
+  margin-bottom: 24px;
 }
 
+.test-title {
+  margin-bottom: 10px;
+  font-size: 1.8rem;
+  font-weight: 600;
+}
+
+.test-description {
+  font-size: 1.1rem;
+  margin-bottom: 8px;
+  opacity: 0.9;
+}
+
+.test-meta {
+  font-size: 0.9rem;
+  opacity: 0.8;
+}
+
+/* --- Question Cards --- */
 .question-card {
   padding: 20px;
+  border-left: 4px solid #1976d2;
+  border-radius: 6px;
+  background-color: #fafafa;
 }
 
 .option {

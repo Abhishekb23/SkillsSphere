@@ -1,8 +1,15 @@
-<app-toaster></app-toaster> 
-<router-outlet></router-outlet>
-<footer class="bg-dark text-light py-4">
-  <div class="container text-center">
-    <p class="mb-1">&copy; 2025 SkillSphere. All rights reserved.</p>
-    <small>Terms • Privacy • Contact</small>
+<div class="app-container">
+  <app-loading-bar></app-loading-bar>
+  <app-toaster></app-toaster>
+  
+  <div class="content">
+    <router-outlet></router-outlet>
   </div>
-</footer>
+  
+  <footer class="bg-dark text-light py-4">
+    <div class="container text-center">
+      <p class="mb-1">&copy; 2025 SkillSphere. All rights reserved.</p>
+      <small>Terms • Privacy • Contact</small>
+    </div>
+  </footer>
+</div>

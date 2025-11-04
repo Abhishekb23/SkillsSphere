@@ -2,6 +2,8 @@ import { Component } from '@angular/core';
 import { ToasterService, ToastMessage } from '../../services/toaster-service';
 import { CommonModule } from '@angular/common';
 
+import { NgZone } from '@angular/core';
+
 @Component({
   selector: 'app-toaster',
   imports: [CommonModule],
@@ -13,15 +15,18 @@ export class Toaster {
   type: 'success' | 'error' | 'info' = 'info';
   show = false;
 
-  constructor(private toasterService: ToasterService) {
-    this.toasterService.toastState$.subscribe((toast: ToastMessage) => {
-      this.message = toast.message;
-      this.type = toast.type;
-      this.show = true;
+constructor(private toasterService: ToasterService, private ngZone: NgZone) {
+  this.toasterService.toastState$.subscribe((toast: ToastMessage) => {
+    this.message = toast.message;
+    this.type = toast.type;
+    this.show = true;
 
+    this.ngZone.runOutsideAngular(() => {
       setTimeout(() => {
-        this.show = false;
-      }, 4000);
+        this.ngZone.run(() => this.show = false);
+      }, 2000);
     });
-  }
+  });
+}
+
 }

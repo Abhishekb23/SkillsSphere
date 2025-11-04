@@ -1,34 +1,42 @@
-<section class="container mt-4">
-  <mat-card class="test-header mat-elevation-z2">
-    <h2>{{ testData?.title }}</h2>
-    <p>{{ testData?.description }}</p>
-    <p><strong>Created At:</strong> {{ testData?.createdAt | date:'medium' }}</p>
+<section class="container mt-4" *ngIf="testData">
+  <mat-card class="test-header mat-elevation-z2 mb-3">
+    <h2>{{ testData.title }}</h2>
+    <p>{{ testData.description }}</p>
+    <p><strong>Created At:</strong> {{ testData.createdAt | date:'medium' }}</p>
   </mat-card>
 
-  <div *ngFor="let question of testData?.questions; let i = index" class="mt-4">
-    <mat-card class="question-card mat-elevation-z1">
+  <div *ngFor="let question of testData.questions; let i = index" class="mt-4">
+    <mat-card class="question-card mat-elevation-z1 p-3">
       <h4>Q{{ i + 1 }}. {{ question.questionText }}</h4>
 
-      <!-- Single Choice Question -->
-      <mat-radio-group *ngIf="question.questionType === 'SingleChoice'">
+      <!-- ✅ Single Choice -->
+      <mat-radio-group
+        *ngIf="question.questionType === 'SingleChoice'"
+        (change)="onSingleChoiceSelect(question.questionId, $event.value)"
+      >
         <mat-radio-button
           *ngFor="let option of question.options"
           [value]="option.optionId"
-          class="option"
+          class="d-block my-2"
         >
           {{ option.optionText }}
         </mat-radio-button>
       </mat-radio-group>
 
-      <!-- Multiple Choice Question -->
+      <!-- ✅ Multiple Choice -->
       <div *ngIf="question.questionType === 'MultipleChoice'">
         <mat-checkbox
           *ngFor="let option of question.options"
-          class="option"
+          class="d-block my-2"
+          (change)="onMultipleChoiceChange(question.questionId, option.optionId, $event)"
         >
           {{ option.optionText }}
         </mat-checkbox>
       </div>
     </mat-card>
+  </div>
+
+  <div class="text-end mt-4">
+    <button class="btn btn-primary" (click)="submitTest()">Submit Test</button>
   </div>
 </section>
