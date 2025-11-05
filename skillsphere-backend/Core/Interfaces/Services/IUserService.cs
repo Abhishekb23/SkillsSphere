@@ -13,5 +13,7 @@ namespace skillsphere.core.Interfaces.Services
         Task<UserDto?> GetUserByIdAsync(int id);
         Task<UserDto> CreateUserAsync(CreateUserDto dto);
         Task<string> LoginAsync(string email, string password);
+        Task SendRegistrationOtpAsync(CreateUserDto dto);
+        Task<UserDto> VerifyOtpAndRegisterAsync(string email, string otp);
     }
 }

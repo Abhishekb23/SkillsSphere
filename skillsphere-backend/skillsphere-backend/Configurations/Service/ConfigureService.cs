@@ -1,5 +1,4 @@
 ﻿
-using Microsoft.Extensions.DependencyInjection;
 using skillsphere.core.Interfaces.Repositories;
 using skillsphere.core.Interfaces.Services;
 using skillsphere.infrastructure;
@@ -23,6 +22,9 @@ public static class ApplicationServiceExtension
         services.AddScoped<ITestService, TestService>();
         services.AddScoped<ICourseRepository, CourseRepository>();
         services.AddScoped<ICourseService, CourseService>();
+
+        services.AddScoped<IVerificationRepository, VerificationRepository>();
+        services.AddScoped<IEmailService,EmailService>();
         return services;
     }
 }

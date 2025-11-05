@@ -28,7 +28,7 @@ namespace skillsphere_backend.Controllers
 
         // GET: api/User/5
         [HttpGet("{id}")]
-        [Authorize(Roles ="Admin")]
+        [Authorize(Roles = "Admin")]
         public async Task<ActionResult<UserDto>> GetUserById(int id)
         {
             var user = await _userService.GetUserByIdAsync(id);
@@ -38,8 +38,9 @@ namespace skillsphere_backend.Controllers
         }
 
         //POST: api/User
-       [HttpPost]
-        public async Task<ActionResult<UserDto>> CreateUser([FromBody] CreateUserDto dto)
+        [Authorize(Roles = "Admin")]
+        [HttpPost("Admin/Ragistraion")]
+        public async Task<ActionResult<UserDto>> AddAdmin([FromBody] CreateUserDto dto)
         {
             try
             {
@@ -71,5 +72,34 @@ namespace skillsphere_backend.Controllers
                 return Unauthorized(new { Message = ex.Message });
             }
         }
+
+        [HttpPost]
+        public async Task<IActionResult> CreateUser([FromBody] CreateUserDto dto)
+        {
+            try
+            {
+                await _userService.SendRegistrationOtpAsync(dto);
+                return Ok(new { Message = "OTP sent to your email. Please verify within 5 minutes." });
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new { Message = ex.Message });
+            }
+        }
+
+        [HttpPost("verify-otp")]
+        public async Task<IActionResult> VerifyOtp([FromBody] VerifyOtpDto dto)
+        {
+            try
+            {
+                var user = await _userService.VerifyOtpAndRegisterAsync(dto.Email, dto.OtpCode);
+                return Ok(new { Message = "Registration successful!", User = user });
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new { Message = ex.Message });
+            }
+        }
+
     }
 }
