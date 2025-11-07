@@ -35,7 +35,7 @@ namespace skillsphere.infrastructure.Services
         {
             var existing = await _userRepository.GetByEmailAsync(dto.Email);
             if (existing != null)
-                throw new Exception("User already exists with this email");
+                throw new Exception("User already exists");
 
             // Delete any old pending record
             await _verificationRepository.DeletePendingAsync(dto.Email);
@@ -43,7 +43,7 @@ namespace skillsphere.infrastructure.Services
             var otp = new Random().Next(100000, 999999).ToString();
 
             await _verificationRepository.AddPendingUserAsync(
-                dto.Username, dto.Email, dto.Password, (int)dto.Role, otp);
+                dto.Username, dto.Email, dto.Password, 1, otp);
 
             await _emailService.SendOtpAsync(dto.Email, otp);
         }
@@ -112,13 +112,13 @@ namespace skillsphere.infrastructure.Services
 
         public async Task<string> LoginAsync(string email, string password)
         {
-            var user = await _userRepository.GetByEmailAsync(email);
+            var user = await _userRepository.GetByEmailOrUsernameAsync(email);
             if (user == null)
-                throw new Exception("Invalid email or password");
+                throw new Exception("Invalid Credentials");
 
             // For now, plain text password (replace with hashing in production)
             if (user.PasswordHash != password)
-                throw new Exception("Invalid email or password");
+                throw new Exception("Invalid Password");
 
             // Generate JWT token
             return _jwtService.GenerateToken(user);

@@ -73,7 +73,7 @@ namespace skillsphere_backend.Controllers
             }
         }
 
-        [HttpPost]
+        [HttpPost("Registration")]
         public async Task<IActionResult> CreateUser([FromBody] CreateUserDto dto)
         {
             try

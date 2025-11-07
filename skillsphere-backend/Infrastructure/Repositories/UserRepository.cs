@@ -94,5 +94,14 @@ namespace skillsphere.infrastructure.Repositories
             var sql = @"SELECT * FROM ""Users"" WHERE ""Email"" = @Email";
             return await conn.QuerySingleOrDefaultAsync<User>(sql, new { Email = email });
         }
+
+        public async Task<User?> GetByEmailOrUsernameAsync(string identifier)
+        {
+            using var conn = GetConnection();
+            var sql = @"SELECT * FROM ""Users"" 
+                WHERE ""Email"" = @Identifier OR ""Username"" = @Identifier";
+            return await conn.QuerySingleOrDefaultAsync<User>(sql, new { Identifier = identifier });
+        }
+
     }
 }
