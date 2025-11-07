@@ -1,72 +1,83 @@
-﻿using skillsphere.core.Interfaces.Services;
+﻿using Microsoft.Extensions.Options;
+using skillsphere.core.Entities;
+using skillsphere.core.Interfaces.Services;
 using System.Net;
 using System.Net.Mail;
-using System.Threading.Tasks;
 
 namespace skillsphere.infrastructure.Services
 {
     public class EmailService : IEmailService
     {
-        private readonly string _fromEmail = "skills.sphere.v1@gmail.com"; // your Gmail address
-        private readonly string _appPassword = "gojtytnrudkbkclk";        // your Gmail App Password
+        private readonly EmailSettings _emailSettings;
 
-        /// <summary>
-        /// Sends an email using Gmail SMTP.
-        /// </summary>
-        public async Task SendEmailAsync(string toEmail, string subject, string body)
+        public EmailService(IOptions<EmailSettings> emailSettings)
         {
-            using (var smtp = new SmtpClient("smtp.gmail.com", 587))
+            _emailSettings = emailSettings.Value;
+        }
+
+        public async Task SendEmailAsync(string toEmail, string subject, string bodyHtml)
+        {
+            using var smtp = new SmtpClient(_emailSettings.SmtpHost, _emailSettings.SmtpPort)
             {
-                smtp.Credentials = new NetworkCredential(_fromEmail, _appPassword);
-                smtp.EnableSsl = true;
+                Credentials = new NetworkCredential(_emailSettings.SmtpUsername, _emailSettings.SmtpPassword),
+                EnableSsl = true
+            };
 
-                var mail = new MailMessage
-                {
-                    From = new MailAddress(_fromEmail, "SkillSphere"),
-                    Subject = subject,
-                    Body = body,
-                    IsBodyHtml = false // true if sending HTML content
-                };
+            var mail = new MailMessage
+            {
+                From = new MailAddress(_emailSettings.FromEmail, _emailSettings.FromName),
+                Subject = subject,
+                Body = bodyHtml,
+                IsBodyHtml = true
+            };
 
-                mail.To.Add(toEmail);
+            mail.To.Add(toEmail);
 
-                try
-                {
-                    await smtp.SendMailAsync(mail);
-                    Console.WriteLine($"✅ Email sent successfully to {toEmail}");
-                }
-                catch (SmtpException ex)
-                {
-                    Console.WriteLine($"❌ Email sending failed: {ex.Message}");
-                    throw;
-                }
+            try
+            {
+                await smtp.SendMailAsync(mail);
+                Console.WriteLine($"✅ Email sent successfully to {toEmail}");
+            }
+            catch (SmtpException ex)
+            {
+                Console.WriteLine($"❌ Email sending failed: {ex.Message}");
+                throw;
             }
         }
 
-        /// <summary>
-        /// Sends OTP email for user verification.
-        /// </summary>
         public async Task SendOtpAsync(string toEmail, string otp)
         {
-            string subject = "SkillSphere Email Verification (OTP)";
-            string body = $"Hello,\n\nYour SkillSphere verification code is: {otp}\n\n" +
-                          "This code is valid for 5 minutes.\n\nThank you,\nTeam SkillSphere";
-
+            string subject = "Verify Your SkillSphere Account (OTP)";
+            string body = $@"
+                <html>
+                <body style='font-family:Segoe UI,Roboto,Arial,sans-serif; background:#f4f7fb; padding:20px;'>
+                  <div style='max-width:600px;margin:auto;background:#ffffff;border-radius:8px;padding:25px;box-shadow:0 4px 10px rgba(0,0,0,0.08);'>
+                    <h2 style='color:#2563eb;text-align:center;'>SkillSphere Email Verification</h2>
+                    <p style='font-size:16px;color:#333;'>Your OTP code is:</p>
+                    <div style='text-align:center;margin:25px 0;'>
+                      <span style='font-size:32px;letter-spacing:6px;color:#111;font-weight:bold;'>{otp}</span>
+                    </div>
+                    <p style='font-size:14px;color:#555;'>This code is valid for 5 minutes.</p>
+                  </div>
+                </body>
+                </html>";
             await SendEmailAsync(toEmail, subject, body);
         }
 
-        /// <summary>
-        /// Sends registration success confirmation email.
-        /// </summary>
         public async Task SendRegistrationSuccessAsync(string toEmail, string username)
         {
             string subject = "Welcome to SkillSphere 🎉";
-            string body =
-                $"Hello {username},\n\n" +
-                "🎉 Congratulations! Your SkillSphere registration was successful.\n\n" +
-                "You can now log in and start exploring our platform.\n\n" +
-                "Best regards,\nTeam SkillSphere";
-
+            string body = $@"
+                <html>
+                <body style='font-family:Segoe UI,Roboto,Arial,sans-serif; background:#f4f7fb; padding:20px;'>
+                  <div style='max-width:600px;margin:auto;background:#ffffff;border-radius:8px;padding:25px;box-shadow:0 4px 10px rgba(0,0,0,0.08);'>
+                    <h2 style='color:#2563eb;text-align:center;'>Welcome to SkillSphere 🎉</h2>
+                    <p style='font-size:16px;color:#333;'>Hi {username},</p>
+                    <p style='font-size:15px;color:#333;'>Your registration was successful!</p>
+                    <p style='color:#777;font-size:13px;text-align:center;'>© {DateTime.UtcNow.Year} SkillSphere</p>
+                  </div>
+                </body>
+                </html>";
             await SendEmailAsync(toEmail, subject, body);
         }
     }

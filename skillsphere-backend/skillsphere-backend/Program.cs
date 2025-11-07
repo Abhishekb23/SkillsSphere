@@ -117,6 +117,7 @@ using EvaluateSystems.Configuration;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
+using skillsphere.core.Entities;
 using skillsphere.core.Interfaces.Services;
 using skillsphere.infrastructure.Services;
 using Swashbuckle.AspNetCore.Filters;
@@ -128,6 +129,8 @@ var configuration = builder.Configuration;
 // Register services
 builder.Services.ConfigureServices(builder.Configuration);
 builder.Services.AddControllers();
+builder.Services.Configure<EmailSettings>(builder.Configuration.GetSection("EmailSettings"));
+
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(options =>
 {
