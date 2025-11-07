@@ -1,23 +1,53 @@
 <div class="container py-4">
-  <h2 class="mb-4">Available Tests</h2>
+  <h2 class="mb-4">
+    {{ isAdmin ? 'Manage Tests (Admin)' : 'Available Tests (Learner)' }}
+  </h2>
 
-  <div class="row g-4">
+  <!-- Loader -->
+  <div *ngIf="isLoading" class="text-center my-5">
+    <div class="spinner-border text-primary" role="status"></div>
+    <p class="text-muted mt-2">Loading tests...</p>
+  </div>
+
+  <!-- No data -->
+  <div *ngIf="!isLoading && tests.length === 0" class="text-center text-muted">
+    No tests available.
+  </div>
+
+  <!-- Test list -->
+  <div class="row g-4" *ngIf="!isLoading && tests.length > 0">
     <div class="col-md-6" *ngFor="let test of tests">
       <div class="card shadow-sm h-100">
         <div class="card-body">
           <h5 class="card-title">
             {{ test.title }}
-            <span class="badge bg-success float-end" *ngIf="test.isActive">Active</span>
-            <span class="badge bg-secondary float-end" *ngIf="!test.isActive">Inactive</span>
+            <!-- Only show active/inactive for Admin -->
+            <span
+              class="badge bg-success float-end"
+              *ngIf="isAdmin && test.isActive"
+              >Active</span
+            >
+            <span
+              class="badge bg-secondary float-end"
+              *ngIf="isAdmin && !test.isActive"
+              >Inactive</span
+            >
           </h5>
 
           <p class="card-text text-muted">{{ test.description }}</p>
 
-          <small class="text-secondary">Created At: {{ test.createdAt | date: 'medium' }}</small>
+          <!-- Only Admin tests have createdAt -->
+          <small class="text-secondary" *ngIf="isAdmin && test.createdAt">
+            Created At: {{ test.createdAt | date: 'medium' }}
+          </small>
         </div>
         <div class="card-footer text-end">
-          <!-- <button class="btn btn-outline-primary btn-sm">View Details</button> -->
-          <button class="btn btn-outline-primary btn-sm" (click)="attendTest(test.testId)">Attend Test</button>
+          <button
+            class="btn btn-outline-primary btn-sm"
+            (click)="attendTest(test.testId)"
+          >
+            Attend Test
+          </button>
         </div>
       </div>
     </div>

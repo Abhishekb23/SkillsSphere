@@ -1,37 +1,62 @@
 import { Component, OnInit } from '@angular/core';
-import { TestService } from '../../services/test-service';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
+import { TestService } from '../../services/test-service';
+import { AuthService } from '../../services/auth-service';
 
 @Component({
   selector: 'app-manage-test',
+  standalone: true,
   imports: [CommonModule],
   templateUrl: './manage-test.html',
-  styleUrl: './manage-test.css'
+  styleUrls: ['./manage-test.css']
 })
 export class ManageTest implements OnInit {
-  tests : any[] = [];
+  tests: any[] = [];
+  isAdmin: boolean = false;
+  isLearner: boolean = false;
+  isLoading: boolean = false;
 
-  constructor(private readonly testService: TestService, private readonly router: Router){}
+  constructor(
+    private readonly testService: TestService,
+    private readonly authService: AuthService,
+    private readonly router: Router
+  ) {}
 
   ngOnInit(): void {
-    this.getAllTests();
+    this.setUserRole();
+    this.loadTests();
   }
 
-
-  getAllTests(){
-    this.testService.getList().subscribe({
-        next: (res) => {
-          this.tests = res;
-          console.log(res);
-        },
-        error: (error) => {
-          alert(error);
-        }
-      });
+  /** ✅ Determine the user's role using AuthService */
+  private setUserRole(): void {
+    this.isAdmin = this.authService.isAdmin();
+    this.isLearner = this.authService.isLearner();
   }
 
-  attendTest(testId: number){
-    this.router.navigate(['get-test', testId]); 
+  /** ✅ Load data dynamically based on role */
+  private loadTests(): void {
+    this.isLoading = true;
+
+    const apiCall = this.isAdmin
+      ? this.testService.getAdminList()
+      : this.testService.getAvailableTests();
+
+    apiCall.subscribe({
+      next: (res) => {
+        this.tests = res;
+        this.isLoading = false;
+      },
+      error: (error) => {
+        console.error('Error loading tests:', error);
+        alert('Failed to load tests');
+        this.isLoading = false;
+      },
+    });
+  }
+
+  /** ✅ Handle test attendance */
+  attendTest(testId: number): void {
+    this.router.navigate(['get-test', testId]);
   }
 }

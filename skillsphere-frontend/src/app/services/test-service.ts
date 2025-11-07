@@ -24,12 +24,20 @@ export class TestService {
 
 
 
-  getList(): Observable<any>{
+  getAdminList(): Observable<any>{
     return this.http.get(this.ADMIN_BASE_URL);
+  }
+
+  getAvailableTests(): Observable<any>{
+    return this.http.get(this.LEARNER_BASE_URL);
   }
 
   getTestById(id: any): Observable<any>{
     return this.http.get(`${this.ADMIN_BASE_URL}/${id}`);
+  }
+
+    getLearnerTestById(testId: number): Observable<any> {
+    return this.http.get(`${this.LEARNER_BASE_URL}/${testId}`);
   }
 
   getTestsCount(): Observable<any>{
