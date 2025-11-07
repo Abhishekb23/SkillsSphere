@@ -1,4 +1,4 @@
-﻿using Microsoft.Extensions.Options;
+using Microsoft.Extensions.Options;
 using skillsphere.core.Entities;
 using skillsphere.core.Interfaces.Services;
 using System.Net;
