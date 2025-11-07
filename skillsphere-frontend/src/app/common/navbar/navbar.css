@@ -4,3 +4,13 @@
 .navbar .dropdown-menu {
   min-width: 200px;
 }
+.skill-sphere{
+  font-weight: 500;
+  color: black;
+  margin-left: 10px;
+}
+.user-name{
+  margin-left: 60px;
+  font-size: medium;
+  font-weight: 400;
+}

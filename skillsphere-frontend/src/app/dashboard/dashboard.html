@@ -3,13 +3,12 @@
     <section class="container-fluid">
         <div class="row">
             <div class="col-12">
-                <div class="hero-container mat-elevation-z4">
-                    <mat-card class="hero-card">
-                        <h1 class="hero-title">
-                            Become the next<br />
-                            generation developer
+                <div class="container-one mat-elevation-z4">
+                    <mat-card class="card-one">
+                        <h1 class="title-one">
+                            {{displayedText}}
                         </h1>
-                        <p class="hero-subtitle">
+                        <p class="subtitle-one">
                             We help thousands of students to learn, get certified, and get hired.
                         </p>
                         <a routerLink="/login" class="btn btn-primary btn-lg">Log In</a>
@@ -19,7 +18,7 @@
         </div>
     </section>
     <!-- Featured Courses Section -->
-    <section class="container mb-6">
+    <section class="container mt-4">
         <h2 class="mb-4 text-center">Featured Courses</h2>
         <div class="row g-4">
             <div class="col-md-4" *ngFor="let course of featuredCourses">

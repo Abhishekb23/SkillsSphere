@@ -39,6 +39,9 @@ export class Dashboard {
   isAdmin: boolean = false;
   userName: string | null = null;
   testsCount: number = 0;
+  fullText = 'Become the next generation developer';
+  displayedText = '';
+  typingSpeed = 100;
 
   featuredCourses: CourseCard[] = [
     {
@@ -69,24 +72,44 @@ export class Dashboard {
 
   currentSlide = 0;
 
-  constructor(private readonly authService: AuthService, private readonly testService: TestService){ }
+  constructor(private readonly authService: AuthService, private readonly testService: TestService) { }
 
   ngOnInit(): void {
     this.isAuthenticated = this.authService.isAuthenticated();
     this.isAdmin = this.authService.isAdmin();
     this.userName = this.authService.getUserName();
 
+    if (this.isAuthenticated) {
+      this.getTestCounts();
+    } else {
+      this.startTyping();
+    }
+    
+    setInterval(() => {
+      this.currentSlide = (this.currentSlide + 1) % this.imageSlides.length;
+    }, 3500); // every 3.5 seconds
+  }
+
+  startTyping() {
+    let index = 0;
+    const interval = setInterval(() => {
+      if (index < this.fullText.length) {
+        this.displayedText += this.fullText[index];
+        index++;
+      } else {
+        clearInterval(interval);
+      }
+    }, this.typingSpeed);
+  }
+
+  getTestCounts() {
     this.testService.getTestsCount().subscribe({
       next: (res) => {
         this.testsCount = res;
         console.log(this.testsCount);
-      },error: (error) => {
+      }, error: (error) => {
         console.error(error);
       }
     });
-
-    setInterval(() => {
-      this.currentSlide = (this.currentSlide + 1) % this.imageSlides.length;
-    }, 3500); // every 3.5 seconds
   }
 }

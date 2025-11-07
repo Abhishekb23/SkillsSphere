@@ -12,12 +12,12 @@ import { Toaster } from '../toaster/toaster';
   styleUrl: './navbar.css'
 })
 export class Navbar {
-    isAdmin: boolean = false;
-    isAuthenticated: boolean = false;
-@Input() userName: string|null = '';
+  isAdmin: boolean = false;
+  isAuthenticated: boolean = false;
+  @Input() userName: string | null = '';
 
-    constructor(public authService: AuthService) {
-      this.isAuthenticated = authService.isAuthenticated();
-      this.isAdmin = authService.isAdmin();    
-    }
+  constructor(public authService: AuthService) {
+    this.isAuthenticated = authService.isAuthenticated();
+    this.isAdmin = authService.isAdmin();
+  }
 }

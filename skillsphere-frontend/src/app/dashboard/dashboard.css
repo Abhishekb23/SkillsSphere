@@ -1,30 +1,35 @@
-.hero-container {
+.public-content{
+  margin-top: 4px;
+}
+
+.container-one {
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 90vh;
+  height: calc(100vh - 75px);
   background: linear-gradient(to right, gray, #cecece);
-  color: white;
   text-align: center;
   padding: 2rem;
   border-radius: 8px;
 }
 
-.hero-card {
+.card-one {
   background: transparent;
   box-shadow: none;
   max-width: 700px;
 }
 
-.hero-title {
+.title-one {
   font-size: 3rem;
   font-weight: bold;
   margin-bottom: 20px;
+  color: whitesmoke;
 }
 
-.hero-subtitle {
+.subtitle-one {
   font-size: 1.2rem;
   margin-bottom: 30px;
+  color: red;
 }
 
 .modern-slider-wrapper {
