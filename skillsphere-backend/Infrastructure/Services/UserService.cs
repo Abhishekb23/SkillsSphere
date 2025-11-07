@@ -100,7 +100,7 @@ namespace skillsphere.infrastructure.Services
 
             var entity = await _userRepository.GetByEmailAsync(user.Email);
             if (entity != null)
-                throw new Exception("User already exists with this email");
+                throw new Exception("User already exists...");
 
             user.PasswordHash = dto.Password;
             user.Role=Constants.UserRole.Admin;
@@ -114,7 +114,7 @@ namespace skillsphere.infrastructure.Services
         {
             var user = await _userRepository.GetByEmailOrUsernameAsync(email);
             if (user == null)
-                throw new Exception("Invalid Credentials");
+                throw new Exception("Invalid Credentials....");
 
             // For now, plain text password (replace with hashing in production)
             if (user.PasswordHash != password)
