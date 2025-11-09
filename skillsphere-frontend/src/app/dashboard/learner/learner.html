@@ -1,0 +1,97 @@
+<div class="dashboard-wrapper">
+    <div class="dashboard-container">
+        <!-- Welcome Header -->
+        <div class="dashboard-header">
+            <h2 *ngIf="isAuthenticated">{{ displayedText }}</h2>
+            <p>Here’s your learning overview and progress summary.</p>
+        </div>
+
+        <!-- Summary Cards -->
+        <div class="stats-grid">
+            <div class="stat-card">
+                <h3>{{ enrolledCourses.length }}</h3>
+                <p>Enrolled Courses</p>
+            </div>
+            <div class="stat-card">
+                <h3>{{ upcomingTests.length }}</h3>
+                <p>Upcoming Tests</p>
+            </div>
+            <div class="stat-card">
+                <h3>{{ certificates.length }}</h3>
+                <p>Certificates Earned</p>
+            </div>
+        </div>
+
+        <!-- Daily Learning -->
+        <section class="challenge-section">
+            <div class="challenge-container">
+                <h2 class="challenge-title">100 Days Learning Challenge</h2>
+                <p class="challenge-subtext">
+                    Keep learning daily and unlock your achievements!
+                </p>
+
+                <div class="challenge-grid">
+                    <!-- Bronze -->
+                    <div class="challenge-card bronze">
+                        <div class="icon">🥉</div>
+                        <h3>Bronze</h3>
+                        <p>Complete <strong>15 days</strong> to get Bronze</p>
+                    </div>
+
+                    <!-- Silver -->
+                    <div class="challenge-card silver">
+                        <div class="icon">🥈</div>
+                        <h3>Silver</h3>
+                        <p>Complete <strong>50 days</strong> to get Silver</p>
+                    </div>
+
+                    <!-- Gold -->
+                    <div class="challenge-card gold">
+                        <div class="icon">🥇</div>
+                        <h3>Gold</h3>
+                        <p>Complete <strong>100 days</strong> to get Gold</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Enrolled Courses -->
+        <section class="section">
+            <h3>Your Courses</h3>
+            <div class="course-grid">
+                <div class="course-card" *ngFor="let c of enrolledCourses">
+                    <h4>{{ c.title }}</h4>
+                    <div class="progress-bar">
+                        <div class="progress" [style.width.%]="c.progress"></div>
+                    </div>
+                    <p>{{ c.progress }}% Completed</p>
+                    <span class="status" [ngClass]="c.status.toLowerCase()">{{ c.status }}</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- Upcoming Tests -->
+        <section class="section">
+            <h3>Upcoming Tests</h3>
+            <div class="test-list">
+                <div class="test-card" *ngFor="let t of upcomingTests">
+                    <h4>{{ t.title }}</h4>
+                    <p>Date: <strong>{{ t.date }}</strong></p>
+                    <span class="status scheduled">{{ t.status }}</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- Certificates -->
+        <section class="section">
+            <h3>Your Certificates</h3>
+            <div class="certificate-grid">
+                <div class="certificate-card" *ngFor="let cert of certificates">
+                    <h4>{{ cert.title }}</h4>
+                    <p>Issued on: {{ cert.issued }}</p>
+                    <button class="btn-view">View Certificate</button>
+                </div>
+            </div>
+        </section>
+    </div>
+</div>

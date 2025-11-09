@@ -1,157 +1,100 @@
 <app-navbar [userName]="userName"></app-navbar>
-<div class="public-content" *ngIf="!isAuthenticated">
-    <section class="container-fluid">
-        <div class="row">
-            <div class="col-12">
-                <div class="container-one mat-elevation-z4">
-                    <mat-card class="card-one">
-                        <h1 class="title-one">
-                            {{displayedText}}
-                        </h1>
-                        <p class="subtitle-one">
-                            We help thousands of students to learn, get certified, and get hired.
-                        </p>
-                        <a routerLink="/login" class="btn btn-primary btn-lg">Log In</a>
-                    </mat-card>
+<!-- Fixed background image and overlay -->
+<div class="outer" *ngIf="!isAuthenticated">
+    <div class="hero-visual" aria-hidden="true"></div>
+    <div class="hero-overlay" aria-hidden="true"></div>
+
+    <!-- HERO SECTION -->
+    <section class="hero" role="region" aria-label="Hero — Learn Test Certified">
+        <div class="container">
+            <div class="hero-card" role="article" aria-labelledby="hero-title">
+                <h1 id="hero-title">Learn with confidence — get certified, get ahead.</h1>
+                <p class="lead">
+                    Join thousands of learners — hands-up learning, mentor-led sessions,
+                    and verified completion certificates that employers trust.
+                </p>
+
+                <div class="cta-row">
+                    <button class="btn btn-info  " routerLink="/courses">Explore Featured Courses</button>
+                    <button class="btn btn-secondary" routerLink="/start-learning">Start Learning</button>
+                </div>
+
+                <div class="trust-row">
+                    <div>⭐ 4.8 (1k+ reviews)</div>
+                    <div>•</div>
+                    <div>Trusted by 15+ universities</div>
+                    <div>•</div>
+                    <div>Job-ready curriculum</div>
                 </div>
             </div>
         </div>
     </section>
-    <!-- Featured Courses Section -->
-    <section class="container mt-4">
-        <h2 class="mb-4 text-center">Featured Courses</h2>
-        <div class="row g-4">
-            <div class="col-md-4" *ngFor="let course of featuredCourses">
-                <div class="card h-100 shadow-sm">
-                    <img [src]="course.img" class="card-img-top" alt="course">
-                    <div class="card-body d-flex flex-column">
-                        <h5 class="card-title">{{ course.title }}</h5>
-                        <p class="text-muted mb-2">by {{ course.instructor }}</p>
-                        <div class="mt-auto d-flex justify-content-between align-items-center">
-                            <span class="fw-bold">{{ course.price }}</span>
-                            <a [routerLink]="'/courses'" class="btn btn-sm btn-outline-primary">View</a>
-                        </div>
+
+    <!-- FEATURED COURSES -->
+    <section id="featured" class="featured">
+        <div class="container">
+            <div class="section-title">
+                <h2>Featured Courses</h2>
+                <p>Practical, interview-ready curriculums with real projects and verified certificates.</p>
+            </div>
+
+            <div class="courses-grid">
+                <article class="course-card">
+                    <div class="course-meta">Beginner • 8 weeks</div>
+                    <h3 class="course-title">Full Stack Web Development</h3>
+                    <p class="course-desc">
+                        Hands-on HTML, CSS, JavaScript, Angular and ASP.NET Core projects — build a portfolio-ready app.
+                    </p>
+                    <div class="course-bottom">
+                        <div class="pill">Certificate</div>
+                        <div class="price">₹7,499</div>
                     </div>
-                </div>
+                </article>
+                <article class="course-card">
+                    <div class="course-meta">Beginner • 8 weeks</div>
+                    <h3 class="course-title">Full Stack Web Development</h3>
+                    <p class="course-desc">
+                        Hands-on HTML, CSS, JavaScript, Angular and ASP.NET Core projects — build a portfolio-ready app.
+                    </p>
+                    <div class="course-bottom">
+                        <div class="pill">Certificate</div>
+                        <div class="price">₹7,499</div>
+                    </div>
+                </article>
+                <article class="course-card">
+                    <div class="course-meta">Beginner • 8 weeks</div>
+                    <h3 class="course-title">Full Stack Web Development</h3>
+                    <p class="course-desc">
+                        Hands-on HTML, CSS, JavaScript, Angular and ASP.NET Core projects — build a portfolio-ready app.
+                    </p>
+                    <div class="course-bottom">
+                        <div class="pill">Certificate</div>
+                        <div class="price">₹7,499</div>
+                    </div>
+                </article>
+                <article class="course-card">
+                    <div class="course-meta">Beginner • 8 weeks</div>
+                    <h3 class="course-title">Full Stack Web Development</h3>
+                    <p class="course-desc">
+                        Hands-on HTML, CSS, JavaScript, Angular and ASP.NET Core projects — build a portfolio-ready app.
+                    </p>
+                    <div class="course-bottom">
+                        <div class="pill">Certificate</div>
+                        <div class="price">₹7,499</div>
+                    </div>
+                </article>
+                <!-- Add others... -->
             </div>
         </div>
     </section>
 
-    <!-- How It Works / Info Section -->
-    <section class="py-5 bg-light">
-        <div class="container">
-            <h3 class="text-center mb-4">How It Works</h3>
-            <div class="row g-4">
-                <div class="col-md-4 text-center">
-                    <i class="bi bi-search fs-1 text-primary mb-2"></i>
-                    <h5>Search Courses</h5>
-                    <p>Find from thousands of high-quality courses</p>
-                </div>
-                <div class="col-md-4 text-center">
-                    <i class="bi bi-play-btn fs-1 text-primary mb-2"></i>
-                    <h5>Start Learning</h5>
-                    <p>Watch video lectures at your pace</p>
-                </div>
-                <div class="col-md-4 text-center">
-                    <i class="bi bi-award fs-1 text-primary mb-2"></i>
-                    <h5>Get Certificate</h5>
-                    <p>Earn certification on course completion</p>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <div class="modern-slider-wrapper">
-        <div class="modern-slider-track" [style.transform]="'translateX(-' + currentSlide * 100 + '%)'">
-            <div class="modern-slide" *ngFor="let img of imageSlides">
-                <mat-card class="modern-slide-card elevation">
-                    <img mat-card-image [src]="img" alt="Slide">
-                </mat-card>
-            </div>
-        </div>
-    </div>
-
-    <!-- Call to Action -->
-    <section class="py-5 text-center">
-        <div class="container">
-            <h2>Ready to begin your learning journey?</h2>
-            <a routerLink="/signup" class="btn btn-primary btn-lg me-3">Sign Up</a>
-            <a routerLink="/login" class="btn btn-outline-primary btn-lg">Log In</a>
-        </div>
+    <section id="start-learning" class="start-learning">
+        <p class="fs-3">Ready to begin your learning journey?</p>
+        <button class="btn btn-success" routerLink="/signup">Sign Up</button>
+        <button class="btn btn-outline" routerLink="/login">Login</button>
     </section>
 </div>
+<app-admin *ngIf="isAuthenticated && isAdmin"></app-admin>
+<app-learner *ngIf="isAuthenticated && !isAdmin"></app-learner>
 
-<!-- Admin Section -->
-
-<div class="admin-container" *ngIf="isAuthenticated && isAdmin">
-    <div class="card-grid">
-        <div class="card">
-            <div class="card-info">
-                <p class="card-label">Total Students</p>
-                <h2 class="card-value">1,250<mat-icon class="card-icon blue">people</mat-icon></h2>
-            </div>
-            <div class="card-buttons">
-                <button mat-raised-button color="primary" class="small-btn">View</button>
-            </div>
-        </div>
-
-        <div class="card">
-            <div class="card-info">
-                <p class="card-label">Total Courses</p>
-                <h2 class="card-value">3 <mat-icon class="card-icon green">menu_book</mat-icon></h2>
-            </div>
-            <div class="card-buttons">
-                <button mat-raised-button color="primary" class="small-btn">Add</button>
-                <button mat-stroked-button color="primary" class="small-btn">View</button>
-            </div>
-        </div>
-
-        <div class="card">
-            <div class="card-info">
-                <p class="card-label">Available Tests</p>
-                <h2 class="card-value">{{testsCount}}<mat-icon class="card-icon purple">menu_book</mat-icon></h2>
-                <div class="card-buttons">
-                    <button mat-raised-button color="primary" routerLink="create-test" class="small-btn">Add</button>
-                    <button mat-stroked-button color="primary" routerLink="manage-test" class="small-btn">View</button>
-                </div>
-            </div>
-        </div>
-
-        <div class="card">
-            <div class="card-info">
-                <p class="card-label">Certificates Issued</p>
-                <h2 class="card-value">2,340 <mat-icon class="card-icon yellow">workspace_premium</mat-icon></h2>
-            </div>
-            <div class="card-buttons">
-                <button mat-raised-button color="primary" class="small-btn">View</button>
-            </div>
-        </div>
-    </div>
-
-    <div class="chart-box">
-        Chart Area (e.g. User Growth or Course Statistics)
-    </div>
-</div>
-<!-- Learner Section -->
-<div class="learner-content p-1" *ngIf="isAuthenticated && !isAdmin">
-    <div class="card-grid">
-        <div class="card">
-            <div class="card-info">
-                <p class="card-label">Total Tests</p>
-                <h2 class="card-value">{{testsCount}}<mat-icon class="card-icon purple">menu_book</mat-icon></h2>
-                <div class="card-buttons">
-                    <button mat-stroked-button color="primary" routerLink="manage-test" class="small-btn">View</button>
-                </div>
-            </div>
-        </div>
-        <div class="card">
-            <div class="card-info">
-                <p class="card-label">Courses</p>
-                <h2 class="card-value">{{testsCount}}<mat-icon class="card-icon purple">menu_book</mat-icon></h2>
-                <div class="card-buttons">
-                    <button mat-stroked-button color="primary" routerLink="manage-test" class="small-btn">View</button>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
+<app-footer></app-footer>

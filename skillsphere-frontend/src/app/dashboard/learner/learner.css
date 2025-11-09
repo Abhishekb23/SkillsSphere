@@ -1,0 +1,336 @@
+.dashboard-wrapper {  
+  min-height: 100vh;
+  background: linear-gradient(180deg, #071024 0%, #061126 100%);
+  color: #e6eef6;
+  padding: 40px 20px 80px;
+  font-family: 'Inter', sans-serif;
+}
+
+.dashboard-container {
+  margin-top: 40px;
+  max-width: 1200px;
+  /* margin: 0 auto; */
+}
+
+/* Header */
+.dashboard-header {
+  text-align: center;
+  margin-bottom: 40px;
+}
+
+.dashboard-header h2 {
+  font-size: 1.8rem;
+  font-weight: 800;
+  color: #f8fbff;
+}
+
+.dashboard-header p {
+  color: #94a3b8;
+  font-size: 1rem;
+  margin-top: 8px;
+}
+
+/* Stats Grid */
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 20px;
+  margin-bottom: 50px;
+}
+
+.stat-card {
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  border-radius: 12px;
+  text-align: center;
+  padding: 30px 20px;
+  backdrop-filter: blur(8px);
+  transition: transform 0.2s ease;
+}
+
+.stat-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 10px 30px rgba(14, 165, 164, 0.2);
+}
+
+.stat-card h3 {
+  color: #0ea5a4;
+  font-size: 2rem;
+  margin: 0;
+}
+
+/* Section Titles */
+.section {
+  margin-top: 40px;
+}
+
+.section h3 {
+  font-size: 1.3rem;
+  margin-bottom: 20px;
+  font-weight: 700;
+  color: #f8fbff;
+}
+
+/* Daily Learning */
+
+.challenge-section {
+  position: relative;
+  background: linear-gradient(180deg, #071024 0%, #061126 100%);
+  color: #e6eef6;
+  text-align: center;
+  font-family: "Inter", sans-serif;
+  padding: 20px;
+  border-radius: 12px;
+  overflow: hidden;
+  z-index: 0;
+  box-shadow: 0 0 35px rgba(14, 165, 164, 0.3);
+}
+
+/* Snake-like animated border */
+.challenge-section::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  padding: 3px; /* border thickness */
+  border-radius: 12px;
+  background: linear-gradient(
+    90deg,
+    #06b6b4,
+    #0ea5a4,
+    #8b5cf6,
+    #06b6b4,
+    #0ea5a4
+  );
+  background-size: 400% 400%;
+  animation: snakeBorder 3s linear infinite;
+  -webkit-mask: 
+    linear-gradient(#000 0 0) content-box, 
+    linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  z-index: -1;
+}
+
+/* The animation loop */
+@keyframes snakeBorder {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+.challenge-container {
+  max-width: 1100px;
+  margin: 0 auto;
+}
+
+.challenge-title {
+  font-size: 2rem;
+  font-weight: 800;
+  color: #f8fbff;
+  margin-bottom: 10px;
+}
+
+.challenge-subtext {
+  color: #94a3b8;
+  font-size: 1rem;
+  margin-bottom: 40px;
+}
+
+/* Card Grid */
+.challenge-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 24px;
+  justify-items: center;
+}
+
+/* Cards */
+.challenge-card {
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 14px;
+  padding: 32px 20px;
+  width: 100%;
+  max-width: 280px;
+  backdrop-filter: blur(8px);
+  transition: all 0.3s ease;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+}
+
+.challenge-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 15px 35px rgba(14, 165, 164, 0.25);
+}
+
+.icon {
+  font-size: 2.5rem;
+  margin-bottom: 12px;
+}
+
+/* Bronze Card */
+.challenge-card.bronze {
+  border-top: 4px solid #cd7f32;
+}
+.challenge-card.bronze .icon {
+  color: #cd7f32;
+}
+
+/* Silver Card */
+.challenge-card.silver {
+  border-top: 4px solid #c0c0c0;
+}
+.challenge-card.silver .icon {
+  color: #c0c0c0;
+}
+
+/* Gold Card */
+.challenge-card.gold {
+  border-top: 4px solid #ffd700;
+}
+.challenge-card.gold .icon {
+  color: #ffd700;
+}
+
+.challenge-card h3 {
+  font-size: 1.2rem;
+  font-weight: 700;
+  margin-bottom: 8px;
+  color: #f8fbff;
+}
+
+.challenge-card p {
+  color: #b9c7d7;
+  font-size: 0.95rem;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .challenge-title {
+    font-size: 1.6rem;
+  }
+
+  .challenge-card {
+    max-width: 100%;
+  }
+}
+
+/* Course Grid */
+.course-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 20px;
+}
+
+.course-card {
+  background: rgba(255, 255, 255, 0.04);
+  padding: 20px;
+  border-radius: 10px;
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  backdrop-filter: blur(6px);
+}
+
+.course-card h4 {
+  margin: 0 0 12px;
+  font-size: 1.1rem;
+  color: #f3fbff;
+}
+
+/* Progress bar */
+.progress-bar {
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 6px;
+  height: 8px;
+  margin-bottom: 10px;
+  overflow: hidden;
+}
+
+.progress {
+  background: linear-gradient(90deg, #0ea5a4, #06b6b4);
+  height: 100%;
+}
+
+.status {
+  display: inline-block;
+  padding: 4px 10px;
+  border-radius: 6px;
+  font-size: 0.8rem;
+  margin-top: 6px;
+}
+
+.status.completed {
+  background: rgba(34, 197, 94, 0.15);
+  color: #22c55e;
+}
+
+.status.ongoing {
+  background: rgba(14, 165, 164, 0.15);
+  color: #0ea5a4;
+}
+
+/* Tests */
+.test-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 20px;
+}
+
+.test-card {
+  background: rgba(255, 255, 255, 0.04);
+  padding: 20px;
+  border-radius: 10px;
+  border: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.test-card h4 {
+  margin-bottom: 6px;
+}
+
+.status.scheduled {
+  background: rgba(245, 158, 11, 0.15);
+  color: #f59e0b;
+}
+
+/* Certificates */
+.certificate-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 20px;
+}
+
+.certificate-card {
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: 10px;
+  padding: 20px;
+  text-align: center;
+}
+
+.btn-view {
+  margin-top: 12px;
+  padding: 8px 16px;
+  background: linear-gradient(90deg, #0ea5a4, #06b6b4);
+  color: #031024;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: 600;
+  transition: all 0.2s ease;
+}
+
+.btn-view:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(14, 165, 164, 0.3);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .dashboard-header h2 {
+    font-size: 1.5rem;
+  }
+}

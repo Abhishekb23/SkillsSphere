@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import {jwtDecode} from 'jwt-decode';
+import { jwtDecode } from 'jwt-decode';
 import { Router } from '@angular/router';
 import environment from '../environment';
 
@@ -9,25 +9,26 @@ import environment from '../environment';
   providedIn: 'root',
 })
 export class AuthService {
-  private readonly BASE_URL =environment.BASE_URL+'/User';
+  private readonly BASE_URL = environment.BASE_URL + '/User';
   private readonly TOKEN_KEY = 'token';
 
-  constructor(private readonly http: HttpClient) {}
+  constructor(private readonly http: HttpClient) { }
 
   signup(data: any): Observable<any> {
-    return this.http.post(`${this.BASE_URL}`, data);
+    return this.http.post(`${this.BASE_URL}/Registration`, data);
   }
 
- verifyOtp(data: { email: string; otpCode: string }): Observable<any> {
+  verifyOtp(data: { email: string; otpCode: string }): Observable<any> {
     return this.http.post(`${this.BASE_URL}/verify-otp`, data);
   }
+  
   login(data: any): Observable<any> {
     return this.http.post(`${this.BASE_URL}/login`, data);
   }
 
   // Authentication helpers
   isAuthenticated(): boolean {
-    return !! this.getToken();
+    return !!this.getToken();
   }
 
   getToken(): string | null {

@@ -1,0 +1,89 @@
+<div class="admin-wrapper">
+  <!-- Sidebar -->
+  <aside class="sidebar">
+    <nav class="menu">
+      <a routerLink="/admin" class="active">Dashboard</a>
+      <a routerLink="/admin/users">Users</a>
+      <a routerLink="/admin/courses">Courses</a>
+      <a routerLink="/admin/tests">Tests</a>
+      <a routerLink="/admin/settings">Settings</a>
+    </nav>
+  </aside>
+
+  <!-- Main Content -->
+  <main class="content">
+    <h1>Dashboard Overview</h1>
+
+    <!-- Stats -->
+    <div class="stats-grid">
+      <div class="stat-card">
+        <h3>350</h3>
+        <p>Total Learners</p>
+      </div>
+      <div class="stat-card">
+        <h3>45</h3>
+        <p>Active Courses</p>
+      </div>
+      <div class="stat-card">
+        <h3>12</h3>
+        <p>Tests Scheduled</p>
+      </div>
+      <div class="stat-card">
+        <h3>5</h3>
+        <p>Instructors</p>
+      </div>
+    </div>
+
+    <!-- User Table -->
+    <section class="data-section">
+      <h2>Recent Users</h2>
+      <div class="table-container">
+        <table>
+          <thead>
+            <tr>
+              <th>Name</th>
+              <th>Email</th>
+              <th>Role</th>
+              <th>Status</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let u of users">
+              <td>{{ u.name }}</td>
+              <td>{{ u.email }}</td>
+              <td>{{ u.role }}</td>
+              <td>
+                <span class="status" [ngClass]="u.status.toLowerCase()">{{ u.status }}</span>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- Courses Section -->
+    <section class="data-section">
+      <h2>Courses Summary</h2>
+      <div class="table-container">
+        <table>
+          <thead>
+            <tr>
+              <th>Course</th>
+              <th>Learners</th>
+              <th>Status</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let c of courses">
+              <td>{{ c.title }}</td>
+              <td>{{ c.learners }}</td>
+              <td>
+                <span class="status" [ngClass]="c.status.toLowerCase()">{{ c.status }}</span>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+  </main>
+</div>
