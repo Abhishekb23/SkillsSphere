@@ -1,82 +1,116 @@
-<div class="container d-flex align-items-center justify-content-center min-vh-100">
-  <div class="card shadow-sm p-4" style="max-width: 400px; width: 100%;">
-    <h4 class="mb-4 text-center">Create Your Account</h4>
+<app-navbar></app-navbar>
 
-    <form *ngIf="!showOtpField" (ngSubmit)="onSignup()" #signupForm="ngForm">
+<div class="signup-wrapper">
+  <div class="signup-card">
+    <h2 *ngIf="!showOtpField">Create Your Account</h2>
+    <h2 *ngIf="showOtpField">Verify Your Account</h2>
+
+    <form (ngSubmit)="onSignup()" #signupForm="ngForm">
       <!-- Username -->
-      <div class="mb-3">
-        <label for="username" class="form-label">Username</label>
+      <div class="form-group" *ngIf="!showOtpField">
+        <label for="username">Username</label>
         <input
           type="text"
           id="username"
           name="username"
-          class="form-control"
           [(ngModel)]="user.username"
           required
+          placeholder="Enter your username"
         />
       </div>
 
       <!-- Email -->
-      <div class="mb-3">
-        <label for="email" class="form-label">Email</label>
+      <div class="form-group">
+        <label for="email">Email</label>
         <input
           type="email"
           id="email"
           name="email"
-          class="form-control"
           [(ngModel)]="user.email"
           required
+          placeholder="Enter your email"
+          [disabled]="showOtpField"
         />
       </div>
 
       <!-- Password -->
-      <div class="mb-3">
-        <label for="password" class="form-label">Password</label>
+      <div class="form-group" *ngIf="!showOtpField">
+        <label for="password">Password</label>
         <input
           type="password"
           id="password"
           name="password"
-          class="form-control"
           [(ngModel)]="user.password"
           required
+          placeholder="Create a password"
         />
       </div>
 
-      <button class="btn btn-dark w-100" type="submit" [disabled]="!signupForm.valid">
+      <!-- Confirm Password -->
+      <div class="form-group" *ngIf="!showOtpField">
+        <label for="confirmPassword">Confirm Password</label>
+        <input
+          type="password"
+          id="confirmPassword"
+          name="confirmPassword"
+          [(ngModel)]="user.confirmPassword"
+          required
+          placeholder="Re-enter your password"
+        />
+        <div class="text-danger" *ngIf="passwordMismatch">
+          Password and Confirm Password do not match.
+        </div>
+      </div>
+
+      <!-- OTP Field -->
+      <div class="form-group" *ngIf="showOtpField">
+        <label for="verifyOtp">Verify OTP</label>
+        <input
+          type="text"
+          id="verifyOtp"
+          name="verifyOtp"
+          [(ngModel)]="otp"
+          required
+          placeholder="Enter the OTP sent to your email"
+        />
+      </div>
+
+      <!-- Timer -->
+      <div class="otp-timer" *ngIf="showOtpField">
+        <span *ngIf="!disableVerifyButton" class="timer-text">
+          ⏳ OTP expires in <strong>{{ formattedTime }}</strong>
+        </span>
+        <span *ngIf="disableVerifyButton" class="expired-text">
+          ⚠️ OTP expired. Please sign up again.
+        </span>
+      </div>
+
+      <!-- Buttons -->
+      <button
+        *ngIf="!showOtpField"
+        type="submit"
+        class="btn btn-signup"
+        [disabled]="!signupForm.valid"
+      >
         Sign Up
+      </button>
+
+      <button
+        *ngIf="showOtpField"
+        type="button"
+        (click)="onVerifyOtp()"
+        class="btn btn-signup"
+        [disabled]="disableVerifyButton || !otp"
+      >
+        Submit OTP
       </button>
     </form>
 
-    <!-- OTP Verification -->
-    <div *ngIf="showOtpField">
-      <div class="mb-3 mt-3">
-        <label for="otp" class="form-label">Enter OTP</label>
-        <input
-          type="text"
-          id="otp"
-          name="otp"
-          class="form-control"
-          [(ngModel)]="otp"
-          placeholder="Enter 6-digit code"
-          maxlength="6"
-          required
-        />
-        <small class="text-muted d-block mt-1">Expires in: {{ formattedTime }}</small>
-      </div>
-
-      <button
-        class="btn btn-primary w-100"
-        (click)="onVerifyOtp()"
-        [disabled]="disableVerifyButton || !otp"
-      >
-        Verify OTP
-      </button>
-    </div>
-
-    <div class="mt-3 text-center">
-      <small>Already have an account?
-        <a routerLink="/login" class="text-decoration-none">Login</a>
-      </small>
-    </div>
+    <p class="login-link">
+      Already have an account?
+      <a routerLink="/login">Log In</a>
+    </p>
   </div>
 </div>
+
+<app-footer></app-footer>

@@ -1,0 +1,143 @@
+.signup-wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  background: linear-gradient(180deg, #071024 0%, #061126 100%);
+  padding: 20px;
+}
+
+.signup-card {
+  margin-top: 70px;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow: 0 8px 40px rgba(0, 0, 0, 0.4);
+  border-radius: 12px;
+  max-width: 420px;
+  width: 100%;
+  padding: 40px 32px;
+  color: #e6eef6;
+  text-align: left;
+  backdrop-filter: blur(10px);
+}
+
+.signup-card h2 {
+  text-align: center;
+  font-size: 1.7rem;
+  font-weight: 800;
+  color: #f8fbff;
+  margin-bottom: 28px;
+}
+
+/* Input fields */
+.form-group {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 18px;
+}
+
+.form-group label {
+  font-size: 0.95rem;
+  margin-bottom: 6px;
+  color: #cbd5e1;
+}
+
+.form-group input {
+  padding: 12px 14px;
+  border-radius: 8px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: rgba(255, 255, 255, 0.04);
+  color: #e2e8f0;
+  font-size: 0.95rem;
+  outline: none;
+  transition: all 0.3s ease;
+}
+
+.form-group input:focus {
+  border-color: #0ea5a4;
+  background: rgba(255, 255, 255, 0.08);
+  box-shadow: 0 0 0 3px rgba(14, 165, 164, 0.2);
+}
+
+/* Signup / OTP Button */
+.btn-signup {
+  width: 100%;
+  padding: 12px;
+  border: none;
+  border-radius: 8px;
+  font-weight: 700;
+  font-size: 1rem;
+  background: linear-gradient(90deg, #06b6b4, #0ea5a4);
+  color: #031024;
+  cursor: pointer;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.btn-signup:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 20px rgba(14, 165, 164, 0.25);
+}
+
+.btn-signup:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+/* OTP Timer */
+.otp-timer {
+  text-align: center;
+  margin-bottom: 16px;
+  font-size: 0.95rem;
+  font-weight: 500;
+  color: #a5b4fc;
+  letter-spacing: 0.3px;
+}
+
+.otp-timer .timer-text {
+  color: #0ea5a4;
+}
+
+.otp-timer .expired-text {
+  color: #f87171;
+  font-weight: 600;
+}
+
+/* Error text */
+.text-danger {
+  font-size: 0.85rem;
+  color: #f87171;
+  margin-top: 4px;
+}
+
+/* Footer link */
+.login-link {
+  text-align: center;
+  margin-top: 20px;
+  color: #94a3b8;
+  font-size: 0.9rem;
+}
+
+.login-link a {
+  color: #0ea5a4;
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.login-link a:hover {
+  text-decoration: underline;
+}
+
+/* Mobile adjustments */
+@media (max-width: 480px) {
+  .signup-card {
+    padding: 30px 20px;
+  }
+
+  .signup-card h2 {
+    font-size: 1.4rem;
+  }
+
+  .form-group input {
+    font-size: 0.9rem;
+  }
+}

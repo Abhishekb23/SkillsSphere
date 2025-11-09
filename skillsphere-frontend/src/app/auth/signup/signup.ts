@@ -3,37 +3,55 @@ import { FormsModule } from '@angular/forms';
 import { Router, RouterModule } from '@angular/router';
 import { AuthService } from '../../services/auth-service';
 import { ToasterService } from '../../services/toaster-service';
+import { Footer } from "../../common/footer/footer";
+import { Navbar } from "../../common/navbar/navbar";
 import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-signup',
   standalone: true,
-  imports: [FormsModule, RouterModule, CommonModule],
+  imports: [FormsModule, RouterModule, CommonModule, Footer, Navbar],
   templateUrl: './signup.html',
   styleUrls: ['./signup.css']
 })
 export class Signup {
+
   user = {
     username: '',
     email: '',
     password: '',
-    role: 1
+    confirmPassword: '',
   };
 
   otp: string = '';
-  showOtpField = false;
-  countdown = 300; // 5 minutes = 300 seconds
+  showOtpField: boolean = false;
+  countdown = 300;
   timerInterval: any;
-  disableVerifyButton = false;
+  disableVerifyButton: boolean = false;
+  passwordMismatch: boolean = false;
 
   constructor(
     private readonly authService: AuthService,
     private readonly toasterService: ToasterService,
     private readonly router: Router
-  ) {}
+  ) { 
+    if (this.authService.isAuthenticated()) {
+      this.router.navigate(['/']);
+    }
+  }
 
   onSignup() {
-    this.authService.signup(this.user).subscribe({
+    if(this.user.password !== this.user.confirmPassword){
+      this.passwordMismatch = true;
+      return;
+    }
+    var userData = {
+      username: this.user.username,
+      email: this.user.email,
+      password: this.user.password,
+      role: 1
+    };
+    this.authService.signup(userData).subscribe({
       next: (res) => {
         this.toasterService.success('OTP sent to your email');
         this.showOtpField = true;
@@ -47,7 +65,7 @@ export class Signup {
   }
 
   startCountdown() {
-    this.countdown = 300; // reset timer
+    this.countdown = 10; // reset timer
     clearInterval(this.timerInterval);
     this.timerInterval = setInterval(() => {
       if (this.countdown > 0) {

@@ -3,10 +3,12 @@ import { FormsModule } from '@angular/forms';
 import { AuthService } from '../../services/auth-service';
 import { Router, RouterModule } from '@angular/router';
 import { ToasterService } from '../../services/toaster-service';
+import { Navbar } from "../../common/navbar/navbar";
+import { Footer } from "../../common/footer/footer";
 
 @Component({
   selector: 'app-login',
-  imports: [FormsModule,RouterModule],
+  imports: [FormsModule, RouterModule, Navbar, Footer],
   templateUrl: './login.html',
   styleUrl: './login.css'
 })
@@ -18,7 +20,14 @@ export class Login {
 
   private token: string = '';
 
-  constructor(private readonly authService: AuthService,private router:Router, private toasterService: ToasterService){}
+  constructor(
+    private readonly authService: AuthService,
+    private router: Router,
+    private toasterService: ToasterService) {
+    if (this.authService.isAuthenticated()) {
+      this.router.navigate(['/']);
+    }
+  }
 
   onLogin() {
     this.authService.login(this.user).subscribe({
