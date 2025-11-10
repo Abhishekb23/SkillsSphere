@@ -1,51 +1,55 @@
 <div class="container py-4">
   <h2 class="mb-4">
-    {{ isAdmin ? 'Manage Tests (Admin)' : 'Available Tests (Learner)' }}
+    {{ isAdmin ? 'Manage Tests' : 'Available Tests' }}
   </h2>
 
-  <!-- Loader -->
+  <!-- ✅ Loader -->
   <div *ngIf="isLoading" class="text-center my-5">
     <div class="spinner-border text-primary" role="status"></div>
     <p class="text-muted mt-2">Loading tests...</p>
   </div>
 
-  <!-- No data -->
+  <!-- ✅ No data -->
   <div *ngIf="!isLoading && tests.length === 0" class="text-center text-muted">
     No tests available.
   </div>
 
-  <!-- Test list -->
+  <!-- ✅ Test list -->
   <div class="row g-4" *ngIf="!isLoading && tests.length > 0">
     <div class="col-md-6" *ngFor="let test of tests">
       <div class="card shadow-sm h-100">
         <div class="card-body">
-          <h5 class="card-title">
-            {{ test.title }}
-            <!-- Only show active/inactive for Admin -->
-            <span
-              class="badge bg-success float-end"
-              *ngIf="isAdmin && test.isActive"
-              >Active</span
-            >
-            <span
-              class="badge bg-secondary float-end"
-              *ngIf="isAdmin && !test.isActive"
-              >Inactive</span
-            >
-          </h5>
 
-          <p class="card-text text-muted">{{ test.description }}</p>
+          <!-- ✅ Title with Icon -->
+          <div class="d-flex align-items-center justify-content-between mb-2">
+            <div class="d-flex align-items-center gap-2">
+              <img *ngIf="test.thumbnailUrl" [src]="test.thumbnailUrl" alt="Test Icon" class="test-icon"
+                loading="lazy" />
+              <h5 class="card-title mb-0">{{ test.title }}</h5>
+            </div>
 
-          <!-- Only Admin tests have createdAt -->
-          <small class="text-secondary" *ngIf="isAdmin && test.createdAt">
+            <!-- ✅ Active/Inactive Badge -->
+            <div *ngIf="isAdmin">
+              <span class="badge bg-success" *ngIf="test.isActive">Active</span>
+              <span class="badge bg-secondary" *ngIf="!test.isActive">Inactive</span>
+            </div>
+          </div>
+
+          <!-- ✅ Description -->
+          <p class="card-text text-muted mb-1">
+            {{ test.description }}
+          </p>
+
+          <!-- ✅ Created info (for Admin only) -->
+          <small class="text-secondary d-block" *ngIf="isAdmin && test.createdAt">
+            Created By: {{ test.createdByName || 'Unknown' }} <br />
             Created At: {{ test.createdAt | date: 'medium' }}
           </small>
         </div>
+
+        <!-- ✅ Footer -->
         <div class="card-footer text-end">
-          <button
-            class="btn btn-outline-primary btn-sm"
-            (click)="attendTest(test.testId)"
-          >
+          <button class="btn btn-outline-primary btn-sm" (click)="attendTest(test.testId)">
             Attend Test
           </button>
         </div>

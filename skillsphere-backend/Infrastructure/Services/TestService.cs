@@ -1,4 +1,6 @@
-﻿using skillsphere.core.Dtos;
+﻿using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
+using skillsphere.core.Dtos;
 using skillsphere.core.Entities;
 using skillsphere.core.Interfaces.Repositories;
 using skillsphere.core.Interfaces.Services;
@@ -8,10 +10,13 @@ namespace skillsphere.infrastructure.Services
     public class TestService : ITestService
     {
         private readonly ITestRepository _testRepository;
+        private readonly IUserService _userService;
 
-        public TestService(ITestRepository testRepository)
+        public TestService(ITestRepository testRepository, IUserService userService)
         {
             _testRepository = testRepository;
+            _userService = userService;
+
         }
 
         public async Task<int> CreateTestAsync(CreateTestRequest request)
@@ -28,8 +33,24 @@ namespace skillsphere.infrastructure.Services
 
         public async Task<Test?> GetTestByIdAsync(int testId)
         {
-            return await _testRepository.GetTestByIdAsync(testId);
+            // Step 1️⃣: Get test details from DB
+            var test = await _testRepository.GetTestByIdAsync(testId);
+            if (test == null) return null;
+
+            // Step 2️⃣: Get user info from UserService
+            var user = await _userService.GetUserByIdAsync(test.CreatedBy);
+
+            // Step 3️⃣: Replace CreatedBy with name (or fallback)
+            if (user != null)
+            {
+                // Replace the int with a readable name — safer to add a new property
+                // Instead of overwriting the int, add a new field CreatedByName
+                test.CreatedByName = user.Username ?? "Unknown User";
+            }
+
+            return test;
         }
+
 
         public async Task<LearnerTestDto?> GetTestForLearnerAsync(int testId)
         {
@@ -79,6 +100,18 @@ namespace skillsphere.infrastructure.Services
 
             return activeTests;
         }
+
+        public async Task<bool> UpdateTestAsync(UpdateTestRequest request)
+        {
+            if (string.IsNullOrWhiteSpace(request.Title))
+                throw new ArgumentException("Test title is required");
+
+            if (request.Questions == null || !request.Questions.Any())
+                throw new ArgumentException("At least one question is required");
+
+            return await _testRepository.UpdateTestAsync(request);
+        }
+
 
 
         public async Task SubmitTestAsync(SubmitTestRequest request)
@@ -161,6 +194,27 @@ namespace skillsphere.infrastructure.Services
 
 
         public Task DeleteTestAsync(int courseId) => _testRepository.DeleteTestAsync(courseId);
+
+
+        public async Task AddThumbnailAsync(int testId, IFormFile file)
+        {
+            if (file == null || file.Length == 0)
+                throw new ArgumentException("File is required.");
+
+            using var ms = new MemoryStream();
+            await file.CopyToAsync(ms);
+            await _testRepository.AddThumbnailAsync(testId, ms.ToArray());
+        }
+
+        public async Task<FileContentResult?> GetThumbnailAsync(int testId)
+        {
+            var data = await _testRepository.GetThumbnailAsync(testId);
+            if (data == null) return null;
+
+            return new FileContentResult(data, "image/png");
+        }
     }
+
+
 
 }

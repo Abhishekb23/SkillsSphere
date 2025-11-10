@@ -1,4 +1,6 @@
-﻿using skillsphere.core.Dtos;
+﻿using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
+using skillsphere.core.Dtos;
 using skillsphere.core.Entities;
 using System;
 using System.Collections.Generic;
@@ -19,6 +21,11 @@ namespace skillsphere.core.Interfaces.Services
         Task<LearnerTestDto?> GetTestForLearnerAsync(int testId);
         Task<IEnumerable<LearnerTestListDto>> GetAllActiveTestsAsync();
         Task DeleteTestAsync(int courseId);
+
+        Task AddThumbnailAsync(int testId, IFormFile file);
+        Task<FileContentResult?> GetThumbnailAsync(int testId);
+
+        Task<bool> UpdateTestAsync(UpdateTestRequest request);
     }
 
 }

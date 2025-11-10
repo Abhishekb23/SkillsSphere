@@ -1,0 +1,33 @@
+h2 {
+  font-weight: 600;
+  color: #1976d2;
+}
+
+.result-card {
+  border-radius: 12px;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  background: #ffffff;
+}
+
+.result-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.1);
+}
+
+.badge {
+  font-size: 0.9rem;
+  padding: 6px 12px;
+  color: #fff;
+}
+
+.bg-success {
+  background-color: #4caf50 !important;
+}
+
+.bg-warning {
+  background-color: #ff9800 !important;
+}
+
+.bg-danger {
+  background-color: #f44336 !important;
+}

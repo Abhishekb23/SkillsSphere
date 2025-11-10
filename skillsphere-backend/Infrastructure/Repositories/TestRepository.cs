@@ -164,6 +164,42 @@ namespace skillsphere.infrastructure.Repositories
         }
 
 
+        public async Task<bool> UpdateTestAsync(UpdateTestRequest request)
+        {
+            using var conn = GetConnection();
+            conn.Open();
+
+            // Convert DTO to JSON
+            var json = System.Text.Json.JsonSerializer.Serialize(new
+            {
+                testId = request.TestId,
+                title = request.Title,
+                description = request.Description,
+                isActive = request.IsActive,
+                questions = request.Questions.Select(q => new
+                {
+                    questionId = q.QuestionId,
+                    questionText = q.QuestionText,
+                    questionType = q.QuestionType,
+                    options = q.Options.Select(o => new
+                    {
+                        optionId = o.OptionId,
+                        optionText = o.OptionText,
+                        isCorrect = o.IsCorrect
+                    })
+                })
+            });
+
+            // Call PostgreSQL function
+            var result = await conn.ExecuteScalarAsync<int>(
+                "SELECT update_test(@JsonData::json);",
+                new { JsonData = json }
+            );
+
+            return result == 1;
+        }
+
+
 
         public async Task DeleteTestAsync(int testId)
         {
@@ -171,6 +207,30 @@ namespace skillsphere.infrastructure.Repositories
             conn.Open();
             await conn.ExecuteAsync(@"DELETE FROM ""test"" WHERE ""testid"" = @Id;", new { Id = testId });
         }
-    }
 
+
+
+        public async Task AddThumbnailAsync(int testId, byte[] imageData)
+        {
+            using var conn = GetConnection();
+            conn.Open();
+
+            await conn.ExecuteAsync(
+                @"INSERT INTO ""TestThumbnail"" (""TestId"", ""ImageData"") VALUES (@TestId, @ImageData);",
+                new { TestId = testId, ImageData = imageData }
+            );
+        }
+
+        public async Task<byte[]?> GetThumbnailAsync(int testId)
+        {
+            using var conn = GetConnection();
+            conn.Open();
+
+            return await conn.ExecuteScalarAsync<byte[]?>(
+                @"SELECT ""ImageData"" FROM ""TestThumbnail"" WHERE ""TestId"" = @TestId LIMIT 1;",
+                new { TestId = testId }
+            );
+        }
+
+    }
 }
