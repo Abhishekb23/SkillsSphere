@@ -7,6 +7,7 @@ import { FormsModule } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { TestService } from '../../services/test-service';
 import { AuthService } from '../../services/auth-service';
+
 @Component({
   selector: 'app-get-test',
   standalone: true,
@@ -17,10 +18,11 @@ import { AuthService } from '../../services/auth-service';
 export class GetTest implements OnInit {
   testId!: number;
   testData: any;
-  isAdmin: boolean = false;
-  isLearner: boolean = false;
-  userId: number = 1; // ✅ Replace later with decoded userId from JWT
-  isLoading: boolean = false;
+  isAdmin = false;
+  isLearner = false;
+  userId = 1; // ✅ Replace with decoded userId later
+  isLoading = false;
+  thumbnailUrl: string | null = null; // ✅ new property
 
   selectedAnswers: Record<number, number[]> = {}; // tracks all answers
 
@@ -36,13 +38,12 @@ export class GetTest implements OnInit {
     this.getTestById(this.testId);
   }
 
-  /** ✅ Determine user role */
   private setUserRole(): void {
     this.isAdmin = this.authService.isAdmin();
     this.isLearner = this.authService.isLearner();
   }
 
-  /** ✅ Load test data (different API for Admin & Learner) */
+  /** ✅ Load test and thumbnail */
   private getTestById(id: number): void {
     this.isLoading = true;
 
@@ -54,7 +55,12 @@ export class GetTest implements OnInit {
       next: (res) => {
         this.testData = res;
         this.isLoading = false;
-        console.log('Loaded test:', res);
+
+        // ✅ Fetch thumbnail once test data is loaded
+        this.testService.getThumbnail(this.testData.testId).subscribe({
+          next: (base64) => (this.thumbnailUrl = base64),
+          error: () => (this.thumbnailUrl = null)
+        });
       },
       error: (error) => {
         this.isLoading = false;
@@ -64,12 +70,10 @@ export class GetTest implements OnInit {
     });
   }
 
-  // ✅ For Single Choice (Radio)
   onSingleChoiceSelect(questionId: number, optionId: number): void {
     this.selectedAnswers[questionId] = [optionId];
   }
 
-  // ✅ For Multiple Choice (Checkbox)
   onMultipleChoiceChange(questionId: number, optionId: number, event: any): void {
     if (!this.selectedAnswers[questionId]) {
       this.selectedAnswers[questionId] = [];
@@ -82,7 +86,6 @@ export class GetTest implements OnInit {
     }
   }
 
-  // ✅ Submit Test
   submitTest(): void {
     if (!this.testData) return;
 
@@ -95,17 +98,9 @@ export class GetTest implements OnInit {
       }))
     };
 
-    console.log('Submitting payload:', payload);
-
     this.testService.submitTest(payload).subscribe({
-      next: (res) => {
-        alert('✅ Test submitted successfully!');
-        console.log('Response:', res);
-      },
-      error: (err) => {
-        console.error('Submission failed:', err);
-        alert('❌ Failed to submit test.');
-      }
+      next: () => alert('✅ Test submitted successfully!'),
+      error: () => alert('❌ Failed to submit test.')
     });
   }
 }

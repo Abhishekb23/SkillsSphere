@@ -52,22 +52,30 @@ export class TestService {
   }
 
   // ✅ Get thumbnail (convert blob → base64 string)
-  getThumbnail(testId: number): Observable<string> {
-    return this.http
+  getThumbnail(testId: number): Observable<string | null> {
+  return new Observable((observer) => {
+    this.http
       .get(`${this.ADMIN_BASE_URL}/${testId}/thumbnail`, { responseType: 'blob' })
-      .pipe(
-        map(blob => {
+      .subscribe({
+        next: (blob) => {
           const reader = new FileReader();
-          return new Promise<string>((resolve) => {
-            reader.onloadend = () => resolve(reader.result as string);
-            reader.readAsDataURL(blob);
-          });
-        }),
-        map(promise => {
-          let result = '';
-          promise.then(res => result = res);
-          return result;
-        })
-      );
-  }
+          reader.onloadend = () => {
+            const base64data = reader.result as string;
+            observer.next(base64data);
+            observer.complete();
+          };
+          reader.onerror = () => {
+            observer.next(null);
+            observer.complete();
+          };
+          reader.readAsDataURL(blob);
+        },
+        error: () => {
+          observer.next(null);
+          observer.complete();
+        }
+      });
+  });
+}
+
 }

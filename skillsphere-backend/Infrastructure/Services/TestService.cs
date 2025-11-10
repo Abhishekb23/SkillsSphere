@@ -10,10 +10,13 @@ namespace skillsphere.infrastructure.Services
     public class TestService : ITestService
     {
         private readonly ITestRepository _testRepository;
+        private readonly IUserService _userService;
 
-        public TestService(ITestRepository testRepository)
+        public TestService(ITestRepository testRepository, IUserService userService)
         {
             _testRepository = testRepository;
+            _userService = userService;
+
         }
 
         public async Task<int> CreateTestAsync(CreateTestRequest request)
@@ -30,8 +33,24 @@ namespace skillsphere.infrastructure.Services
 
         public async Task<Test?> GetTestByIdAsync(int testId)
         {
-            return await _testRepository.GetTestByIdAsync(testId);
+            // Step 1️⃣: Get test details from DB
+            var test = await _testRepository.GetTestByIdAsync(testId);
+            if (test == null) return null;
+
+            // Step 2️⃣: Get user info from UserService
+            var user = await _userService.GetUserByIdAsync(test.CreatedBy);
+
+            // Step 3️⃣: Replace CreatedBy with name (or fallback)
+            if (user != null)
+            {
+                // Replace the int with a readable name — safer to add a new property
+                // Instead of overwriting the int, add a new field CreatedByName
+                test.CreatedByName = user.Username ?? "Unknown User";
+            }
+
+            return test;
         }
+
 
         public async Task<LearnerTestDto?> GetTestForLearnerAsync(int testId)
         {

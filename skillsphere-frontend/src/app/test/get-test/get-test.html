@@ -8,22 +8,33 @@
 <section class="container mt-4" *ngIf="!isLoading && testData">
 
   <!-- ✅ Test Header -->
-  <mat-card class="test-header mat-elevation-z2 mb-3">
-    <h2>{{ testData.title }}</h2>
-    <p>{{ testData.description }}</p>
-
-    <!-- Show extra info only for admin -->
-    <div *ngIf="isAdmin" class="mt-3">
-      <p><strong>Created By:</strong> {{ testData.createdBy }}</p>
-      <p><strong>Created At:</strong> {{ testData.createdAt | date:'medium' }}</p>
-      <p>
-        <strong>Status:</strong>
-        <span class="badge" [ngClass]="testData.isActive ? 'bg-success' : 'bg-secondary'">
-          {{ testData.isActive ? 'Active' : 'Inactive' }}
-        </span>
-      </p>
+  <!-- ✅ Test Header -->
+<mat-card class="test-header mat-elevation-z2 mb-3">
+  <div class="header-content">
+    <!-- ✅ Thumbnail Icon -->
+    <div class="icon-container" *ngIf="thumbnailUrl">
+      <img [src]="thumbnailUrl" alt="Test Icon" class="test-icon" />
     </div>
-  </mat-card>
+
+    <!-- ✅ Title & Info -->
+    <div class="text-container">
+      <h2 class="test-title">{{ testData.title }}</h2>
+      <p class="test-description">{{ testData.description }}</p>
+
+      <!-- ✅ Admin-only meta info -->
+      <div *ngIf="isAdmin" class="test-meta mt-3">
+        <p><strong>Created By:</strong> {{ testData.createdByName }}</p>
+        <p><strong>Created At:</strong> {{ testData.createdAt | date:'medium' }}</p>
+        <p>
+          <strong>Status:</strong>
+          <span class="badge" [ngClass]="testData.isActive ? 'bg-success' : 'bg-secondary'">
+            {{ testData.isActive ? 'Active' : 'Inactive' }}
+          </span>
+        </p>
+      </div>
+    </div>
+  </div>
+</mat-card>
 
   <!-- ✅ Question List -->
   <div *ngFor="let question of testData.questions; let i = index" class="mt-4">
