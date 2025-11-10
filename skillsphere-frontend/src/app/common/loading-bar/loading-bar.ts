@@ -1,6 +1,6 @@
 import { Component, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { LoadingService } from '../../services/loading-bar-service';
+import { LoadingService } from '../../services/loading-bar.service';
 import { interval, Subscription } from 'rxjs';
 
 @Component({

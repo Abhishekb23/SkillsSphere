@@ -1,0 +1,158 @@
+.users-wrapper {
+    min-height: 100vh;
+    background: linear-gradient(180deg, #071024 0%, #061126 100%);
+    color: #e6eef6;
+    padding: 40px 20px;
+    font-family: 'Inter', sans-serif;
+}
+
+.users-container {
+    max-width: 1200px;
+    margin: 50px auto 0;
+}
+
+h2 {
+    font-size: 1.6rem;
+    font-weight: 800;
+    color: #f8fbff;
+    margin-bottom: 20px;
+}
+
+/* Search */
+.search-field {
+    width: 100%;
+    margin-bottom: 20px;
+    height: 60px;    
+}
+
+.mat-mdc-form-field {
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 8px;
+}
+
+/* Table */
+.table-container {
+    border-radius: 12px;
+    overflow-x: auto;
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    backdrop-filter: blur(8px);
+}
+
+/* Material table customization */
+.mat-table-custom {
+    width: 100%;
+    color: #e6eef6;
+}
+
+.mat-header-cell {
+    background: rgba(255, 255, 255, 0.04);
+    color: #0ea5a4;
+    font-weight: 700;
+}
+
+.mat-cell,
+.mat-header-cell {
+    padding: 14px 16px;
+}
+
+::ng-deep .mat-mdc-table tbody{
+    background-color: lightblue !important;
+}
+
+.avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    object-fit: cover;
+    box-shadow: 0 0 10px rgba(14, 165, 164, 0.3);
+}
+
+/* Role styles */
+.role {
+    padding: 4px 10px;
+    border-radius: 6px;
+    font-size: 0.85rem;
+    font-weight: 600;
+}
+
+.role.learner {
+    background: rgba(14, 165, 164, 0.15);
+    color: #0ea5a4;
+}
+
+.role.instructor {
+    background: rgba(147, 197, 253, 0.15);
+    color: #60a5fa;
+}
+
+.role.admin {
+    background: rgba(234, 179, 8, 0.15);
+    color: #eab308;
+}
+
+/* Status styles */
+.status {
+    padding: 4px 10px;
+    border-radius: 6px;
+    font-size: 0.85rem;
+    font-weight: 600;
+}
+
+.status.active {
+    background: rgba(34, 197, 94, 0.15);
+    color: #22c55e;
+}
+
+.status.inactive {
+    background: rgba(239, 68, 68, 0.15);
+    color: #ef4444;
+}
+
+.no-data {
+    text-align: center;
+    padding: 20px;
+    color: #94a3b8;
+}
+
+/* Pagination */
+.mat-mdc-paginator {
+    background: transparent;
+    color: #e6eef6;
+}
+
+button[mat-icon-button] mat-icon {
+  color: #555;
+  font-size: 24px;
+}
+
+::ng-deep .mat-mdc-menu-panel{
+    background-color: rgb(26, 27, 31) !important;
+}
+
+.custom-btn .mat-icon{
+    color: white;
+}
+
+.custom-btn{
+    color: white;
+}
+
+/* Responsive */
+@media (max-width: 800px) {
+
+    .mat-header-cell,
+    .mat-cell {
+        padding: 10px 12px;
+        font-size: 0.85rem;
+    }
+
+    .avatar {
+        width: 35px;
+        height: 35px;
+    }
+
+    .search-field {
+        max-width: 100%;
+    }
+}

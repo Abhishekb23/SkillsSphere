@@ -31,7 +31,7 @@ export class AuthService {
     return !!this.getToken();
   }
 
-  getToken(): string | null {
+  private getToken(): string | null {
     return localStorage.getItem(this.TOKEN_KEY);
   }
 
@@ -72,6 +72,18 @@ export class AuthService {
     try {
       const decoded: any = jwtDecode(token);
       return decoded.unique_name || null;
+    } catch (error) {
+      console.error('Invalid token', error);
+      return null;
+    }
+  }
+
+  getUserEmail(): string | null {
+    const token = this.getToken();
+    if (!token) return null;
+    try {
+      const decoded: any = jwtDecode(token);
+      return decoded.email || null;
     } catch (error) {
       console.error('Invalid token', error);
       return null;

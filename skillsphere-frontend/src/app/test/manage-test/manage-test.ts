@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
-import { TestService } from '../../services/test-service';
-import { AuthService } from '../../services/auth-service';
+import { TestService } from '../../services/test.service';
+import { AuthService } from '../../services/auth.service';
 
 @Component({
   selector: 'app-manage-test',

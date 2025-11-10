@@ -1,0 +1,69 @@
+<app-navbar></app-navbar>
+
+<div class="profile-wrapper">
+    <div class="profile-card">
+        <div class="profile-header">
+            <div class="avatar">
+                <img [src]="user.profile_url" alt="User Avatar" />
+            </div>
+            <div class="user-info">
+                <h2>{{ user.name }}</h2>
+                <p>{{ user.email }}</p>
+            </div>
+            <button class="btn-edit" (click)="toggleEdit()">
+                {{ isEditing ? 'Cancel' : 'Edit Profile' }}
+            </button>
+            <button class="btn-edit margin-one" routerLink="/">
+                <i class="bi bi-house-fill fs-6"></i>Home
+            </button>
+        </div>
+
+        <form *ngIf="isEditing; else viewMode" class="profile-form" (ngSubmit)="saveProfile()">
+            <div class="form-group">
+                <label>Full Name</label>
+                <input type="text" [(ngModel)]="user.name" name="name" required />
+            </div>
+
+            <div class="form-group">
+                <label>Email</label>
+                <input type="email" [(ngModel)]="user.email" name="email" required />
+            </div>
+
+            <div class="form-group">
+                <label>Phone</label>
+                <input type="tel" [(ngModel)]="user.phone" name="phone" placeholder="Enter your phone number" />
+            </div>
+
+            <div class="form-group">
+                <label>Date of Birth</label>
+                <input type="date" [(ngModel)]="user.dob" name="dob" />
+            </div>
+
+            <div class="form-group">
+                <label>About</label>
+                <textarea [(ngModel)]="user.about" name="about" rows="3"
+                    placeholder="Write something about yourself"></textarea>
+            </div>
+
+            <div class="form-group">
+                <label>Skills</label>
+                <input type="text" [(ngModel)]="user.skills" name="skills" placeholder="e.g., Angular, C#, SQL" />
+            </div>
+
+            <div class="button-group">
+                <button type="submit" class="btn-save">Save Changes</button>
+            </div>
+        </form>
+
+        <ng-template #viewMode>
+            <div class="profile-details">
+                <p><strong>Phone:</strong> {{ user.phone || 'Not added' }}</p>
+                <p><strong>Date of Birth:</strong> {{ user.dob || 'Not added' }}</p>
+                <p><strong>About:</strong> {{ user.about || 'No information yet' }}</p>
+                <p><strong>Skills:</strong> {{ user.skills || 'No skills listed' }}</p>
+            </div>
+        </ng-template>
+    </div>
+</div>
+
+<app-footer></app-footer>

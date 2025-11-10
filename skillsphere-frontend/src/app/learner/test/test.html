@@ -1,0 +1,37 @@
+<app-navbar></app-navbar>
+
+<div class="tests-wrapper">
+    <div class="tests-container">
+        <div class="row text-center mb-4">
+            <div class="col-12">
+                <h2 class="fw-bold text-primary mb-2">Show Your Skills</h2>
+                <p class="fs-5 text-secondary mb-0">
+                    Take the test and <span class="fw-semibold text-success">get certified!</span>
+                </p>
+            </div>
+        </div>
+
+        <div *ngIf="tests.length === 0" class="no-tests">
+            <p>No tests are currently available.</p>
+        </div>
+
+        <div class="tests-grid" *ngIf="tests.length > 0">
+            <div class="test-card" *ngFor="let test of tests">
+                <div class="test-thumb">
+                    <img [src]="'/assets/java.png'" alt="{{ test.title }}" />
+                </div>
+
+                <div class="test-info">
+                    <h3>{{ test.title }}</h3>
+                    <p>{{ test.description }}</p>
+
+                    <button class="btn-participate" (click)="onParticipate(test.testId)">
+                        Participate & Earn Certificate
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<app-footer></app-footer>

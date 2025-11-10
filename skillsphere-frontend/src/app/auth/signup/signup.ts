@@ -1,8 +1,8 @@
 import { Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Router, RouterModule } from '@angular/router';
-import { AuthService } from '../../services/auth-service';
-import { ToasterService } from '../../services/toaster-service';
+import { AuthService } from '../../services/auth.service';
+import { ToasterService } from '../../services/toaster.service';
 import { Footer } from "../../common/footer/footer";
 import { Navbar } from "../../common/navbar/navbar";
 import { CommonModule } from '@angular/common';

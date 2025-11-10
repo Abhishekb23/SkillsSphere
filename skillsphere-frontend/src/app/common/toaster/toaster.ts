@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { ToasterService, ToastMessage } from '../../services/toaster-service';
+import { ToasterService, ToastMessage } from '../../services/toaster.service';
 import { CommonModule } from '@angular/common';
 
 import { NgZone } from '@angular/core';

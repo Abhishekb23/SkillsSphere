@@ -5,8 +5,8 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatRadioModule } from '@angular/material/radio';
 import { FormsModule } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
-import { TestService } from '../../services/test-service';
-import { AuthService } from '../../services/auth-service';
+import { TestService } from '../../services/test.service';
+import { AuthService } from '../../services/auth.service';
 @Component({
   selector: 'app-get-test',
   standalone: true,

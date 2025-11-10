@@ -1,7 +1,7 @@
 <nav class="navbar">
   <div class="nav-container">
     <!-- Logo -->
-    <div class="nav-logo">
+    <div class="nav-logo" routerLink="/">
       <span class="brand">Skill<span class="highlight">Sphere</span></span>
     </div>
 
@@ -17,17 +17,36 @@
       </li>
 
       <li *ngIf="isAuthenticated" class="user-section">
-        <div class="user-avatar" (click)="toggleMenu()">
+        <div class="user-avatar" [matMenuTriggerFor]="menu">
           {{ userInitials }}
         </div>
 
-        <div class="user-menu" *ngIf="menuOpen">
-          <a routerLink="/profile" (click)="menuOpen = false">Profile</a>
-          <a routerLink="/certificates" (click)="menuOpen = false">Certificates</a>
-          <a routerLink="/courses" (click)="menuOpen = false">My Courses</a>
-          <a routerLink="/tests" (click)="menuOpen = false">My Tests</a>
-          <a (click)="logout()">Logout</a>
-        </div>
+        <mat-menu #menu="matMenu">
+          <button mat-menu-item class="custom-btn" [routerLink]="'/profile'">
+            <mat-icon>person</mat-icon>
+            <span>Profile</span>
+          </button>
+
+          <button mat-menu-item class="custom-btn" [routerLink]="'/certificates'">
+            <mat-icon>school</mat-icon>
+            <span>Certificates</span>
+          </button>
+
+          <button mat-menu-item class="custom-btn" [routerLink]="'/courses'">
+            <mat-icon>menu_book</mat-icon>
+            <span>My Courses</span>
+          </button>
+
+          <button mat-menu-item class="custom-btn" [routerLink]="'/tests'">
+            <mat-icon>assignment</mat-icon>
+            <span>My Tests</span>
+          </button>
+
+          <button mat-menu-item class="custom-btn" (click)="logout()">
+            <mat-icon>logout</mat-icon>
+            <span>Logout</span>
+          </button>
+        </mat-menu>
       </li>
     </ul>
 
