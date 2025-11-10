@@ -1,4 +1,6 @@
-﻿using skillsphere.core.Dtos;
+﻿using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
+using skillsphere.core.Dtos;
 using skillsphere.core.Entities;
 using skillsphere.core.Interfaces.Repositories;
 using skillsphere.core.Interfaces.Services;
@@ -161,6 +163,27 @@ namespace skillsphere.infrastructure.Services
 
 
         public Task DeleteTestAsync(int courseId) => _testRepository.DeleteTestAsync(courseId);
+
+
+        public async Task AddThumbnailAsync(int testId, IFormFile file)
+        {
+            if (file == null || file.Length == 0)
+                throw new ArgumentException("File is required.");
+
+            using var ms = new MemoryStream();
+            await file.CopyToAsync(ms);
+            await _testRepository.AddThumbnailAsync(testId, ms.ToArray());
+        }
+
+        public async Task<FileContentResult?> GetThumbnailAsync(int testId)
+        {
+            var data = await _testRepository.GetThumbnailAsync(testId);
+            if (data == null) return null;
+
+            return new FileContentResult(data, "image/png");
+        }
     }
+
+
 
 }

@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { map, Observable } from 'rxjs';
 import environment from '../environment';
 
 @Injectable({
@@ -42,5 +42,32 @@ export class TestService {
 
   getTestsCount(): Observable<any>{
     return this.http.get(`${this.ADMIN_BASE_URL}/count`);
+  }
+
+
+    uploadThumbnail(testId: number, file: File): Observable<any> {
+    const formData = new FormData();
+    formData.append('file', file);
+    return this.http.post(`${this.ADMIN_BASE_URL}/${testId}/thumbnail`, formData);
+  }
+
+  // ✅ Get thumbnail (convert blob → base64 string)
+  getThumbnail(testId: number): Observable<string> {
+    return this.http
+      .get(`${this.ADMIN_BASE_URL}/${testId}/thumbnail`, { responseType: 'blob' })
+      .pipe(
+        map(blob => {
+          const reader = new FileReader();
+          return new Promise<string>((resolve) => {
+            reader.onloadend = () => resolve(reader.result as string);
+            reader.readAsDataURL(blob);
+          });
+        }),
+        map(promise => {
+          let result = '';
+          promise.then(res => result = res);
+          return result;
+        })
+      );
   }
 }

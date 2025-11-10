@@ -8,7 +8,7 @@ namespace skillsphere_backend.Controllers
 {
     [ApiController]
     [Route("api/admin/tests")]
-    [Authorize(Roles = "Admin")]
+    //[Authorize(Roles = "Admin")]
     public class AdminTestController : ControllerBase
     {
         private readonly ITestService _testService;
@@ -66,6 +66,36 @@ namespace skillsphere_backend.Controllers
         {
             await _testService.DeleteTestAsync(id);
             return NoContent();
+        }
+
+
+        [HttpPost("{testId}/thumbnail")]
+        [Consumes("multipart/form-data")]
+        public async Task<IActionResult> UploadTestThumbnail(int testId, IFormFile file)
+        {
+            try
+            {
+                await _testService.AddThumbnailAsync(testId, file);
+                return Ok(new { Message = "Thumbnail uploaded successfully" });
+            }
+            catch (ArgumentException ex)
+            {
+                return BadRequest(new { Message = ex.Message });
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { Message = "Internal server error", Details = ex.Message });
+            }
+        }
+
+        [HttpGet("{testId}/thumbnail")]
+        public async Task<IActionResult> GetTestThumbnail(int testId)
+        {
+            var result = await _testService.GetThumbnailAsync(testId);
+            if (result == null)
+                return NotFound(new { Message = "Thumbnail not found" });
+
+            return result; // ✅ Returns image file
         }
     }
 

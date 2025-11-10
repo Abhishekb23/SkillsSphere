@@ -171,6 +171,30 @@ namespace skillsphere.infrastructure.Repositories
             conn.Open();
             await conn.ExecuteAsync(@"DELETE FROM ""test"" WHERE ""testid"" = @Id;", new { Id = testId });
         }
-    }
 
+
+
+        public async Task AddThumbnailAsync(int testId, byte[] imageData)
+        {
+            using var conn = GetConnection();
+            conn.Open();
+
+            await conn.ExecuteAsync(
+                @"INSERT INTO ""TestThumbnail"" (""TestId"", ""ImageData"") VALUES (@TestId, @ImageData);",
+                new { TestId = testId, ImageData = imageData }
+            );
+        }
+
+        public async Task<byte[]?> GetThumbnailAsync(int testId)
+        {
+            using var conn = GetConnection();
+            conn.Open();
+
+            return await conn.ExecuteScalarAsync<byte[]?>(
+                @"SELECT ""ImageData"" FROM ""TestThumbnail"" WHERE ""TestId"" = @TestId LIMIT 1;",
+                new { TestId = testId }
+            );
+        }
+
+    }
 }
