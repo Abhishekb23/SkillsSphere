@@ -27,7 +27,7 @@ export class GetTest implements OnInit {
   selectedAnswers: Record<number, number[]> = {}; // tracks all answers
 
   constructor(
-    private readonly testService: TestService,
+    public readonly testService: TestService,
     private readonly authService: AuthService,
     private readonly route: ActivatedRoute
   ) {}

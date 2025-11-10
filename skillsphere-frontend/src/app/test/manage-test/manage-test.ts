@@ -3,13 +3,14 @@ import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
 import { TestService } from '../../services/test-service';
 import { AuthService } from '../../services/auth-service';
+import { forkJoin } from 'rxjs';
 
 @Component({
   selector: 'app-manage-test',
   standalone: true,
   imports: [CommonModule],
   templateUrl: './manage-test.html',
-  styleUrls: ['./manage-test.css']
+  styleUrls: ['./manage-test.css'],
 })
 export class ManageTest implements OnInit {
   tests: any[] = [];
@@ -18,7 +19,7 @@ export class ManageTest implements OnInit {
   isLoading: boolean = false;
 
   constructor(
-    private readonly testService: TestService,
+    public readonly testService: TestService,
     private readonly authService: AuthService,
     private readonly router: Router
   ) {}
@@ -35,6 +36,7 @@ export class ManageTest implements OnInit {
   }
 
   /** ✅ Load data dynamically based on role */
+
   private loadTests(): void {
     this.isLoading = true;
 
@@ -45,7 +47,25 @@ export class ManageTest implements OnInit {
     apiCall.subscribe({
       next: (res) => {
         this.tests = res;
-        this.isLoading = false;
+
+        // ✅ Prepare all thumbnail requests in parallel
+        const thumbnailRequests = this.tests.map((test) =>
+          this.testService.getThumbnail(test.testId)
+        );
+
+        // ✅ Run all thumbnail requests together
+        forkJoin(thumbnailRequests).subscribe({
+          next: (thumbnails) => {
+            thumbnails.forEach((thumb, i) => {
+              this.tests[i].thumbnailUrl = thumb || null;
+            });
+            this.isLoading = false;
+          },
+          error: (err) => {
+            console.error('Thumbnail load failed:', err);
+            this.isLoading = false;
+          },
+        });
       },
       error: (error) => {
         console.error('Error loading tests:', error);
@@ -59,4 +79,6 @@ export class ManageTest implements OnInit {
   attendTest(testId: number): void {
     this.router.navigate(['get-test', testId]);
   }
+
+
 }

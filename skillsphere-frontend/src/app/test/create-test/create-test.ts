@@ -2,6 +2,7 @@ import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { TestService } from '../../services/test-service';
+import { ToasterService } from '../../services/toaster-service';
 
 @Component({
   selector: 'app-create-test',
@@ -16,7 +17,7 @@ export class CreateTest {
   thumbnailPreview: string | null = null;
   isSubmitting = false;
 
-  constructor(private fb: FormBuilder, private readonly testService: TestService) {
+  constructor(private fb: FormBuilder, private readonly testService: TestService,private readonly toasterService: ToasterService) {
     this.quizForm = this.fb.group({
       title: ['', Validators.required],
       description: ['', Validators.required],
@@ -81,7 +82,7 @@ export class CreateTest {
   // ✅ Submit quiz (create test + upload thumbnail)
   submitQuiz() {
     if (this.quizForm.invalid) {
-      alert('Please fill all required fields.');
+      this.toasterService.error('Please fill all required fields.');
       return;
     }
 
@@ -91,7 +92,7 @@ export class CreateTest {
     this.testService.create(this.quizForm.value).subscribe({
       next: (res) => {
         const testId = res.testId || res.TestId;
-        alert('Test created successfully!');
+        this.toasterService.success('Test created successfully!');
 
         // Step 2️⃣ — upload thumbnail if selected
         if (this.selectedThumbnail && testId) {

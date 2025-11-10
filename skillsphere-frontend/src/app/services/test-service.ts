@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { map, Observable } from 'rxjs';
+import { map, Observable, of } from 'rxjs';
 import environment from '../environment';
 
 @Injectable({
@@ -52,7 +52,13 @@ export class TestService {
   }
 
   // ✅ Get thumbnail (convert blob → base64 string)
-  getThumbnail(testId: number): Observable<string | null> {
+  private thumbnailCache = new Map<number, string>();
+
+getThumbnail(testId: number): Observable<string | null> {
+  if (this.thumbnailCache.has(testId)) {
+    return of(this.thumbnailCache.get(testId)!);
+  }
+
   return new Observable((observer) => {
     this.http
       .get(`${this.ADMIN_BASE_URL}/${testId}/thumbnail`, { responseType: 'blob' })
@@ -60,12 +66,9 @@ export class TestService {
         next: (blob) => {
           const reader = new FileReader();
           reader.onloadend = () => {
-            const base64data = reader.result as string;
-            observer.next(base64data);
-            observer.complete();
-          };
-          reader.onerror = () => {
-            observer.next(null);
+            const base64 = reader.result as string;
+            this.thumbnailCache.set(testId, base64);
+            observer.next(base64);
             observer.complete();
           };
           reader.readAsDataURL(blob);
@@ -73,9 +76,8 @@ export class TestService {
         error: () => {
           observer.next(null);
           observer.complete();
-        }
+        },
       });
   });
 }
-
 }

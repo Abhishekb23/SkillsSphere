@@ -101,6 +101,18 @@ namespace skillsphere.infrastructure.Services
             return activeTests;
         }
 
+        public async Task<bool> UpdateTestAsync(UpdateTestRequest request)
+        {
+            if (string.IsNullOrWhiteSpace(request.Title))
+                throw new ArgumentException("Test title is required");
+
+            if (request.Questions == null || !request.Questions.Any())
+                throw new ArgumentException("At least one question is required");
+
+            return await _testRepository.UpdateTestAsync(request);
+        }
+
+
 
         public async Task SubmitTestAsync(SubmitTestRequest request)
         {

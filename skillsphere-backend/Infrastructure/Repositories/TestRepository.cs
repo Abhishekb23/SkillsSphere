@@ -164,6 +164,42 @@ namespace skillsphere.infrastructure.Repositories
         }
 
 
+        public async Task<bool> UpdateTestAsync(UpdateTestRequest request)
+        {
+            using var conn = GetConnection();
+            conn.Open();
+
+            // Convert DTO to JSON
+            var json = System.Text.Json.JsonSerializer.Serialize(new
+            {
+                testId = request.TestId,
+                title = request.Title,
+                description = request.Description,
+                isActive = request.IsActive,
+                questions = request.Questions.Select(q => new
+                {
+                    questionId = q.QuestionId,
+                    questionText = q.QuestionText,
+                    questionType = q.QuestionType,
+                    options = q.Options.Select(o => new
+                    {
+                        optionId = o.OptionId,
+                        optionText = o.OptionText,
+                        isCorrect = o.IsCorrect
+                    })
+                })
+            });
+
+            // Call PostgreSQL function
+            var result = await conn.ExecuteScalarAsync<int>(
+                "SELECT update_test(@JsonData::json);",
+                new { JsonData = json }
+            );
+
+            return result == 1;
+        }
+
+
 
         public async Task DeleteTestAsync(int testId)
         {

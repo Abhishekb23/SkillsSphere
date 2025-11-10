@@ -24,6 +24,8 @@ namespace skillsphere.core.Interfaces.Services
 
         Task AddThumbnailAsync(int testId, IFormFile file);
         Task<FileContentResult?> GetThumbnailAsync(int testId);
+
+        Task<bool> UpdateTestAsync(UpdateTestRequest request);
     }
 
 }

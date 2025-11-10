@@ -13,7 +13,6 @@ namespace skillsphere.core.Entities
         public string? Description { get; set; }
         public int CreatedBy { get; set; }
         public string? CreatedByName { get; set; } // ✅ Added
-
         public DateTime CreatedAt { get; set; }
         public bool IsActive { get; set; } = true;
         public List<Question>? Questions { get; set; }

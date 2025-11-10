@@ -78,4 +78,28 @@ namespace skillsphere.core.Dtos
         public string OptionText { get; set; } = null!;
     }
 
+    public class UpdateTestRequest
+    {
+        public int TestId { get; set; }
+        public string Title { get; set; } = null!;
+        public string? Description { get; set; }
+        public bool IsActive { get; set; } = true;
+        public List<UpdateQuestionRequest> Questions { get; set; } = new();
+    }
+
+    public class UpdateQuestionRequest
+    {
+        public int? QuestionId { get; set; } // null = new question
+        public string QuestionText { get; set; } = null!;
+        public string QuestionType { get; set; } = "SingleChoice";
+        public List<UpdateOptionRequest> Options { get; set; } = new();
+    }
+
+    public class UpdateOptionRequest
+    {
+        public int? OptionId { get; set; } // null = new option
+        public string OptionText { get; set; } = null!;
+        public bool IsCorrect { get; set; }
+    }
+
 }

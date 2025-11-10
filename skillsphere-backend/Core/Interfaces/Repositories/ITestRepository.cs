@@ -20,6 +20,7 @@ namespace skillsphere.core.Interfaces.Repositories
         Task DeleteTestAsync(int testId);
         Task AddThumbnailAsync(int testId, byte[] imageData);
         Task<byte[]?> GetThumbnailAsync(int testId);
+        Task<bool> UpdateTestAsync(UpdateTestRequest request);
     }
 
 }

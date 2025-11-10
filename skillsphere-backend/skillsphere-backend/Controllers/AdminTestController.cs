@@ -61,6 +61,33 @@ namespace skillsphere_backend.Controllers
         }
 
 
+        [HttpPut("{id}")]
+        public async Task<IActionResult> UpdateTest(int id, [FromBody] UpdateTestRequest request)
+        {
+            try
+            {
+                if (id != request.TestId)
+                    return BadRequest(new { Message = "Test ID mismatch" });
+
+                var updated = await _testService.UpdateTestAsync(request);
+
+                if (!updated)
+                    return NotFound(new { Message = "Test not found" });
+
+                return Ok(new { Message = "Test updated successfully" });
+            }
+            catch (ArgumentException ex)
+            {
+                return BadRequest(new { Message = ex.Message });
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { Message = "Internal server error", Details = ex.Message });
+            }
+        }
+
+
+
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteTest(int id)
         {
