@@ -5,6 +5,7 @@
   min-height: 100vh;
   background: linear-gradient(180deg, #071024 0%, #061126 100%);
   padding: 20px;
+  margin-top: -20px;
 }
 
 .signup-card {

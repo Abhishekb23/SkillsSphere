@@ -3,7 +3,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { TestService } from '../../services/test.service';
 import { ActivatedRoute, Router } from '@angular/router';
-import { ToasterService } from '../../services/toaster-service';
+import { ToasterService } from '../../services/toaster.service';
 
 @Component({
   selector: 'app-create-test',
@@ -46,7 +46,6 @@ export class CreateTest implements OnInit {
     });
   }
 
-  // ✅ Load existing test for editing
   private loadTestData(testId: number) {
     this.testService.getTestById(testId).subscribe({
       next: (test) => {
@@ -79,7 +78,7 @@ export class CreateTest implements OnInit {
           questionsArray.push(questionGroup);
         });
 
-        // ✅ Load existing thumbnail
+        // Load existing thumbnail
         this.testService.getThumbnail(testId).subscribe({
           next: (thumb) => (this.thumbnailPreview = thumb),
           error: () => (this.thumbnailPreview = null)
@@ -91,7 +90,7 @@ export class CreateTest implements OnInit {
     });
   }
 
-  // ✅ Form helpers
+  // Form helpers
   get questions(): FormArray {
     return this.quizForm.get('questions') as FormArray;
   }
@@ -128,7 +127,7 @@ export class CreateTest implements OnInit {
     this.getOptions(qIndex).removeAt(oIndex);
   }
 
-  // ✅ Thumbnail selection
+  // Thumbnail selection
   onThumbnailSelected(event: any) {
     const file = event.target.files[0];
     if (file) {
@@ -139,7 +138,7 @@ export class CreateTest implements OnInit {
     }
   }
 
-  // ✅ Submit (Create or Update)
+  // Submit (Create or Update)
   submitQuiz() {
     if (this.quizForm.invalid) {
       this.toasterService.error('Please fill all required fields.');
@@ -155,7 +154,7 @@ export class CreateTest implements OnInit {
     }
   }
 
-  // 🟩 Create new test
+  // Create new test
   private createTest() {
     this.testService.create(this.quizForm.value).subscribe({
       next: (res) => {
@@ -175,7 +174,7 @@ export class CreateTest implements OnInit {
     });
   }
 
-  // 🟨 Update existing test
+  // Update existing test
   private updateTest(testId: number) {
     const payload = { ...this.quizForm.value, testId };
 
@@ -196,7 +195,7 @@ export class CreateTest implements OnInit {
     });
   }
 
-  // ✅ Upload thumbnail after create/update
+  // Upload thumbnail after create/update
   private uploadThumbnail(testId: number) {
     this.testService.uploadThumbnail(testId, this.selectedThumbnail!).subscribe({
       next: () => {

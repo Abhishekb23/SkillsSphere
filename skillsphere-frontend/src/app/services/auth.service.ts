@@ -11,7 +11,7 @@ export class AuthService {
   private readonly BASE_URL = environment.BASE_URL + '/User';
   private readonly TOKEN_KEY = 'token';
 
-  constructor(private readonly http: HttpClient) {}
+  constructor(private readonly http: HttpClient) { }
 
   // 🔹 User registration and authentication
   signup(data: any): Observable<any> {
@@ -58,7 +58,6 @@ export class AuthService {
     }
   }
 
-  // 🔹 Get user info from token
   getUserId(): number | null {
     const decoded = this.decodeToken();
     if (!decoded || !decoded['nameid']) return null;
@@ -80,7 +79,6 @@ export class AuthService {
     return decoded?.role || null;
   }
 
-  // 🔹 Role helpers
   isAdmin(): boolean {
     return this.getUserRole() === 'Admin';
   }
@@ -88,16 +86,5 @@ export class AuthService {
   isLearner(): boolean {
     return this.getUserRole() === 'Learner';
   }
-    } catch (error) {
-      console.error('Invalid token', error);
-      return null;
-    }
-  }
 
-  getUserEmail(): string | null {
-    const token = this.getToken();
-    if (!token) return null;
-    try {
-      const decoded: any = jwtDecode(token);
-      return decoded.email || null;
 }

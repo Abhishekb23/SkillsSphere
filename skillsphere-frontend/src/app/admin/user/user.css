@@ -4,6 +4,7 @@
     color: #e6eef6;
     padding: 40px 20px;
     font-family: 'Inter', sans-serif;
+    margin-top: -20px;
 }
 
 .users-container {
@@ -57,7 +58,7 @@ h2 {
 }
 
 ::ng-deep .mat-mdc-table tbody{
-    background-color: lightblue !important;
+    background-color: lightsteelblue !important;
 }
 
 .avatar {
