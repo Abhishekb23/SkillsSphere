@@ -33,7 +33,7 @@ namespace skillsphere.infrastructure.Repositories
                 PasswordHash = passwordHash,
                 Role = role,
                 OtpCode = otp,
-                ExpiresAt = DateTime.UtcNow.AddMinutes(5)
+                ExpiresAt = DateTime.UtcNow.AddMinutes(2)
             });
         }
 

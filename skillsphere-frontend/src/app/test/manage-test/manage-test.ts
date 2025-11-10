@@ -22,27 +22,27 @@ export class ManageTest implements OnInit {
     public readonly testService: TestService,
     private readonly authService: AuthService,
     private readonly router: Router
-  ) {}
+  ) { }
 
   ngOnInit(): void {
     this.setUserRole();
     this.loadTests();
   }
 
-  /** ✅ Determine the user's role using AuthService */
+  /* Determine the user's role using AuthService */
   private setUserRole(): void {
     this.isAdmin = this.authService.isAdmin();
     this.isLearner = this.authService.isLearner();
   }
 
-  /** ✅ Load data dynamically based on role */
+  /* Load data dynamically based on role */
 
   private loadTests(): void {
     this.isLoading = true;
 
     const apiCall = this.isAdmin
-      ? this.testService.getAdminList()
-      : this.testService.getAvailableTests();
+      ? this.testService.getTestsForAdmin()
+      : this.testService.getTestsForLearner();
 
     apiCall.subscribe({
       next: (res) => {
@@ -75,10 +75,8 @@ export class ManageTest implements OnInit {
     });
   }
 
-  /** ✅ Handle test attendance */
+  /* Handle test attendance */
   attendTest(testId: number): void {
     this.router.navigate(['get-test', testId]);
   }
-
-
 }

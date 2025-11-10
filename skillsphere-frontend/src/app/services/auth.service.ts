@@ -40,12 +40,10 @@ export class AuthService {
     window.location.href = '/';
   }
 
-  // 🔹 Authentication Checks
   isAuthenticated(): boolean {
     return !!this.getToken();
   }
 
-  // 🔹 Decode JWT safely
   private decodeToken(): any | null {
     const token = this.getToken();
     if (!token) return null;

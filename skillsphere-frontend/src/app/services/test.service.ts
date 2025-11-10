@@ -20,11 +20,11 @@ export class TestService {
     return this.http.post(`${this.LEARNER_BASE_URL}/submit-test`, payload);
   }
 
-  getAdminList(): Observable<any> {
+  getTestsForAdmin(): Observable<any> {
     return this.http.get(this.ADMIN_BASE_URL);
   }
 
-  getAvailableTests(): Observable<any> {
+  getTestsForLearner(): Observable<any> {
     return this.http.get(this.LEARNER_BASE_URL);
   }
 

@@ -1,4 +1,3 @@
-<app-navbar [userName]="userName"></app-navbar>
 <!-- Fixed background image and overlay -->
 <div class="outer" *ngIf="!isAuthenticated">
     <div class="hero-visual" aria-hidden="true"></div>
@@ -96,5 +95,3 @@
 </div>
 <app-admin *ngIf="isAuthenticated && isAdmin"></app-admin>
 <app-learner *ngIf="isAuthenticated && !isAdmin"></app-learner>
-
-<app-footer></app-footer>

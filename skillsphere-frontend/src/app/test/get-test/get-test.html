@@ -1,96 +1,92 @@
-<!-- ✅ Loader -->
-<div *ngIf="isLoading" class="text-center my-5">
-  <div class="spinner-border text-primary" role="status"></div>
-  <p class="text-muted mt-2">Loading test...</p>
-</div>
-
-<!-- ✅ Test Section -->
-<section class="container mt-4" *ngIf="!isLoading && testData">
-
-  <!-- ✅ Test Header -->
-  <!-- ✅ Test Header -->
-<mat-card class="test-header mat-elevation-z2 mb-3">
-  <div class="header-content">
-    <!-- ✅ Thumbnail Icon -->
-    <div class="icon-container" *ngIf="thumbnailUrl">
-      <img [src]="thumbnailUrl" alt="Test Icon" class="test-icon" />
-    </div>
-
-    <!-- ✅ Title & Info -->
-    <div class="text-container">
-      <h2 class="test-title">{{ testData.title }}</h2>
-      <p class="test-description">{{ testData.description }}</p>
-
-      <!-- ✅ Admin-only meta info -->
-      <div *ngIf="isAdmin" class="test-meta mt-3">
-        <p><strong>Created By:</strong> {{ testData.createdByName }}</p>
-        <p><strong>Created At:</strong> {{ testData.createdAt | date:'medium' }}</p>
-        <p>
-          <strong>Status:</strong>
-          <span class="badge" [ngClass]="testData.isActive ? 'bg-success' : 'bg-secondary'">
-            {{ testData.isActive ? 'Active' : 'Inactive' }}
-          </span>
-        </p>
-          <button class="btn btn-warning" (click)="editTest()">✏️ Edit Test</button>
-      </div>
-    </div>
+<div class="test-wrapper">
+  <!-- Loader -->
+  <div *ngIf="isLoading" class="loader">
+    <div class="spinner-border text-teal" role="status"></div>
+    <p>Loading test...</p>
   </div>
-</mat-card>
 
-  <!-- ✅ Question List -->
-  <div *ngFor="let question of testData.questions; let i = index" class="mt-4">
-    <mat-card class="question-card mat-elevation-z1 p-3">
-      <h4>Q{{ i + 1 }}. {{ question.questionText }}</h4>
-
-      <!-- ✅ Learner view: choose options -->
-      <ng-container *ngIf="isLearner">
-        <!-- Single Choice -->
-        <mat-radio-group
-          *ngIf="question.questionType === 'SingleChoice'"
-          (change)="onSingleChoiceSelect(question.questionId, $event.value)"
-        >
-          <mat-radio-button
-            *ngFor="let option of question.options"
-            [value]="option.optionId"
-            class="d-block my-2"
-          >
-            {{ option.optionText }}
-          </mat-radio-button>
-        </mat-radio-group>
-
-        <!-- Multiple Choice -->
-        <div *ngIf="question.questionType === 'MultipleChoice'">
-          <mat-checkbox
-            *ngFor="let option of question.options"
-            class="d-block my-2"
-            (change)="onMultipleChoiceChange(question.questionId, option.optionId, $event)"
-          >
-            {{ option.optionText }}
-          </mat-checkbox>
+  <!-- Test Section -->
+  <section class="test-container" *ngIf="!isLoading && testData">
+    <!-- Header -->
+    <mat-card class="test-header mat-elevation-z2">
+      <div class="header-content">
+        <!-- Thumbnail -->
+        <div class="icon-container" *ngIf="thumbnailUrl">
+          <img [src]="thumbnailUrl" alt="Test Thumbnail" />
         </div>
-      </ng-container>
 
-      <!-- ✅ Admin view: show all options and mark correct ones -->
-      <ng-container *ngIf="isAdmin">
-        <ul class="list-unstyled mt-3">
-          <li
-            *ngFor="let option of question.options"
-            class="p-2 rounded"
-            [ngClass]="{
-              'bg-success text-white': option.isCorrect,
-              'bg-light': !option.isCorrect
-            }"
-          >
-            <strong>{{ option.optionText }}</strong>
-            <span *ngIf="option.isCorrect" class="ms-2 badge bg-success">Correct</span>
-          </li>
-        </ul>
-      </ng-container>
+        <!-- Text -->
+        <div class="text-content">
+          <h2>{{ testData.title }}</h2>
+          <p class="test-description">{{ testData.description }}</p>
+
+          <!-- Admin Info -->
+          <div *ngIf="isAdmin" class="test-meta">
+            <p><strong>Created By:</strong> {{ testData.createdByName }}</p>
+            <p><strong>Created At:</strong> {{ testData.createdAt | date:'medium' }}</p>
+            <p>
+              <strong>Status:</strong>
+              <span class="badge" [ngClass]="testData.isActive ? 'active' : 'inactive'">
+                {{ testData.isActive ? 'Active' : 'Inactive' }}
+              </span>
+            </p>
+            <button class="btn-edit" (click)="editTest()">✏️ Edit Test</button>
+          </div>
+        </div>
+      </div>
     </mat-card>
-  </div>
 
-  <!-- ✅ Submit button for learner only -->
-  <div class="text-end mt-4" *ngIf="isLearner">
-    <button class="btn btn-primary" (click)="submitTest()">Submit Test</button>
-  </div>
-</section>
+    <!-- Questions -->
+    <div *ngFor="let question of testData.questions; let i = index" class="question-wrapper">
+      <mat-card class="question-card mat-elevation-z1">
+        <h4>Q{{ i + 1 }}. {{ question.questionText }}</h4>
+
+        <!-- Learner View -->
+        <ng-container *ngIf="isLearner">
+          <!-- Single Choice -->
+          <mat-radio-group
+            *ngIf="question.questionType === 'SingleChoice'"
+            (change)="onSingleChoiceSelect(question.questionId, $event.value)"
+          >
+            <mat-radio-button
+              *ngFor="let option of question.options"
+              [value]="option.optionId"
+              class="option-item"
+            >
+              {{ option.optionText }}
+            </mat-radio-button>
+          </mat-radio-group>
+
+          <!-- Multiple Choice -->
+          <div *ngIf="question.questionType === 'MultipleChoice'">
+            <mat-checkbox
+              *ngFor="let option of question.options"
+              class="option-item"
+              (change)="onMultipleChoiceChange(question.questionId, option.optionId, $event)"
+            >
+              {{ option.optionText }}
+            </mat-checkbox>
+          </div>
+        </ng-container>
+
+        <!-- Admin View -->
+        <ng-container *ngIf="isAdmin">
+          <ul class="admin-options">
+            <li
+              *ngFor="let option of question.options"
+              [ngClass]="option.isCorrect ? 'correct' : 'neutral'"
+            >
+              {{ option.optionText }}
+              <span *ngIf="option.isCorrect" class="tag">✔ Correct</span>
+            </li>
+          </ul>
+        </ng-container>
+      </mat-card>
+    </div>
+
+    <!-- Submit -->
+    <div class="submit-container" *ngIf="isLearner">
+      <button class="btn-submit" (click)="submitTest()">Submit Test</button>
+    </div>
+  </section>
+</div>

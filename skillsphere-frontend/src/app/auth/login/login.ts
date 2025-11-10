@@ -3,12 +3,10 @@ import { FormsModule } from '@angular/forms';
 import { AuthService } from '../../services/auth.service';
 import { Router, RouterModule } from '@angular/router';
 import { ToasterService } from '../../services/toaster.service';
-import { Navbar } from "../../common/navbar/navbar";
-import { Footer } from "../../common/footer/footer";
 
 @Component({
   selector: 'app-login',
-  imports: [FormsModule, RouterModule, Navbar, Footer],
+  imports: [FormsModule, RouterModule],
   templateUrl: './login.html',
   styleUrl: './login.css'
 })
@@ -35,7 +33,7 @@ export class Login {
         this.token = res.token;
         this.authService.setToken(this.token);
         this.toasterService.success('Logged in successfully');
-        this.router.navigate(['/']);
+        window.location.href = '/';
       },
       error: (error) => {
         this.toasterService.error(error.error?.message);

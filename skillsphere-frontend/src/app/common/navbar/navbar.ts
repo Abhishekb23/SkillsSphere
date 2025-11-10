@@ -3,7 +3,6 @@ import { AuthService } from '../../services/auth.service';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Router, RouterModule } from '@angular/router';
-import { Toaster } from '../toaster/toaster';
 import { MatIconModule } from '@angular/material/icon';
 import { MatMenuModule } from '@angular/material/menu';
 
@@ -16,7 +15,7 @@ import { MatMenuModule } from '@angular/material/menu';
 export class Navbar implements AfterViewInit {
   isAdmin: boolean = false;
   isAuthenticated: boolean = false;
-  @Input() userName: string | null = '';
+  userName: string | null = '';
   userInitials: string = '';
   menuOpen = false;
   isMobileMenu = false;

@@ -9,8 +9,6 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { TestService } from '../services/test.service';
-import { Navbar } from "../common/navbar/navbar";
-import { Footer } from "../common/footer/footer";
 import { Admin } from "./admin/admin";
 import { Learner } from "./learner/learner";
 
@@ -32,7 +30,7 @@ interface CourseCard {
 @Component({
   selector: 'app-dashboard',
   imports: [CommonModule, RouterModule, MatIconModule, MatButtonModule,
-    MatMenuModule, MatDividerModule, MatCardModule, MatProgressBarModule, Navbar, Footer, Admin, Learner],
+    MatMenuModule, MatDividerModule, MatCardModule, MatProgressBarModule, Admin, Learner],
   templateUrl: './dashboard.html',
   styleUrl: './dashboard.css'
 })

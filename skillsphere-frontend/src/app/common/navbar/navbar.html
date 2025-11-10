@@ -7,7 +7,7 @@
 
     <!-- Navigation Links -->
     <ul class="nav-links">
-      <li><a routerLink="/featured">Courses</a></li>
+      <li><a routerLink="manage-courses">Courses</a></li>
 
       <li *ngIf="isAuthenticated && isAdmin"><a routerLink="/users">Users</a></li>
 
@@ -32,12 +32,12 @@
             <span>Certificates</span>
           </button>
 
-          <button mat-menu-item class="custom-btn" [routerLink]="'/courses'">
+          <button mat-menu-item class="custom-btn" [routerLink]="'/manage-courses'">
             <mat-icon>menu_book</mat-icon>
             <span>My Courses</span>
           </button>
 
-          <button mat-menu-item class="custom-btn" [routerLink]="'/tests'">
+          <button mat-menu-item class="custom-btn" [routerLink]="'/manage-tests'">
             <mat-icon>assignment</mat-icon>
             <span>My Tests</span>
           </button>

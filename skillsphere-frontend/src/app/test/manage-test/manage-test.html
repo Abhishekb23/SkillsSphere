@@ -1,56 +1,55 @@
-<div class="container py-4">
-  <h2 class="mb-4">
-    {{ isAdmin ? 'Manage Tests' : 'Available Tests' }}
-  </h2>
+<div class="tests-wrapper">
+  <div class="tests-container">
+    <!-- Title Section -->
+    <div class="title-section">
+      <h2>Show Your Skills</h2>
+      <p>Take the test and <span class="highlight">get certified!</span></p>
+    </div>
 
-  <!-- ✅ Loader -->
-  <div *ngIf="isLoading" class="text-center my-5">
-    <div class="spinner-border text-primary" role="status"></div>
-    <p class="text-muted mt-2">Loading tests...</p>
-  </div>
+    <!-- No Data Message -->
+    <div *ngIf="!isLoading && tests.length === 0" class="no-tests">
+      No tests available.
+    </div>
 
-  <!-- ✅ No data -->
-  <div *ngIf="!isLoading && tests.length === 0" class="text-center text-muted">
-    No tests available.
-  </div>
+    <!-- Tests Grid -->
+    <div class="tests-grid" *ngIf="!isLoading && tests.length > 0">
+      <div class="test-card" *ngFor="let test of tests">
+        <!-- Thumbnail -->
+        <div class="test-thumb">
+          <div class="thumb-image">
+            <img
+              [src]="test.thumbnailUrl || 'assets/certificate.png'"
+              alt="Test Thumbnail"
+              loading="lazy"
+            />
+          </div>
+        </div>
 
-  <!-- ✅ Test list -->
-  <div class="row g-4" *ngIf="!isLoading && tests.length > 0">
-    <div class="col-md-6" *ngFor="let test of tests">
-      <div class="card shadow-sm h-100">
-        <div class="card-body">
-
-          <!-- ✅ Title with Icon -->
-          <div class="d-flex align-items-center justify-content-between mb-2">
-            <div class="d-flex align-items-center gap-2">
-              <img *ngIf="test.thumbnailUrl" [src]="test.thumbnailUrl" alt="Test Icon" class="test-icon"
-                loading="lazy" />
-              <h5 class="card-title mb-0">{{ test.title }}</h5>
-            </div>
-
-            <!-- ✅ Active/Inactive Badge -->
-            <div *ngIf="isAdmin">
-              <span class="badge bg-success" *ngIf="test.isActive">Active</span>
-              <span class="badge bg-secondary" *ngIf="!test.isActive">Inactive</span>
-            </div>
+        <!-- Info -->
+        <div class="test-info">
+          <div class="test-header">
+            <h3>{{ test.title }}</h3>
+            <span
+              *ngIf="isAdmin"
+              class="status-badge"
+              [ngClass]="test.isActive ? 'active' : 'inactive'"
+            >
+              {{ test.isActive ? 'Active' : 'Inactive' }}
+            </span>
           </div>
 
-          <!-- ✅ Description -->
-          <p class="card-text text-muted mb-1">
-            {{ test.description }}
-          </p>
+          <p class="test-desc">{{ test.description }}</p>
 
-          <!-- ✅ Created info (for Admin only) -->
-          <small class="text-secondary d-block" *ngIf="isAdmin && test.createdAt">
-            Created By: {{ test.createdByName || 'Unknown' }} <br />
+          <small *ngIf="isAdmin && test.createdAt" class="created-info">
+            Created By: {{ test.createdByName || 'Unknown' }}<br />
             Created At: {{ test.createdAt | date: 'medium' }}
           </small>
         </div>
 
-        <!-- ✅ Footer -->
-        <div class="card-footer text-end">
-          <button class="btn btn-outline-primary btn-sm" (click)="attendTest(test.testId)">
-            Attend Test
+        <!-- Footer -->
+        <div class="card-footer">
+          <button class="btn-participate" (click)="attendTest(test.testId)">
+            {{ isAdmin ? 'Manage Test' : 'Participate & Earn Certificate' }}
           </button>
         </div>
       </div>

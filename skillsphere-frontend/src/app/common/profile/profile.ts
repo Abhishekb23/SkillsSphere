@@ -4,12 +4,10 @@ import { FormsModule } from '@angular/forms';
 import { RouterLink } from '@angular/router';
 import { AuthService } from '../../services/auth.service';
 import { ToasterService } from '../../services/toaster.service';
-import { Footer } from '../footer/footer';
-import { Navbar } from '../navbar/navbar';
 
 @Component({
   selector: 'app-profile',
-  imports: [Footer, Navbar, CommonModule, FormsModule, RouterLink],
+  imports: [CommonModule, FormsModule, RouterLink],
   templateUrl: './profile.html',
   styleUrl: './profile.css'
 })

@@ -1,5 +1,3 @@
-<app-navbar></app-navbar>
-
 <div class="signup-wrapper">
   <div class="signup-card">
     <h2 *ngIf="!showOtpField">Create Your Account</h2>
@@ -9,54 +7,29 @@
       <!-- Username -->
       <div class="form-group" *ngIf="!showOtpField">
         <label for="username">Username</label>
-        <input
-          type="text"
-          id="username"
-          name="username"
-          [(ngModel)]="user.username"
-          required
-          placeholder="Enter your username"
-        />
+        <input type="text" id="username" name="username" [(ngModel)]="user.username" required
+          placeholder="Enter your username" />
       </div>
 
       <!-- Email -->
       <div class="form-group">
         <label for="email">Email</label>
-        <input
-          type="email"
-          id="email"
-          name="email"
-          [(ngModel)]="user.email"
-          required
-          placeholder="Enter your email"
-          [disabled]="showOtpField"
-        />
+        <input type="email" id="email" name="email" [(ngModel)]="user.email" required placeholder="Enter your email"
+          [disabled]="showOtpField" />
       </div>
 
       <!-- Password -->
       <div class="form-group" *ngIf="!showOtpField">
         <label for="password">Password</label>
-        <input
-          type="password"
-          id="password"
-          name="password"
-          [(ngModel)]="user.password"
-          required
-          placeholder="Create a password"
-        />
+        <input type="password" id="password" name="password" [(ngModel)]="user.password" required
+          placeholder="Create a password" />
       </div>
 
       <!-- Confirm Password -->
       <div class="form-group" *ngIf="!showOtpField">
         <label for="confirmPassword">Confirm Password</label>
-        <input
-          type="password"
-          id="confirmPassword"
-          name="confirmPassword"
-          [(ngModel)]="user.confirmPassword"
-          required
-          placeholder="Re-enter your password"
-        />
+        <input type="password" id="confirmPassword" name="confirmPassword" [(ngModel)]="user.confirmPassword" required
+          placeholder="Re-enter your password" />
         <div class="text-danger" *ngIf="passwordMismatch">
           Password and Confirm Password do not match.
         </div>
@@ -65,14 +38,8 @@
       <!-- OTP Field -->
       <div class="form-group" *ngIf="showOtpField">
         <label for="verifyOtp">Verify OTP</label>
-        <input
-          type="text"
-          id="verifyOtp"
-          name="verifyOtp"
-          [(ngModel)]="otp"
-          required
-          placeholder="Enter the OTP sent to your email"
-        />
+        <input type="text" id="verifyOtp" name="verifyOtp" [(ngModel)]="otp" required
+          placeholder="Enter the OTP sent to your email" />
       </div>
 
       <!-- Timer -->
@@ -81,27 +48,20 @@
           ⏳ OTP expires in <strong>{{ formattedTime }}</strong>
         </span>
         <span *ngIf="disableVerifyButton" class="expired-text">
-          ⚠️ OTP expired. Please sign up again.
+          ⚠️ OTP expired or not received? Resend
+          <button matMiniFab class="ms-2" (click)="onSignup()">
+            <mat-icon class="me-1">refresh</mat-icon>
+          </button>
         </span>
       </div>
 
       <!-- Buttons -->
-      <button
-        *ngIf="!showOtpField"
-        type="submit"
-        class="btn btn-signup"
-        [disabled]="!signupForm.valid"
-      >
+      <button *ngIf="!showOtpField" type="submit" class="btn btn-signup" [disabled]="!signupForm.valid">
         Sign Up
       </button>
 
-      <button
-        *ngIf="showOtpField"
-        type="button"
-        (click)="onVerifyOtp()"
-        class="btn btn-signup"
-        [disabled]="disableVerifyButton || !otp"
-      >
+      <button *ngIf="showOtpField" type="button" (click)="onVerifyOtp()" class="btn btn-signup"
+        [disabled]="disableVerifyButton || !otp">
         Submit OTP
       </button>
     </form>
@@ -112,5 +72,3 @@
     </p>
   </div>
 </div>
-
-<app-footer></app-footer>

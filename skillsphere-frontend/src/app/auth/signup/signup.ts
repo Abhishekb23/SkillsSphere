@@ -3,14 +3,14 @@ import { FormsModule } from '@angular/forms';
 import { Router, RouterModule } from '@angular/router';
 import { AuthService } from '../../services/auth.service';
 import { ToasterService } from '../../services/toaster.service';
-import { Footer } from "../../common/footer/footer";
-import { Navbar } from "../../common/navbar/navbar";
 import { CommonModule } from '@angular/common';
+import { MatIconModule } from "@angular/material/icon";
+import { MatButtonModule } from '@angular/material/button';
 
 @Component({
   selector: 'app-signup',
   standalone: true,
-  imports: [FormsModule, RouterModule, CommonModule, Footer, Navbar],
+  imports: [FormsModule, RouterModule, CommonModule, MatIconModule, MatButtonModule],
   templateUrl: './signup.html',
   styleUrls: ['./signup.css']
 })
@@ -55,6 +55,7 @@ export class Signup {
       next: (res) => {
         this.toasterService.success('OTP sent to your email');
         this.showOtpField = true;
+        this.disableVerifyButton = false;
         this.startCountdown();
       },
       error: (error) => {
@@ -65,7 +66,7 @@ export class Signup {
   }
 
   startCountdown() {
-    this.countdown = 10; // reset timer
+    this.countdown = 20; // reset timer
     clearInterval(this.timerInterval);
     this.timerInterval = setInterval(() => {
       if (this.countdown > 0) {

@@ -1,6 +1,4 @@
 import { AfterViewInit, Component, ViewChild } from '@angular/core';
-import { Footer } from "../../common/footer/footer";
-import { Navbar } from "../../common/navbar/navbar";
 import { AuthService } from '../../services/auth.service';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
@@ -19,8 +17,6 @@ import { Router } from '@angular/router';
 @Component({
   selector: 'app-user',
   imports: [CommonModule,
-    Navbar,
-    Footer,
     MatTableModule,
     MatPaginatorModule,
     MatSortModule,

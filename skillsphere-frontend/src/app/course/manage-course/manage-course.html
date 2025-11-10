@@ -1,0 +1,57 @@
+<div class="courses-wrapper">
+  <div class="courses-container">
+    <!-- Header Section -->
+    <div class="title-section">
+      <h2>Explore Our Courses</h2>
+      <p>Choose a course and <span class="highlight">start learning today!</span></p>
+    </div>
+
+    <!-- No Data -->
+    <div *ngIf="!isLoading && courses.length === 0" class="no-courses">
+      No courses available.
+    </div>
+
+    <!-- Courses Grid -->
+    <div class="courses-grid" *ngIf="!isLoading && courses.length > 0">
+      <div class="course-card" *ngFor="let course of courses">
+        <!-- Thumbnail -->
+        <div class="course-thumb">
+          <div class="thumb-image">
+            <img
+              [src]="course.thumbnailUrl || 'assets/course-placeholder.jpg'"
+              alt="Course Thumbnail"
+              loading="lazy"
+            />
+          </div>
+        </div>
+
+        <!-- Info -->
+        <div class="course-info">
+          <div class="course-header">
+            <h3>{{ course.title }}</h3>
+
+            <span
+              class="status-badge"
+              [ngClass]="course.isActive ? 'active' : 'inactive'"
+            >
+              {{ course.isActive ? 'Active' : 'Inactive' }}
+            </span>
+          </div>
+
+          <p class="course-desc">{{ course.description }}</p>
+
+          <small class="created-info">
+            Created At: {{ course.createdAt | date: 'medium' }}
+          </small>
+        </div>
+
+        <!-- Footer -->
+        <div class="card-footer">
+          <button class="btn-enroll" (click)="viewCourse(course.courseId)">
+            {{ course.isActive ? 'View Modules' : 'Coming Soon' }}
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
