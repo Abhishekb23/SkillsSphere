@@ -4,7 +4,7 @@ import { MatCardModule } from '@angular/material/card';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatRadioModule } from '@angular/material/radio';
 import { FormsModule } from '@angular/forms';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { TestService } from '../../services/test-service';
 import { AuthService } from '../../services/auth-service';
 
@@ -29,7 +29,8 @@ export class GetTest implements OnInit {
   constructor(
     public readonly testService: TestService,
     private readonly authService: AuthService,
-    private readonly route: ActivatedRoute
+    private readonly route: ActivatedRoute,
+    private readonly router: Router
   ) {}
 
   ngOnInit(): void {
@@ -37,6 +38,12 @@ export class GetTest implements OnInit {
     this.setUserRole();
     this.getTestById(this.testId);
   }
+
+  editTest(): void {
+  this.router.navigate(['/create-test'], {
+    queryParams: { id: this.testData.testId }
+  });
+}
 
   private setUserRole(): void {
     this.isAdmin = this.authService.isAdmin();

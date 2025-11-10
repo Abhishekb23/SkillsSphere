@@ -1,0 +1,38 @@
+<div class="container py-4">
+  <h2 class="mb-4 text-center">📊 Your Test Results</h2>
+
+  <!-- Loader -->
+  <div *ngIf="isLoading" class="text-center my-5">
+    <div class="spinner-border text-primary" role="status"></div>
+    <p class="text-muted mt-2">Fetching your results...</p>
+  </div>
+
+  <!-- No Results -->
+  <div *ngIf="!isLoading && results.length === 0" class="text-center text-muted mt-5">
+    <p>No results found yet. Try attempting some tests!</p>
+  </div>
+
+  <!-- Results Grid -->
+  <div class="row g-4" *ngIf="!isLoading && results.length > 0">
+    <div class="col-md-6 col-lg-4" *ngFor="let result of results">
+      <div class="card result-card shadow-sm border-0 h-100">
+        <div class="card-body">
+          <div class="d-flex justify-content-between align-items-center mb-2">
+            <h5 class="card-title mb-0">Test #{{ result.testId }}</h5>
+            <span class="badge" [ngClass]="getScoreClass(result.score)">
+              {{ result.score }}%
+            </span>
+          </div>
+
+          <p class="mb-1 text-muted">
+            <strong>Correct:</strong> {{ result.correctAnswers }} / {{ result.totalQuestions }}
+          </p>
+
+          <p class="mb-1 text-muted">
+            <strong>Completed:</strong> {{ formatDate(result.completedAt) }}
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

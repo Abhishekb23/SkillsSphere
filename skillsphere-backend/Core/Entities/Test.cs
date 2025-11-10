@@ -52,6 +52,7 @@ namespace skillsphere.core.Entities
     {
         public int ResultId { get; set; }
         public int TestId { get; set; }
+        public string TestTitle { get; set; } = null!;
         public int UserId { get; set; }
         public int TotalQuestions { get; set; }
         public int CorrectAnswers { get; set; }
