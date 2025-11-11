@@ -25,7 +25,7 @@ export class Signup {
 
   otp: string = '';
   showOtpField: boolean = false;
-  countdown = 300;
+  countdown = 120;
   timerInterval: any;
   disableVerifyButton: boolean = false;
   passwordMismatch: boolean = false;
@@ -66,7 +66,7 @@ export class Signup {
   }
 
   startCountdown() {
-    this.countdown = 20; // reset timer
+    this.countdown = 120; // reset timer
     clearInterval(this.timerInterval);
     this.timerInterval = setInterval(() => {
       if (this.countdown > 0) {
