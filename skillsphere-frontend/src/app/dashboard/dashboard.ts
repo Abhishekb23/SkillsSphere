@@ -61,4 +61,8 @@ export class Dashboard {
       }
     });
   }
+
+  scroll(element: HTMLElement) {
+    element.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }
 }

@@ -14,8 +14,8 @@
                 </p>
 
                 <div class="cta-row">
-                    <button class="btn btn-info  " routerLink="/courses">Explore Featured Courses</button>
-                    <button class="btn btn-secondary" routerLink="/start-learning">Start Learning</button>
+                    <button class="btn btn-info" (click)="scroll(featured)">Explore Featured Courses</button>
+                    <button class="btn btn-secondary" routerLink="/login">Start Learning</button>
                 </div>
 
                 <div class="trust-row">
@@ -30,7 +30,7 @@
     </section>
 
     <!-- FEATURED COURSES -->
-    <section id="featured" class="featured">
+    <section id="featured" #featured class="featured">
         <div class="container">
             <div class="section-title">
                 <h2>Featured Courses</h2>
@@ -39,50 +39,56 @@
 
             <div class="courses-grid">
                 <article class="course-card">
-                    <div class="course-meta">Beginner • 8 weeks</div>
-                    <h3 class="course-title">Full Stack Web Development</h3>
+                    <div class="course-meta">Beginner • 6 weeks</div>
+                    <h3 class="course-title">Frontend Development with React</h3>
                     <p class="course-desc">
-                        Hands-on HTML, CSS, JavaScript, Angular and ASP.NET Core projects — build a portfolio-ready app.
+                        Learn HTML, CSS, JavaScript, and React — build interactive user interfaces and deploy a
+                        responsive web app.
                     </p>
                     <div class="course-bottom">
                         <div class="pill">Certificate</div>
-                        <div class="price">₹7,499</div>
+                        <div class="price">₹6,999</div>
                     </div>
                 </article>
+
                 <article class="course-card">
-                    <div class="course-meta">Beginner • 8 weeks</div>
-                    <h3 class="course-title">Full Stack Web Development</h3>
+                    <div class="course-meta">Intermediate • 10 weeks</div>
+                    <h3 class="course-title">Python for Data Science</h3>
                     <p class="course-desc">
-                        Hands-on HTML, CSS, JavaScript, Angular and ASP.NET Core projects — build a portfolio-ready app.
+                        Master Python, NumPy, Pandas, and Matplotlib — analyze real datasets and create powerful data
+                        visualizations.
                     </p>
                     <div class="course-bottom">
                         <div class="pill">Certificate</div>
-                        <div class="price">₹7,499</div>
+                        <div class="price">₹8,499</div>
                     </div>
                 </article>
+
                 <article class="course-card">
-                    <div class="course-meta">Beginner • 8 weeks</div>
-                    <h3 class="course-title">Full Stack Web Development</h3>
+                    <div class="course-meta">Beginner • 7 weeks</div>
+                    <h3 class="course-title">UI/UX Design Fundamentals</h3>
                     <p class="course-desc">
-                        Hands-on HTML, CSS, JavaScript, Angular and ASP.NET Core projects — build a portfolio-ready app.
+                        Understand design principles, wireframing, and prototyping — create beautiful, user-centered
+                        digital experiences.
                     </p>
                     <div class="course-bottom">
                         <div class="pill">Certificate</div>
-                        <div class="price">₹7,499</div>
+                        <div class="price">₹7,199</div>
                     </div>
                 </article>
+
                 <article class="course-card">
-                    <div class="course-meta">Beginner • 8 weeks</div>
-                    <h3 class="course-title">Full Stack Web Development</h3>
+                    <div class="course-meta">Advanced • 12 weeks</div>
+                    <h3 class="course-title">Machine Learning with TensorFlow</h3>
                     <p class="course-desc">
-                        Hands-on HTML, CSS, JavaScript, Angular and ASP.NET Core projects — build a portfolio-ready app.
+                        Dive into supervised and unsupervised learning — build predictive models using TensorFlow and
+                        scikit-learn.
                     </p>
                     <div class="course-bottom">
                         <div class="pill">Certificate</div>
-                        <div class="price">₹7,499</div>
+                        <div class="price">₹9,999</div>
                     </div>
                 </article>
-                <!-- Add others... -->
             </div>
         </div>
     </section>
