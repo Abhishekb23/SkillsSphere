@@ -3,12 +3,7 @@ using skillsphere.core.Dtos;
 using skillsphere.core.Entities;
 using skillsphere.core.Interfaces.Repositories;
 using skillsphere.infrastructure.Data;
-using System;
-using System.Collections.Generic;
 using System.Data;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace skillsphere.infrastructure.Repositories
 {
@@ -20,20 +15,22 @@ namespace skillsphere.infrastructure.Repositories
         {
             _dbContext = dbContext;
         }
+
         private IDbConnection GetConnection() => _dbContext.CreateConnection();
 
-        // Create test using PostgreSQL function
+        // -----------------------------
+        // CREATE TEST (uses create_test function)
+        // -----------------------------
         public async Task<int> CreateTestAsync(CreateTestRequest request)
         {
             using var conn = GetConnection();
             conn.Open();
 
-            // Convert DTO to JSON
             var json = System.Text.Json.JsonSerializer.Serialize(new
             {
                 title = request.Title,
                 description = request.Description,
-                createdBy = 1, // Replace with actual admin user id
+                createdBy = 1,
                 questions = request.Questions.Select(q => new
                 {
                     questionText = q.QuestionText,
@@ -46,130 +43,21 @@ namespace skillsphere.infrastructure.Repositories
                 })
             });
 
-            // Call the PostgreSQL function
-            var testId = await conn.ExecuteScalarAsync<int>(
-                "SELECT create_test(@JsonData::json);",
+            return await conn.ExecuteScalarAsync<int>(
+                "SELECT create_test(@JsonData::json)",
                 new { JsonData = json }
             );
-
-            return testId;
-        }
-
-        // Get test by id (optional)
-        public async Task<Test?> GetTestByIdAsync(int testId)
-        {
-            using var conn = GetConnection();
-            conn.Open();
-
-            // Get test
-            var test = await conn.QueryFirstOrDefaultAsync<Test>(
-                "SELECT * FROM Test WHERE TestId = @Id;",
-                new { Id = testId }
-            );
-
-            if (test == null) return null;
-
-            // Get questions
-            var questions = await conn.QueryAsync<Question>(
-                "SELECT * FROM Question WHERE TestId = @Id;",
-                new { Id = testId }
-            );
-
-            foreach (var question in questions)
-            {
-                var options = await conn.QueryAsync<Option>(
-                    "SELECT * FROM Option WHERE QuestionId = @QId;",
-                    new { QId = question.QuestionId }
-                );
-                question.Options = options.ToList();
-            }
-
-            test.Questions = questions.ToList();
-            return test;
-        }
-
-        // Get all tests (optional)
-        public async Task<IEnumerable<Test>> GetAllTestsAsync()
-        {
-            using var conn = GetConnection();
-            conn.Open();
-            var tests = await conn.QueryAsync<Test>("SELECT * FROM Test;");
-            return tests;
         }
 
 
-
-        public async Task SubmitAnswersAsync(SubmitTestRequest request)
-        {
-            using var conn = GetConnection();
-            conn.Open();
-
-            foreach (var answer in request.Answers)
-            {
-                await conn.ExecuteAsync(
-                    @"INSERT INTO ""UserAnswer"" (""UserId"", ""TestId"", ""QuestionId"", ""SelectedOptionIds"", ""SubmittedAt"")
-                      VALUES (@UserId, @TestId, @QuestionId, @SelectedOptionIds::jsonb, NOW());",
-                    new
-                    {
-                        UserId = request.UserId,
-                        TestId = request.TestId,
-                        QuestionId = answer.QuestionId,
-                        SelectedOptionIds = System.Text.Json.JsonSerializer.Serialize(answer.SelectedOptionIds)
-                    }
-                );
-            }
-        }
-
-        public async Task<IEnumerable<TestResult>> GetUserResultsAsync(int userId)
-        {
-            using var conn = GetConnection();
-            conn.Open();
-
-            var results = await conn.QueryAsync<TestResult>(
-                @"SELECT * FROM ""TestResult"" WHERE ""UserId"" = @UserId;",
-                new { UserId = userId }
-            );
-
-            return results;
-        }
-
-
-        public async Task InsertTestResultAsync(int userId, int testId, int totalQuestions, double correctAnswers, double score)
-        {
-            using var conn = GetConnection();
-            conn.Open();
-
-            await conn.ExecuteAsync(
-                @"INSERT INTO ""TestResult"" 
-                    (""UserId"", ""TestId"", ""TotalQuestions"", ""CorrectAnswers"", ""Score"", ""StartedAt"", ""CompletedAt"")
-                  VALUES (@UserId, @TestId, @TotalQuestions, @CorrectAnswers, @Score, NOW(), NOW());",
-                new
-                {
-                    UserId = userId,
-                    TestId = testId,
-                    TotalQuestions = totalQuestions,
-                    CorrectAnswers = correctAnswers,
-                    Score = score
-                }
-            );
-        }
-
-        public async Task<int> GetTestsCount()
-        {
-            using var conn = GetConnection();
-            conn.Open();
-
-            int tests = await conn.ExecuteScalarAsync<int>("SELECT COUNT(*) FROM Test;");
-            return tests;
-        }
-
-
+        // -----------------------------
+        // UPDATE TEST (uses update_test function)
+        // -----------------------------
         public async Task<bool> UpdateTestAsync(UpdateTestRequest request)
         {
             using var conn = GetConnection();
             conn.Open();
 
-            // Convert DTO to JSON
             var json = System.Text.Json.JsonSerializer.Serialize(new
             {
                 testId = request.TestId,
@@ -190,9 +78,8 @@ namespace skillsphere.infrastructure.Repositories
                 })
             });
 
-            // Call PostgreSQL function
             var result = await conn.ExecuteScalarAsync<int>(
-                "SELECT update_test(@JsonData::json);",
+                "SELECT update_test(@JsonData::json)",
                 new { JsonData = json }
             );
 
@@ -200,37 +87,157 @@ namespace skillsphere.infrastructure.Repositories
         }
 
 
+        // -----------------------------
+        // GET TEST BY ID
+        // (Keeping your logic the same)
+        // -----------------------------
+        public async Task<Test?> GetTestByIdAsync(int testId)
+        {
+            using var conn = GetConnection();
+            conn.Open();
 
+            var test = await conn.QueryFirstOrDefaultAsync<Test>(
+                "SELECT * FROM Test WHERE TestId = @Id;",
+                new { Id = testId }
+            );
+
+            if (test == null) return null;
+
+            var questions = await conn.QueryAsync<Question>(
+                "SELECT * FROM Question WHERE TestId = @Id;",
+                new { Id = testId }
+            );
+
+            foreach (var question in questions)
+            {
+                var options = await conn.QueryAsync<Option>(
+                    "SELECT * FROM Option WHERE QuestionId = @QId;",
+                    new { QId = question.QuestionId }
+                );
+                question.Options = options.ToList();
+            }
+
+            test.Questions = questions.ToList();
+            return test;
+        }
+
+
+        // -----------------------------
+        // GET ALL TESTS
+        // -----------------------------
+        public async Task<IEnumerable<Test>> GetAllTestsAsync()
+        {
+            using var conn = GetConnection();
+            conn.Open();
+
+            return await conn.QueryAsync<Test>("SELECT * FROM Test;");
+        }
+
+
+        // -----------------------------
+        // SUBMIT ANSWERS (convert to SP)
+        // -----------------------------
+        public async Task SubmitAnswersAsync(SubmitTestRequest request)
+        {
+            using var conn = GetConnection();
+            conn.Open();
+
+            var json = System.Text.Json.JsonSerializer.Serialize(request.Answers);
+
+            await conn.ExecuteAsync(
+                "CALL submit_user_answers(@UserId, @TestId, @JsonData::json)",
+                new { request.UserId, request.TestId, JsonData = json }
+            );
+        }
+
+
+        // -----------------------------
+        // GET USER RESULTS
+        // -----------------------------
+        public async Task<IEnumerable<TestResult>> GetUserResultsAsync(int userId)
+        {
+            using var conn = GetConnection();
+            conn.Open();
+
+            return await conn.QueryAsync<TestResult>(
+                @"SELECT * FROM ""TestResult"" WHERE ""UserId"" = @UserId",
+                new { UserId = userId }
+            );
+        }
+
+
+        // -----------------------------
+        // INSERT TEST RESULT (SP)
+        // -----------------------------
+        public async Task InsertTestResultAsync(int userId, int testId, int totalQuestions, double correctAnswers, double score)
+        {
+            using var conn = GetConnection();
+            conn.Open();
+
+            await conn.ExecuteAsync(
+                "CALL insert_test_result(@userId, @testId, @total, @correct, @score)",
+                new
+                {
+                    userId,
+                    testId,
+                    total = totalQuestions,
+                    correct = correctAnswers,
+                    score
+                });
+        }
+
+
+        // -----------------------------
+        // GET TEST COUNT (function)
+        // -----------------------------
+        public async Task<int> GetTestsCount()
+        {
+            using var conn = GetConnection();
+            conn.Open();
+
+            return await conn.ExecuteScalarAsync<int>("SELECT get_tests_count()");
+        }
+
+
+        // -----------------------------
+        // DELETE TEST (SP)
+        // -----------------------------
         public async Task DeleteTestAsync(int testId)
         {
             using var conn = GetConnection();
             conn.Open();
-            await conn.ExecuteAsync(@"DELETE FROM ""test"" WHERE ""testid"" = @Id;", new { Id = testId });
+
+            await conn.ExecuteAsync("CALL delete_test(@Id)", new { Id = testId });
         }
 
 
-
+        // -----------------------------
+        // ADD THUMBNAIL (SP)
+        // -----------------------------
         public async Task AddThumbnailAsync(int testId, byte[] imageData)
         {
             using var conn = GetConnection();
             conn.Open();
 
             await conn.ExecuteAsync(
-                @"INSERT INTO ""TestThumbnail"" (""TestId"", ""ImageData"") VALUES (@TestId, @ImageData);",
+                "CALL add_thumbnail(@TestId, @ImageData)",
                 new { TestId = testId, ImageData = imageData }
             );
         }
 
+
+        // -----------------------------
+        // GET THUMBNAIL (function)
+        // -----------------------------
         public async Task<byte[]?> GetThumbnailAsync(int testId)
         {
             using var conn = GetConnection();
             conn.Open();
 
             return await conn.ExecuteScalarAsync<byte[]?>(
-                @"SELECT ""ImageData"" FROM ""TestThumbnail"" WHERE ""TestId"" = @TestId LIMIT 1;",
+                "SELECT get_thumbnail(@TestId)",
                 new { TestId = testId }
             );
         }
-
     }
 }

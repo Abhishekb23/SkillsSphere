@@ -8,6 +8,7 @@ namespace skillsphere_backend.Controllers
 {
     [Route("api/learner/test")]
     [ApiController]
+    //[Authorize(Roles = "Learner")]
     public class LearnerTestController : ControllerBase
     {
         private readonly ITestService _testService;
@@ -33,7 +34,6 @@ namespace skillsphere_backend.Controllers
 
 
         [HttpGet("{id}")]
-        //[Authorize(Roles = "Learner")]
         public async Task<IActionResult> GetTestForLearner(int id)
         {
             var test = await _testService.GetTestForLearnerAsync(id);
@@ -45,7 +45,6 @@ namespace skillsphere_backend.Controllers
 
         // GET api/learner/tests
         [HttpGet]
-        //[Authorize(Roles = "Learner")]
         public async Task<IActionResult> GetAllActiveTests()
         {
             var tests = await _testService.GetAllActiveTestsAsync();
