@@ -239,5 +239,17 @@ namespace skillsphere.infrastructure.Repositories
                 new { TestId = testId }
             );
         }
+
+        public async Task DeleteThumbnailAsync(int testId)
+        {
+            using var conn = GetConnection();
+            conn.Open();
+
+            await conn.ExecuteAsync(
+                "DELETE FROM TestThumbnail WHERE TestId = @TestId",
+                new { TestId = testId }
+            );
+        }
+
     }
 }

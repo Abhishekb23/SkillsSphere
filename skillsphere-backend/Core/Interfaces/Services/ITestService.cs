@@ -26,6 +26,7 @@ namespace skillsphere.core.Interfaces.Services
         Task<FileContentResult?> GetThumbnailAsync(int testId);
 
         Task<bool> UpdateTestAsync(UpdateTestRequest request);
+        Task DeleteThumbnailAsync(int testId);
     }
 
 }

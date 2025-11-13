@@ -213,6 +213,12 @@ namespace skillsphere.infrastructure.Services
 
             return new FileContentResult(data, "image/png");
         }
+
+        public async Task DeleteThumbnailAsync(int testId)
+        {
+            await _testRepository.DeleteThumbnailAsync(testId);
+        }
+
     }
 
 
