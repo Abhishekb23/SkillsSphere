@@ -1,4 +1,5 @@
-﻿using skillsphere.core.Entities;
+﻿using skillsphere.core.Dtos;
+using skillsphere.core.Entities;
 
 namespace skillsphere.core.Interfaces.Repositories
 {
@@ -10,5 +11,7 @@ namespace skillsphere.core.Interfaces.Repositories
         Task<IEnumerable<User>> GetAllAsync();
         Task AddUserAsync(User user);
         Task UpdateUserAsync(User user);
+        Task SaveProfileAsync(SaveUserProfileRequest model, byte[]? imageBytes);
+        Task<UserProfileDto?> GetProfileAsync(int userId);
     }
 }

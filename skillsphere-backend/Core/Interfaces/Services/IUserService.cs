@@ -1,4 +1,6 @@
-﻿using skillsphere.core.Dtos;
+﻿using Microsoft.AspNetCore.Http;
+using skillsphere.core.Dtos;
+using skillsphere.core.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,5 +17,7 @@ namespace skillsphere.core.Interfaces.Services
         Task<string> LoginAsync(string email, string password);
         Task SendRegistrationOtpAsync(CreateUserDto dto);
         Task<UserDto> VerifyOtpAndRegisterAsync(string email, string otp);
+        Task<UserProfileDto?> GetProfileAsync(int userId);
+        Task SaveProfileAsync(SaveUserProfileRequest model, IFormFile? profileImage);
     }
 }

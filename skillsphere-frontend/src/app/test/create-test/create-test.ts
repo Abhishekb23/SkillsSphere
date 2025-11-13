@@ -19,6 +19,7 @@ export class CreateTest implements OnInit {
   isSubmitting = false;
   isEditMode = false;
   testIdToEdit: number | null = null;
+  existingThumbnailPresent = false; // NEW
 
   constructor(
     private fb: FormBuilder,
@@ -41,7 +42,7 @@ export class CreateTest implements OnInit {
         this.testIdToEdit = +params['id'];
         this.loadTestData(this.testIdToEdit);
       } else {
-        this.addQuestion(); // default empty question
+        this.addQuestion(); // default
       }
     });
   }
@@ -80,8 +81,14 @@ export class CreateTest implements OnInit {
 
         // Load existing thumbnail
         this.testService.getThumbnail(testId).subscribe({
-          next: (thumb) => (this.thumbnailPreview = thumb),
-          error: () => (this.thumbnailPreview = null)
+          next: (thumb) => {
+            this.thumbnailPreview = thumb;
+            this.existingThumbnailPresent = true;
+          },
+          error: () => {
+            this.thumbnailPreview = null;
+            this.existingThumbnailPresent = false;
+          }
         });
       },
       error: () => {
@@ -90,7 +97,7 @@ export class CreateTest implements OnInit {
     });
   }
 
-  // Form helpers
+  // Helpers
   get questions(): FormArray {
     return this.quizForm.get('questions') as FormArray;
   }
@@ -127,21 +134,35 @@ export class CreateTest implements OnInit {
     this.getOptions(qIndex).removeAt(oIndex);
   }
 
-  // Thumbnail selection
+  // Thumbnail Handling
   onThumbnailSelected(event: any) {
     const file = event.target.files[0];
     if (file) {
       this.selectedThumbnail = file;
+      this.existingThumbnailPresent = false;
+
       const reader = new FileReader();
       reader.onload = () => (this.thumbnailPreview = reader.result as string);
       reader.readAsDataURL(file);
     }
   }
 
-  // Submit (Create or Update)
+  deleteExistingThumbnail() {
+    if (!this.testIdToEdit) return;
+
+    this.testService.deleteThumbnail(this.testIdToEdit).subscribe({
+      next: () => {
+        this.toasterService.success('Thumbnail deleted!');
+        this.thumbnailPreview = null;
+        this.existingThumbnailPresent = false;
+      },
+      error: () => this.toasterService.error('Failed to delete thumbnail.')
+    });
+  }
+
   submitQuiz() {
     if (this.quizForm.invalid) {
-      this.toasterService.error('Please fill all required fields.');
+      this.toasterService.error('Fill all required fields.');
       return;
     }
 
@@ -154,66 +175,45 @@ export class CreateTest implements OnInit {
     }
   }
 
-  // Create new test
   private createTest() {
     this.testService.create(this.quizForm.value).subscribe({
       next: (res) => {
         const testId = res.testId || res.TestId;
-        this.toasterService.success('Test created successfully!');
-
-        if (this.selectedThumbnail && testId) {
+        if (this.selectedThumbnail) {
           this.uploadThumbnail(testId);
         } else {
-          this.resetForm();
+          this.router.navigate(['/get-test', testId]);
         }
       },
-      error: () => {
-        this.toasterService.error('Failed to create test.');
-        this.isSubmitting = false;
-      }
+      error: () => this.toasterService.error('Failed to create test.')
     });
   }
 
-  // Update existing test
   private updateTest(testId: number) {
     const payload = { ...this.quizForm.value, testId };
 
     this.testService.updateTest(payload).subscribe({
       next: () => {
-        this.toasterService.success('Test updated successfully!');
         if (this.selectedThumbnail) {
           this.uploadThumbnail(testId);
         } else {
           this.router.navigate(['/get-test', testId]);
-          this.isSubmitting = false;
         }
       },
-      error: () => {
-        this.toasterService.error('Failed to update test.');
-        this.isSubmitting = false;
-      }
+      error: () => this.toasterService.error('Failed to update test.')
     });
   }
 
-  // Upload thumbnail after create/update
   private uploadThumbnail(testId: number) {
     this.testService.uploadThumbnail(testId, this.selectedThumbnail!).subscribe({
       next: () => {
-        this.toasterService.success('Thumbnail uploaded successfully!');
+        this.toasterService.success('Thumbnail uploaded!');
         this.router.navigate(['/get-test', testId]);
-        this.resetForm();
       },
       error: () => {
         this.toasterService.error('Test saved, but thumbnail upload failed.');
         this.router.navigate(['/get-test', testId]);
       }
     });
-  }
-
-  private resetForm() {
-    this.quizForm.reset();
-    this.thumbnailPreview = null;
-    this.selectedThumbnail = null;
-    this.isSubmitting = false;
   }
 }

@@ -219,6 +219,11 @@ namespace skillsphere.infrastructure.Services
             await _testRepository.DeleteThumbnailAsync(testId);
         }
 
+
+
+        
+        
+
     }
 
 

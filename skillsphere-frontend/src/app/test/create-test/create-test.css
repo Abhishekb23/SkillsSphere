@@ -9,3 +9,23 @@
 .input-group-text {
   background-color: #f8f9fa;
 }
+
+
+.thumbnail-box {
+  position: relative;
+  display: inline-block;
+}
+
+.btn-delete-thumb {
+  position: absolute;
+  top: -6px;
+  right: -6px;
+  background: #ff3b3b;
+  border: none;
+  color: white;
+  border-radius: 50%;
+  font-size: 14px;
+  width: 28px;
+  height: 28px;
+  cursor: pointer;
+}

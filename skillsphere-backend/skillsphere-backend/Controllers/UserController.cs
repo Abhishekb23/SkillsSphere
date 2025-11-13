@@ -2,12 +2,12 @@
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using skillsphere.core.Dtos;
+using skillsphere.core.Entities;
 using skillsphere.core.Interfaces.Services;
 
 namespace skillsphere_backend.Controllers
 {
     [Route("api/[controller]")]
-    //[Authorize(Roles = "Admin")]
     [ApiController]
     public class UserController : ControllerBase
     {
@@ -36,8 +36,8 @@ namespace skillsphere_backend.Controllers
             return Ok(user);
         }
 
-        //POST: api/User
-        [HttpPost("Admin/Ragistraion")]
+        // POST: api/User/Admin/Registration
+        [HttpPost("Admin/Registration")]
         public async Task<ActionResult<UserDto>> AddAdmin([FromBody] CreateUserDto dto)
         {
             try
@@ -46,7 +46,6 @@ namespace skillsphere_backend.Controllers
                     return BadRequest(ModelState);
 
                 var createdUser = await _userService.CreateUserAsync(dto);
-
                 return Ok(createdUser);
             }
             catch (Exception ex)
@@ -54,7 +53,6 @@ namespace skillsphere_backend.Controllers
                 return BadRequest(ex.Message);
             }
         }
-
 
         // POST: api/User/login
         [HttpPost("login")]
@@ -72,6 +70,7 @@ namespace skillsphere_backend.Controllers
             }
         }
 
+        // POST: api/User/Registration
         [HttpPost("Registration")]
         [AllowAnonymous]
         public async Task<IActionResult> CreateUser([FromBody] CreateUserDto dto)
@@ -87,6 +86,7 @@ namespace skillsphere_backend.Controllers
             }
         }
 
+        // POST: api/User/verify-otp
         [HttpPost("verify-otp")]
         [AllowAnonymous]
         public async Task<IActionResult> VerifyOtp([FromBody] VerifyOtpDto dto)
@@ -102,5 +102,24 @@ namespace skillsphere_backend.Controllers
             }
         }
 
+        // ✅ GET: api/User/profile/{userId}
+        [HttpGet("profile/{userId}")]
+        public async Task<IActionResult> GetProfile(int userId)
+        {
+            var profile = await _userService.GetProfileAsync(userId);
+            if (profile == null)
+                return NotFound(new { Message = "Profile not found" });
+
+            return Ok(profile);
+        }
+
+        // ✅ POST: api/User/profile
+        [HttpPost("profile")]
+        [Consumes("multipart/form-data")]
+        public async Task<IActionResult> SaveProfile([FromForm] SaveUserProfileRequest model)
+        {
+            await _userService.SaveProfileAsync(model, model.ProfileImage);
+            return Ok(new { Message = "Profile saved successfully" });
+        }
     }
 }

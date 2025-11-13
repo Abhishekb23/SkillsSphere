@@ -1,11 +1,8 @@
 const environment = {
   production: false,
 
-  //local
-  //   BASE_URL: 'https://localhost:7042/api',
-
-  // remote
-  BASE_URL: 'https://skillssphere-1.onrender.com/api',
+  BASE_URL: 'http://localhost:8080/api',
+  // BASE_URL: 'https://skillssphere-1.onrender.com/api',
 };
 
 export default environment;

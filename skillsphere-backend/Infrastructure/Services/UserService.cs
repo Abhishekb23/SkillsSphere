@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Http;
 using skillsphere.core.Dtos;
 using skillsphere.core.Entities;
 using skillsphere.core.Interfaces.Repositories;
@@ -122,6 +123,23 @@ namespace skillsphere.infrastructure.Services
 
             // Generate JWT token
             return _jwtService.GenerateToken(user);
+        }
+
+        public Task<UserProfileDto?> GetProfileAsync(int userId)
+            => _userRepository.GetProfileAsync(userId);
+
+        public async Task SaveProfileAsync(SaveUserProfileRequest model, IFormFile? profileImage)
+        {
+            byte[]? bytes = null;
+
+            if (profileImage != null)
+            {
+                using var ms = new MemoryStream();
+                await profileImage.CopyToAsync(ms);
+                bytes = ms.ToArray();
+            }
+
+            await _userRepository.SaveProfileAsync(model, bytes);
         }
     }
 }

@@ -76,6 +76,11 @@ export class TestService {
     });
   }
 
+  deleteThumbnail(testId: number) {
+  return this.http.delete(`${this.ADMIN_BASE_URL}/${testId}/delete/thumbnail`);
+}
+
+
   updateTest(payload: any): Observable<any> {
     return this.http.put(`${this.ADMIN_BASE_URL}/${payload.testId}`, payload);
   }

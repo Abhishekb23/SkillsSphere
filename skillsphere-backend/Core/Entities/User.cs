@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Http;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -34,4 +35,17 @@ namespace skillsphere.core.Entities
         public string FromEmail { get; set; } = string.Empty;
         public string FromName { get; set; } = string.Empty;
     }
+
+    public class SaveUserProfileRequest
+    {
+        public int UserId { get; set; }
+        public string? FullName { get; set; }
+        public string? Phone { get; set; }
+        public DateTime? DateOfBirth { get; set; }
+        public string? About { get; set; }
+        public string? Skills { get; set; }
+        public IFormFile? ProfileImage { get; set; }
+
+    }
+
 }

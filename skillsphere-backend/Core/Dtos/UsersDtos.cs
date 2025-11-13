@@ -25,5 +25,18 @@ namespace skillsphere.core.Dtos
         public string OtpCode { get; set; } = string.Empty;
     }
 
+    public class UserProfileDto
+    {
+        public int UserId { get; set; }
+        public string? FullName { get; set; }
+        public string? Email { get; set; }
+        public string? Phone { get; set; }
+        public DateTime? DateOfBirth { get; set; }
+        public string? About { get; set; }
+        public string? Skills { get; set; }
+        public string? ProfileImageBase64 { get; set; }
+    }
+
+
 
 }

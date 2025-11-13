@@ -3,13 +3,35 @@
   
   <form [formGroup]="quizForm" (ngSubmit)="submitQuiz()" enctype="multipart/form-data">
     <!-- ✅ Thumbnail Upload -->
-    <div class="mb-3">
-      <label class="form-label">Thumbnail (optional)</label>
-      <input type="file" accept="image/*" class="form-control" (change)="onThumbnailSelected($event)" />
-      <div class="mt-2" *ngIf="thumbnailPreview">
-        <img [src]="thumbnailPreview" alt="Thumbnail preview" class="img-thumbnail" width="180" />
-      </div>
-    </div>
+  <!-- THUMBNAIL UPLOAD -->
+<div class="mb-3">
+
+  <label class="form-label">Thumbnail</label>
+
+  <!-- SHOW EXISTING THUMBNAIL IN EDIT MODE -->
+  <div class="thumbnail-box" *ngIf="thumbnailPreview">
+    <img [src]="thumbnailPreview" class="img-thumbnail" width="180" />
+
+    <!-- DELETE BUTTON -->
+    <button
+      *ngIf="existingThumbnailPresent"
+      type="button"
+      class="btn-delete-thumb"
+      (click)="deleteExistingThumbnail()"
+    >
+      ❌
+    </button>
+  </div>
+
+  <!-- CHOOSE NEW THUMBNAIL -->
+  <input
+    type="file"
+    accept="image/*"
+    class="form-control mt-2"
+    (change)="onThumbnailSelected($event)"
+  />
+</div>
+
 
     <div class="mb-3">
       <label class="form-label">Title</label>

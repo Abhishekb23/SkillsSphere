@@ -18,4 +18,12 @@ export class UserService {
     }
     return this.http.get(this.BASE_URL);
   }
+
+  getProfile(userId: number) {
+    return this.http.get(`${this.BASE_URL}/profile/${userId}`);
+  }
+
+  saveProfile(formData: FormData) {
+    return this.http.post(`${this.BASE_URL}/profile/`, formData);
+  }
 }

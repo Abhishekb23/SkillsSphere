@@ -3,6 +3,7 @@ using System.Data;
 using skillsphere.core.Entities;
 using skillsphere.core.Interfaces.Repositories;
 using skillsphere.infrastructure.Data;
+using skillsphere.core.Dtos;
 
 namespace skillsphere.infrastructure.Repositories
 {
@@ -87,5 +88,55 @@ namespace skillsphere.infrastructure.Repositories
                 "SELECT * FROM get_user_by_email_or_username(@Identifier);",
                 new { Identifier = identifier });
         }
+
+
+        public async Task<UserProfileDto?> GetProfileAsync(int userId)
+        {
+            using var conn = GetConnection();
+            conn.Open();
+
+            var result = await conn.QueryFirstOrDefaultAsync<dynamic>(
+                "SELECT * FROM get_user_profile(@UserId)",
+                new { UserId = userId }
+            );
+
+            if (result == null) return null;
+
+            return new UserProfileDto
+            {
+                UserId = result.userid,
+                FullName = result.fullname,
+                Email = result.email,
+                Phone = result.phone,
+                About = result.about,
+                Skills = result.skills,
+                DateOfBirth = result.dateofbirth,
+                ProfileImageBase64 = result.profileimage != null
+                    ? $"data:image/png;base64,{Convert.ToBase64String(result.profileimage)}"
+                    : null
+            };
+        }
+
+        public async Task SaveProfileAsync(SaveUserProfileRequest model, byte[]? imageBytes)
+        {
+            using var conn = GetConnection();
+            conn.Open();
+
+            await conn.ExecuteAsync(
+    "CALL save_user_profile(@UserId, @FullName, @Phone, @DateOfBirth::timestamp, @About, @Skills, @ProfileImage)",
+    new
+    {
+        UserId = model.UserId,
+        model.FullName,
+        model.Phone,
+        model.DateOfBirth,
+        model.About,
+        model.Skills,
+        ProfileImage = imageBytes
+    }
+);
+
+        }
+
     }
 }
