@@ -246,10 +246,11 @@ namespace skillsphere.infrastructure.Repositories
             conn.Open();
 
             await conn.ExecuteAsync(
-                "DELETE FROM TestThumbnail WHERE TestId = @TestId",
+                "CALL delete_thumbnail(@TestId)",
                 new { TestId = testId }
             );
         }
+
 
     }
 }

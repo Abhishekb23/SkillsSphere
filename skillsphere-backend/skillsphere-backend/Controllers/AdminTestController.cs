@@ -125,7 +125,7 @@ namespace skillsphere_backend.Controllers
             return result; // ✅ Returns image file
         }
 
-        [HttpDelete("{testId}/thumbnail")]
+        [HttpDelete("{testId}/delete/thumbnail")]
         public async Task<IActionResult> DeleteTestThumbnail(int testId)
         {
             await _testService.DeleteThumbnailAsync(testId);
