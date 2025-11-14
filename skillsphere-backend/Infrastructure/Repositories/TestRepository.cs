@@ -142,13 +142,23 @@ namespace skillsphere.infrastructure.Repositories
             using var conn = GetConnection();
             conn.Open();
 
-            var json = System.Text.Json.JsonSerializer.Serialize(request.Answers);
-
-            await conn.ExecuteAsync(
-                "CALL submit_user_answers(@UserId, @TestId, @JsonData::json)",
-                new { request.UserId, request.TestId, JsonData = json }
-            );
+            foreach (var answer in request.Answers)
+            {
+                await conn.ExecuteAsync(
+                    @"INSERT INTO ""UserAnswer"" 
+              (""UserId"", ""TestId"", ""QuestionId"", ""SelectedOptionIds"", ""SubmittedAt"")
+              VALUES (@UserId, @TestId, @QuestionId, @SelectedOptionIds::jsonb, NOW());",
+                    new
+                    {
+                        UserId = request.UserId,
+                        TestId = request.TestId,
+                        QuestionId = answer.QuestionId,
+                        SelectedOptionIds = System.Text.Json.JsonSerializer.Serialize(answer.SelectedOptionIds)
+                    }
+                );
+            }
         }
+
 
 
         // -----------------------------
@@ -175,15 +185,18 @@ namespace skillsphere.infrastructure.Repositories
             conn.Open();
 
             await conn.ExecuteAsync(
-                "CALL insert_test_result(@userId, @testId, @total, @correct, @score)",
+                @"INSERT INTO ""TestResult"" 
+                    (""UserId"", ""TestId"", ""TotalQuestions"", ""CorrectAnswers"", ""Score"", ""StartedAt"", ""CompletedAt"")
+                  VALUES (@UserId, @TestId, @TotalQuestions, @CorrectAnswers, @Score, NOW(), NOW());",
                 new
                 {
-                    userId,
-                    testId,
-                    total = totalQuestions,
-                    correct = correctAnswers,
-                    score
-                });
+                    UserId = userId,
+                    TestId = testId,
+                    TotalQuestions = totalQuestions,
+                    CorrectAnswers = correctAnswers,
+                    Score = score
+                }
+            );
         }
 
 

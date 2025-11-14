@@ -14,24 +14,39 @@
         <div class="icon-container" *ngIf="thumbnailUrl">
           <img [src]="thumbnailUrl" alt="Test Thumbnail" />
         </div>
-
         <!-- Text -->
         <div class="text-content">
           <h2>{{ testData.title }}</h2>
           <p class="test-description">{{ testData.description }}</p>
 
           <!-- Admin Info -->
-          <div *ngIf="isAdmin" class="test-meta">
-            <p><strong>Created By:</strong> {{ testData.createdByName }}</p>
-            <p><strong>Created At:</strong> {{ testData.createdAt | date:'medium' }}</p>
-            <p>
-              <strong>Status:</strong>
-              <span class="badge" [ngClass]="testData.isActive ? 'active' : 'inactive'">
-                {{ testData.isActive ? 'Active' : 'Inactive' }}
-              </span>
-            </p>
-            <button class="btn-edit" (click)="editTest()">✏️ Edit Test</button>
-          </div>
+         <!-- Admin Info -->
+<div *ngIf="isAdmin" class="test-meta">
+  <p><strong>Created By:</strong> {{ testData.createdByName }}</p>
+  <p><strong>Created At:</strong> {{ testData.createdAt | date:'medium' }}</p>
+  <p>
+    <strong>Status:</strong>
+    <span class="badge" [ngClass]="testData.isActive ? 'active' : 'inactive'">
+      {{ testData.isActive ? 'Active' : 'Inactive' }}
+    </span>
+  </p>
+</div>
+
+<!-- Action Buttons (Clean Aligned) -->
+<div *ngIf="isAdmin" class="action-buttons">
+  <button class="btn-edit" (click)="editTest()">
+    <mat-icon>edit</mat-icon>
+    Edit
+  </button>
+
+  <button class="btn-delete" (click)="deleteTest()">
+    <mat-icon>delete</mat-icon>
+    Delete
+  </button>
+</div>
+
+
+
         </div>
       </div>
     </mat-card>
@@ -44,26 +59,17 @@
         <!-- Learner View -->
         <ng-container *ngIf="isLearner">
           <!-- Single Choice -->
-          <mat-radio-group
-            *ngIf="question.questionType === 'SingleChoice'"
-            (change)="onSingleChoiceSelect(question.questionId, $event.value)"
-          >
-            <mat-radio-button
-              *ngFor="let option of question.options"
-              [value]="option.optionId"
-              class="option-item"
-            >
+          <mat-radio-group *ngIf="question.questionType === 'SingleChoice'"
+            (change)="onSingleChoiceSelect(question.questionId, $event.value)">
+            <mat-radio-button *ngFor="let option of question.options" [value]="option.optionId" class="option-item">
               {{ option.optionText }}
             </mat-radio-button>
           </mat-radio-group>
 
           <!-- Multiple Choice -->
           <div *ngIf="question.questionType === 'MultipleChoice'">
-            <mat-checkbox
-              *ngFor="let option of question.options"
-              class="option-item"
-              (change)="onMultipleChoiceChange(question.questionId, option.optionId, $event)"
-            >
+            <mat-checkbox *ngFor="let option of question.options" class="option-item"
+              (change)="onMultipleChoiceChange(question.questionId, option.optionId, $event)">
               {{ option.optionText }}
             </mat-checkbox>
           </div>
@@ -72,10 +78,7 @@
         <!-- Admin View -->
         <ng-container *ngIf="isAdmin">
           <ul class="admin-options">
-            <li
-              *ngFor="let option of question.options"
-              [ngClass]="option.isCorrect ? 'correct' : 'neutral'"
-            >
+            <li *ngFor="let option of question.options" [ngClass]="option.isCorrect ? 'correct' : 'neutral'">
               {{ option.optionText }}
               <span *ngIf="option.isCorrect" class="tag">✔ Correct</span>
             </li>

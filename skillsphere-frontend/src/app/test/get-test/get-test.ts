@@ -7,11 +7,13 @@ import { FormsModule } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { TestService } from '../../services/test.service';
 import { AuthService } from '../../services/auth.service';
+import { ToasterService } from '../../services/toaster.service';
+import { MatIconModule } from '@angular/material/icon';
 
 @Component({
   selector: 'app-get-test',
   standalone: true,
-  imports: [CommonModule, FormsModule, MatCardModule, MatCheckboxModule, MatRadioModule],
+  imports: [CommonModule, FormsModule, MatCardModule, MatCheckboxModule, MatRadioModule,MatIconModule],
   templateUrl: './get-test.html',
   styleUrls: ['./get-test.css']
 })
@@ -30,7 +32,8 @@ export class GetTest implements OnInit {
     public readonly testService: TestService,
     private readonly authService: AuthService,
     private readonly route: ActivatedRoute,
-    private readonly router: Router
+    private readonly router: Router,
+    private readonly toasterService:ToasterService
   ) {}
 
   ngOnInit(): void {
@@ -106,8 +109,21 @@ export class GetTest implements OnInit {
     };
 
     this.testService.submitTest(payload).subscribe({
-      next: () => alert('✅ Test submitted successfully!'),
-      error: () => alert('❌ Failed to submit test.')
+      next: () =>this.toasterService.information('Test submitted!'),
+      error: () =>this.toasterService.error('Test Submission faild')
+    });
+  }
+
+
+  deleteTest(){
+    this.testService.deleteTest(this.testId).subscribe({
+    next:(res)=>{
+      this.toasterService.success(`${this.testData.title} deleted successfully`);
+      this.router.navigate(['/manage-tests'])
+    },
+    error:(err)=>{
+      this.toasterService.error(`${this.testData.title} not deleted`);
+    }
     });
   }
 }

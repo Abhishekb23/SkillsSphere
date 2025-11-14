@@ -1,11 +1,15 @@
+/* =====================================
+   TEST PAGE MAIN WRAPPER
+===================================== */
 .test-wrapper {
   min-height: 100vh;
   background: linear-gradient(180deg, #071024 0%, #061126 100%);
   color: #e6eef6;
   font-family: "Inter", sans-serif;
-  padding: 40px 20px;  
+  padding: 40px 20px;
 }
 
+/* Loader */
 .loader {
   text-align: center;
   margin-top: 80px;
@@ -17,13 +21,15 @@
   font-size: 1rem;
 }
 
-/* === Container === */
+/* Container */
 .test-container {
   max-width: 900px;
   margin: 45px auto;
 }
 
-/* === Header === */
+/* =====================================
+   HEADER CARD
+===================================== */
 .test-header {
   background: rgba(255, 255, 255, 0.03);
   border: 1px solid rgba(255, 255, 255, 0.08);
@@ -41,6 +47,7 @@
   flex-wrap: wrap;
 }
 
+/* Thumbnail */
 .icon-container {
   flex-shrink: 0;
   width: 90px;
@@ -56,6 +63,7 @@
   object-fit: cover;
 }
 
+/* Header text */
 .text-content {
   flex: 1;
 }
@@ -72,6 +80,7 @@
   margin-bottom: 10px;
 }
 
+/* Header meta info */
 .test-meta {
   font-size: 0.9rem;
   color: #94a3b8;
@@ -81,6 +90,7 @@
   margin: 2px 0;
 }
 
+/* Status badges */
 .badge {
   padding: 4px 8px;
   border-radius: 5px;
@@ -98,23 +108,67 @@
   color: #94a3b8;
 }
 
-.btn-edit {
-  background: linear-gradient(90deg, #facc15, #f59e0b);
-  color: #031024;
-  border: none;
-  padding: 6px 14px;
-  border-radius: 8px;
-  margin-top: 10px;
-  cursor: pointer;
+/* =====================================
+   FINAL CLEAN ACTION BUTTONS
+===================================== */
+.action-buttons {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 14px;
+  margin-top: 12px;
+}
+
+.btn-edit,
+.btn-delete {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+
+  height: 42px;
+  padding: 0 18px;
+  font-size: 15px;
   font-weight: 600;
-  transition: transform 0.2s ease;
+  border-radius: 8px;
+  border: none;
+  cursor: pointer;
+  transition: all 0.2s ease-in-out;
+}
+
+/* Edit Button */
+.btn-edit {
+  background: #0ea5a4;
+  color: #031024;
 }
 
 .btn-edit:hover {
   transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(14, 165, 164, 0.2);
 }
 
-/* === Question Section === */
+/* Delete button */
+.btn-delete {
+  background: #ef4444;
+  color: white;
+}
+
+.btn-delete:hover {
+  background: #dc2626;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(239, 68, 68, 0.2);
+}
+
+/* Material icon inside the buttons */
+button mat-icon {
+  font-size: 20px;
+  width: 20px;
+  height: 20px;
+}
+
+/* =====================================
+   QUESTION CARD
+===================================== */
 .question-wrapper {
   margin-bottom: 24px;
 }
@@ -138,6 +192,7 @@
   margin-bottom: 15px;
 }
 
+/* Options */
 .option-item {
   display: block;
   color: #e6eef6;
@@ -145,7 +200,7 @@
   margin: 8px 0;
 }
 
-/* === Admin View === */
+/* Admin View */
 .admin-options {
   list-style: none;
   padding: 0;
@@ -179,15 +234,15 @@
   font-size: 0.75rem;
 }
 
-::ng-deep .mat-mdc-radio-button .mat-internal-form-field{
+/* Fix Angular Material color */
+::ng-deep .mat-mdc-radio-button .mat-internal-form-field,
+::ng-deep .mat-mdc-checkbox .mat-internal-form-field {
   color: white !important;
 }
 
-::ng-deep .mat-mdc-checkbox .mat-internal-form-field{
-  color: white !important;
-}
-
-/* === Submit Button === */
+/* =====================================
+   SUBMIT BUTTON
+===================================== */
 .submit-container {
   text-align: right;
   margin-top: 20px;
@@ -209,7 +264,9 @@
   box-shadow: 0 4px 15px rgba(14, 165, 164, 0.25);
 }
 
-/* === Responsive === */
+/* =====================================
+   RESPONSIVE
+===================================== */
 @media (max-width: 768px) {
   .test-header {
     padding: 16px;

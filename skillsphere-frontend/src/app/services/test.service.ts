@@ -40,6 +40,12 @@ export class TestService {
     return this.http.get(`${this.ADMIN_BASE_URL}/count`);
   }
 
+
+   deleteTest(id:number):Observable<any>{
+    return this.http.delete(`${this.ADMIN_BASE_URL}/${id}`);
+   }
+
+   
   uploadThumbnail(testId: number, file: File): Observable<any> {
     const formData = new FormData();
     formData.append('file', file);
