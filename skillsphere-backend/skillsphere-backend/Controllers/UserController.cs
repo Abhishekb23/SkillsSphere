@@ -9,6 +9,7 @@ namespace skillsphere_backend.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize(Roles = "Admin")]
     public class UserController : ControllerBase
     {
         private readonly IUserService _userService;
@@ -104,6 +105,7 @@ namespace skillsphere_backend.Controllers
 
         // ✅ GET: api/User/profile/{userId}
         [HttpGet("profile/{userId}")]
+        [AllowAnonymous]
         public async Task<IActionResult> GetProfile(int userId)
         {
             var profile = await _userService.GetProfileAsync(userId);
@@ -115,6 +117,7 @@ namespace skillsphere_backend.Controllers
 
         // ✅ POST: api/User/profile
         [HttpPost("profile")]
+        [AllowAnonymous]
         [Consumes("multipart/form-data")]
         public async Task<IActionResult> SaveProfile([FromForm] SaveUserProfileRequest model)
         {
