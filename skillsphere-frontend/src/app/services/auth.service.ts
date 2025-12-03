@@ -2,7 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { jwtDecode } from 'jwt-decode';
-import environment from '../environment';
+import { environment } from '../environment';
 
 @Injectable({
   providedIn: 'root',

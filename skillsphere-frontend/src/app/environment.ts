@@ -1,8 +1,10 @@
-const environment = {
-  production: false,
+const isLocalhost =
+  window.location.hostname === 'localhost' ||
+  window.location.hostname === '127.0.0.1';
 
- // BASE_URL: 'http://localhost:8080/api',
-  BASE_URL: 'https://skillssphere-1.onrender.com/api',
+export const environment = {
+  production: !isLocalhost,
+  BASE_URL: isLocalhost
+    ? 'http://localhost:8080/api'
+    : 'https://skillssphere-1.onrender.com/api'
 };
-
-export default environment;
