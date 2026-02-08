@@ -88,8 +88,9 @@
             <div class="certificate-grid">
                 <div class="certificate-card" *ngFor="let cert of certificates">
                     <h4>{{ cert.title }}</h4>
-                    <p>Issued on: {{ cert.issued }}</p>
-                    <button class="btn-view">View Certificate</button>
+                    <p class="text-muted">Issued on: {{ cert.issued }}</p>
+                    <h3>You have successfully obtained your certificate.</h3>
+                    <button disabled class="btn-view">Get Certificate</button>
                 </div>
             </div>
         </section>

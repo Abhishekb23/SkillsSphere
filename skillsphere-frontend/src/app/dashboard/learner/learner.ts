@@ -41,8 +41,7 @@ export class Learner implements OnInit{
   ];
 
   certificates = [
-    { title: 'SQL Mastery', issued: '01 Oct 2025' },
-    { title: 'Web Development Basics', issued: '12 Sep 2025' }
+    { title: 'SQL & Databases', issued: '01 Oct 2025' },
   ];
 
   typeText() {
