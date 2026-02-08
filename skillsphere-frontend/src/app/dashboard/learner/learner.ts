@@ -1,43 +1,40 @@
 import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { AuthService } from '../../services/auth.service';
+import { RouterLink } from "@angular/router";
 
 @Component({
   selector: 'app-learner',
-  imports: [CommonModule],
+  imports: [CommonModule, RouterLink],
   templateUrl: './learner.html',
   styleUrl: './learner.css'
 })
-export class Learner implements OnInit{
+export class Learner implements OnInit {
   isAuthenticated: boolean = false;
   isLearner: boolean = false;
   fullText: string = '';
   displayedText: string = '';
   userName: string = '';
 
-  constructor(private authService: AuthService){
+  constructor(private authService: AuthService) {
     this.isAuthenticated = authService.isAuthenticated();
     this.isLearner = authService.isLearner();
-    this.userName = authService.getUserName()??"";
+    this.userName = authService.getUserName() ?? "";
   }
 
   ngOnInit(): void {
     this.fullText = `Welcome back, ${this.userName}👋`;
-    if(this.isAuthenticated){
+    if (this.isAuthenticated) {
       this.typeText();
     }
   }
 
-   learnerName = 'Vivek Kushwaha';
   enrolledCourses = [
-    { title: 'Full Stack Web Development', progress: 75, status: 'Ongoing' },
     { title: 'SQL & Databases', progress: 100, status: 'Completed' },
-    { title: 'Machine Learning Basics', progress: 45, status: 'Ongoing' }
   ];
 
   upcomingTests = [
-    { title: 'JavaScript Fundamentals', date: '15 Nov 2025', status: 'Scheduled' },
-    { title: 'Data Structures Final', date: '22 Nov 2025', status: 'Pending' }
+    { title: 'Data Structures Final', date: '22 June 2026', status: 'Pending' }
   ];
 
   certificates = [

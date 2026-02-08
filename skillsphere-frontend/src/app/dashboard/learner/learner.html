@@ -70,6 +70,16 @@
             </div>
         </section>
 
+        <section class="section">
+            <h3>All Tests</h3>
+            <div class="certificate-grid">
+                <div class="certificate-card">
+                    <h4>Explore Tests and Earn Certificates</h4>
+                    <button class="btn-view" routerLink="/manage-tests">Tests</button>
+                </div>
+            </div>
+        </section>
+
         <!-- Upcoming Tests -->
         <section class="section">
             <h3>Upcoming Tests</h3>
@@ -88,7 +98,7 @@
             <div class="certificate-grid">
                 <div class="certificate-card" *ngFor="let cert of certificates">
                     <h4>{{ cert.title }}</h4>
-                    <p class="text-muted">Issued on: {{ cert.issued }}</p>
+                    <p style="color: #0EA5A4;">Issued on: {{ cert.issued }}</p>
                     <h3>You have successfully obtained your certificate.</h3>
                     <button disabled class="btn-view">Get Certificate</button>
                 </div>
