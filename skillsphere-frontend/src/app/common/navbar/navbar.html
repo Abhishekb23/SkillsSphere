@@ -1,19 +1,16 @@
 <nav class="navbar">
   <div class="nav-container">
     <!-- Logo -->
-    <div class="nav-logo" routerLink="/">
+    <div class="nav-logo" routerLink="/" (click)="closeMobileMenu()">
       <span class="brand">Skill<span class="highlight">Sphere</span></span>
     </div>
 
-    <!-- Navigation Links -->
     <ul class="nav-links">
-      <!-- <li></li> -->
-
       <li *ngIf="isAuthenticated && isAdmin"><a routerLink="/users">Users</a></li>
 
       <li *ngIf="!isAuthenticated" class="auth-buttons">
-        <button class="btn btn-outline" routerLink="/login">Login</button>
-        <button class="btn btn-success" routerLink="/signup">Sign Up</button>
+        <button class="btn btn-outline" routerLink="/login" (click)="closeMobileMenu()">Login</button>
+        <button class="btn btn-success" routerLink="/signup" (click)="closeMobileMenu()">Sign Up</button>
       </li>
 
       <li *ngIf="isAuthenticated" class="user-section">

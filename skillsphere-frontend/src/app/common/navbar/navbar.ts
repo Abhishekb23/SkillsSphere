@@ -49,6 +49,18 @@ export class Navbar implements AfterViewInit {
     navToggle?.addEventListener('click', () => {
       navLinks?.classList.toggle('open');
     });
+
+    document.addEventListener('click', (event) => {
+      const target = event.target as HTMLElement;
+      if (
+        this.isMobileMenu &&
+        !navbar?.contains(target) &&
+        navLinks?.classList.contains('open')
+      ) {
+        navLinks?.classList.remove('open');
+        this.isMobileMenu = false;
+      }
+    });
   }
 
   toggleMenu() {
@@ -65,5 +77,11 @@ export class Navbar implements AfterViewInit {
       return (parts[0][0] + parts[1][0]).toUpperCase();
     }
     return name.substring(0, 2).toUpperCase();
+  }
+
+  closeMobileMenu() {
+    const navLinks = document.querySelector('.nav-links');
+    navLinks?.classList.remove('open');
+    this.isMobileMenu = false;
   }
 }
